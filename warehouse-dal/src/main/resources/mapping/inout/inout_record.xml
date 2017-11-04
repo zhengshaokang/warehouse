@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.inout.IInoutRecordDao">
+
+	<resultMap type="inoutRecord" id="inoutRecordResult">
+		<id property="id" column="id" />
+		<result property="productId" column="product_id" />
+		<result property="inoutType" column="inout_type" />
+		<result property="beforeTotal" column="before_total" />
+		<result property="afterTotal" column="after_total" />
+		<result property="beforeInventory" column="before_inventory" />
+		<result property="afterInventory" column="after_inventory" />
+		<result property="changeInventory" column="change_inventory" />
+		<result property="recordType" column="record_type" />
+		<result property="operator" column="operator" />
+		<result property="operateTime" column="operate_time" />
+	</resultMap>
+    <!-- 添加出入库记录 -->
+	<insert id="addInoutRecord" parameterType="inoutRecord" useGeneratedKeys="true" keyProperty="id">
+		insert  into inout_record (id,product_id,inout_type,before_total,after_total,before_inventory,after_inventory,change_inventory,record_type,operator,operate_time)
+			values (#{id},#{productId},#{inoutType},#{beforeTotal},#{afterTotal},#{beforeInventory},#{afterInventory},#{changeInventory},#{recordType},#{operator},#{operateTime})
+	</insert>
+	
+    <!-- 根据商品id查询出入记录-->
+	<select id="queryInoutRecordByProductId" resultMap="inoutRecordResult">
+		select * from inout_record where product_id = #{productId}
+	</select>
+	
+	 <!-- 根据出入库时间查询-->
+	<select id="queryInoutRecordByTime" resultMap="inoutRecordResult">
+		select * from inout_record where operate_time &gt; #{operateTimeStart} and operate_time &lt;= #{operateTimeEnd}
+	</select>
+	
+	<!-- 查询全部 -->
+	<select id="queryInoutRecords"  resultMap="inoutRecordResult">
+		select * from inout_record 
+	</select>
+	
+	<!-- 分页查询 -->
+	<select id="pageQueryInoutRecord" resultMap="inoutRecordResult" parameterType="page">
+	 	select * from inout_record ir, product pr where pr.id = ir.product_id
+		<if test="p.sku != null and p.sku !=''">
+			 and pr.sku like concat('%',#{p.sku},'%')
+		</if>
+	    <if test="p.inoutType > 0 ">and ir.inout_type = #{p.inoutType}</if>
+		<if test="p.recordType > 0 ">and ir.record_type=#{p.recordType}</if>
+		<if test="p.operateTimeStart != null and p.operateTimeStart != '' and p.operateTimeEnd != null and p.operateTimeEnd != ''">
+			and ir.operate_time &gt; #{p.operateTimeStart} and ir.operate_time &lt;= #{p.operateTimeEnd}
+		</if>
+		order by ir.operate_time desc
+	</select>
+	
+</mapper>	

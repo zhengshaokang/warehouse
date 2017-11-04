@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.user.ISysUserDao">
+	<resultMap type="sysuser" id="sysuserResult">
+		<result property="id" column="id" />
+		<result property="loginname" column="login_name" />
+		<result property="password" column="password" />
+		<result property="realname" column="real_name" />
+		<result property="email" column="email" />
+		<result property="sex" column="sex" />
+		<result property="age" column="age" />
+		<result property="mobile" column="mobile" />
+		<result property="birthday" column="birthday"/>
+		<result property="officephone" column="officephone"/>
+		<result property="userStatus" column="user_status" />
+		<result property="createUserId" column="create_user_id" />
+		<result property="createDatetime" column="create_datetime" />
+		<result property="updateUserId" column="update_user_id" />
+		<result property="updateDatetime" column="update_datetime" />
+	</resultMap>
+	
+    <!-- 添加系统用户-->
+	<insert id="addSysUser" parameterType="sysuser" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		sys_user(id,login_name,password,real_name,sex,age,birthday,mobile,office_phone,user_status,create_datetime,create_user_id,update_datetime, update_user_id)
+		values(#{id},#{loginname},#{password},#{realname},#{sex},#{age},#{birthday},#{mobile},#{officephone},#{userStatus},#{createUserId},#{createDatetime},#{updateUserId},#{updateDatetime})
+	</insert>
+    <!-- 修改系统用户 -->
+	<update id="updateSysUser" parameterType="sysuser">
+		update sys_user 
+		<set>
+			<if test="loginname != null and loginname != ''">login_name=#{loginname},</if>
+			<if test="password != null and password != ''">password=#{password},</if>
+			<if test="realname != null and realname != ''">real_name=#{realname},</if>
+			<if test="mobile != null and mobile != ''">mobile=#{mobile},</if>
+			<if test="sex >= 0">sex=#{sex},</if>
+	        <if test="officephone != null and officephone != ''">office_phone=#{officephone},</if>
+			<if test="userStatus >= 0">user_status=#{userStatus},</if>
+			<if test="createDatetime != null and createDatetime!=''">create_datetime=#{createDatetime},</if>
+			<if test="updateUserId != null and updateUserId != ''">update_user_id=#{updateUserId},</if>
+			<if test="updateDatetime != null">update_datetime=#{updateDatetime}</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	 <!-- 添加用户角色 -->
+	<insert id="addSysRoleUser">
+		insert into sys_role_user (user_id,role_id) values(#{userId},#{roleId})
+	</insert>
+	
+	 <!-- 删除用户角色 -->
+	<delete id="deleteSysRoleUser">
+		delete from sys_role_user
+		where user_id=#{userId} and role_id=#{roleId}
+	</delete>
+	
+	<!-- 查询系统用户-->
+	<select id="querySysUser" resultMap="sysuserResult" parameterType="sysuser">
+		    select * from sys_user where 1=1
+			<if test="id != null and id != ''">
+			   and  id = #{id}
+			</if>
+			<if test="loginname != null and loginname != ''">
+				and login_name = #{loginname}
+			</if>
+			<if test="mobile != null and mobile != ''">
+				and mobile = #{mobile}
+			</if>
+	</select>
+	
+	<!-- 查询系统登陆用户-->
+	<select id="querySysUserLogin" resultMap="sysuserResult" parameterType="sysuser">
+		    select * from sys_user where 1=1 and user_status=1 
+			<if test="id != null and id != ''">
+			   and  id = #{id}
+			</if>
+			<if test="loginname != null and loginname != ''">
+				and login_name = #{loginname}
+			</if>
+			<if test="password != null and password != ''">
+				and password = #{password}
+			</if>
+	</select>
+	
+	<!-- 系统用户的登录 -->
+	<select id="querySysUser4Login" resultMap="sysuserResult" parameterType="sysuser">
+		select * from sys_user where 1=1
+		<where>
+			<if test="loginname != null and loginname != '' and password != null and password != ''">
+				and loginname = #{loginname} and password=#{password} 
+			</if>
+			<if test="mobile != null and mobile != '' and password != null and password != ''">
+				and  mobile = #{mobile} and password=#{password}
+			</if>
+			<if test="email != null and email != '' and password != null and password != ''">
+				and email = #{email} and password=#{password} 
+			</if>
+		</where>
+	</select>
+	<!-- 查询系统用户进行分页 -->
+	<select id="pageQuerySysUsers" resultMap="sysuserResult" parameterType="page">
+		select * from sys_user where 1=1
+			<if test="p.id != null and p.id != ''">
+			    and	id = #{p.id}
+			</if>
+			<if test="p.loginname != null and p.loginname != ''">
+				and login_name like concat('%',#{p.loginname},'%')
+			</if>
+			<if test="p.mobile != null and p.mobile != ''">
+				and mobile = #{p.mobile}
+			</if>
+			<if test="p.email != null and p.email != ''">
+				and email = #{p.email}
+			</if>
+	</select>
+	
+	<!-- 查询系统用户审核进行分页 -->
+	<select id="querySysCensorUser" resultMap="sysuserResult" parameterType="page">
+		 select * from sys_user where 1=1
+			<if test="p.id != null and p.id != ''">
+			    and	id = #{p.id}
+			</if>
+			<if test="p.loginname != null and p.loginname != ''">
+				and login_name like concat('%',#{p.loginname},'%')
+			</if>
+			<if test="p.mobile != null and p.mobile != ''">
+				and mobile = #{p.mobile}
+			</if>
+			<if test="p.email != null and p.email != ''">
+				and email = #{p.email}
+			</if>
+	</select>
+	
+	<!-- 用于前台登陆 -->
+	<select id="prosceniumLogin" resultMap="sysuserResult" >
+		select * from sys_user where user_status = 1  and login_name = #{loginname}
+	</select>
+	
+	<!-- 查询全部用户 -->
+	<select id="querySysUsers" resultMap="sysuserResult">
+		select * from sys_user where user_status = 1
+	</select>
+</mapper>

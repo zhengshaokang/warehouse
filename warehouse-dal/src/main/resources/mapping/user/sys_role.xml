@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.user.ISysRoleDao">
+
+     <!-- 用户角色的查询集合   返回的容器 -->
+	<resultMap type="sysRole" id="sysRoleResult">
+		<id property="id" column="id" />
+		<result property="roleName" column="role_name" />
+		<result property="roleStatus" column="role_status" />
+	</resultMap>
+	
+	 <!-- 用户权限的查询集合   返回的容器 -->
+	<resultMap type="sysAuth" id="sysAuthResult">
+		<id property="id" column="id" />
+		<result property="authName" column="auth_name" />
+		<result property="authUrl" column="auth_url" />
+		<result property="authPic" column="auth_pic" />
+		<result property="parentId" column="parent_id" />
+		<result property="sort" column="sort" />
+		<result property="recordStatus" column="record_status" />
+		<result property="authButton" column="auth_button" />
+	</resultMap>
+    <!-- 添加用户角色 -->
+	<insert id="addSysRole" parameterType="sysRole" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_role
+		(id,role_name,role_status)
+		values(#{id},#{roleName},#{roleStatus})
+	</insert>
+   
+	  <!-- 修改用户角色-->
+	<update id="updateSysRole"   parameterType="sysRole">
+		update sys_role
+		<set>
+			<if test="roleName != null and roleName != ''">role_name=#{roleName},</if>
+			<if test="roleStatus >= 0">role_status=#{roleStatus},</if>
+		</set>
+		where id = #{id}
+	</update>
+	  <!-- 添加用户权限 -->
+	<insert id="addSysRoleAuth">
+		insert into sys_role_auth (auth_id,role_id) values(#{authId},#{roleId})
+	</insert>
+	<!-- 删除用户权限 -->
+	<delete id="deleteSysRoleAuth">
+		delete from sys_role_auth
+		where auth_id=#{authId} and role_id=#{roleId}
+	</delete>	
+	<!-- 查询用户权限 -->
+	<select id="querySysRoles" parameterType="page" resultMap="sysRoleResult">
+		select * 
+		from sys_role 
+		where role_status = 1
+			<if test="p.id > 0">and id = ${p.id}</if>
+			<if test="p.roleName != null and p.roleName != ''">and role_name like ${p.roleName}</if>
+			<if test="p.roleStatus >= 0 and p.roleStatus != 1">and role_status = #{p.roleStatus} </if>
+	</select>
+	<!--根据用户的编号来查询用户的权限 -->
+	<select id="queryRolesByUserId" resultMap="sysRoleResult">
+		select r.* from sys_role r,sys_role_user ru where r.id=ru.role_id and r.role_status=1 and ru.user_id=#{userId} 
+	</select>
+	
+	<select id="queryRolesByAuthId" resultMap="sysRoleResult">
+		select r.* from sys_role r,sys_role_auth ra where r.id=ra.role_id and ra.auth_id=#{authId}
+	</select>
+	
+</mapper>	

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:task="http://www.springframework.org/schema/task"
+	xsi:schemaLocation="
+     http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+     http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
+     http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd
+     http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+     http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+<!-- 	<context:annotation-config />
+	<context:component-scan base-package="com.hys.dal com.hys.service" />
+	 -->
+
+	<!-- The data source configuration start -->
+	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver"></property>
+		<property name="url" value="jdbc:mysql://${db.host}:${db.port}/${db.dbname}?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull"></property>
+		<property name="username" value="${db.user}"></property>
+		<property name="password" value="${db.pwd}"></property>
+	</bean>
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="configLocation" value="classpath:sqlmapping-configuration.xml"></property>
+		<property name="dataSource" ref="dataSource" />
+	</bean>
+	<!-- The data source configuration end -->
+
+
+	<!-- Config spring's thread pool -->
+	<bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">
+		<property name="corePoolSize" value="3" />
+		<property name="maxPoolSize" value="10" />
+	</bean>
+	
+
+	<!-- Declarative transaction configuration start -->
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+    	<property name="dataSource" ref="dataSource" />
+	</bean>
+	<tx:annotation-driven transaction-manager="txManager" />
+ 	<tx:advice id="methodAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="add*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="delete*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="update*" propagation="REQUIRED" rollback-for="Exception" />
+			<tx:method name="get*" propagation="SUPPORTS" />
+			<tx:method name="query*" propagation="SUPPORTS" />
+		</tx:attributes>
+	</tx:advice>
+	<aop:config>
+		<aop:pointcut id="interceptorPointCuts" expression="execution(public * com.hys.service..*.*(..))" />
+		<aop:advisor advice-ref="methodAdvice" pointcut-ref="interceptorPointCuts" />
+	</aop:config> 
+	<!-- Declarative transaction configuration end = -->
+
+
+	<!-- Scheduled task configuration start -->
+	<task:annotation-driven executor="serviceExecutor" scheduler="serviceScheduler" mode="proxy" proxy-target-class="true" />
+	<task:executor id="serviceExecutor" pool-size="5" />
+	<task:scheduler id="serviceScheduler" pool-size="10" />
+	<!-- Scheduled task configuration end -->
+	
+	
+	<!-- ================= Image and file sftp transfer start ============================== -->
+	<bean id="sftpFileTransfer" class="com.hys.commons.fileupload.sftp.SftpFileTransfer" scope="prototype">
+		<property name="host" value="${remote.file.server.host}"></property>
+		<property name="port" value="${remote.file.server.port}"></property>
+		<property name="username" value="${remote.file.server.username}"></property>
+		<property name="password" value="${remote.file.server.password}"></property>
+		<property name="timeout" value="${remote.file.server.timeout}"></property>
+	</bean>
+	<bean id="fileSender" class="com.hys.commons.fileupload.FileSender" scope="prototype">
+		<property name="sftpFileTransfer" ref="sftpFileTransfer"></property>
+	</bean>
+	<bean id="fileResender" class="com.hys.commons.fileupload.FileResender">
+		<property name="sftpFileTransfer" ref="sftpFileTransfer"></property>
+	</bean>
+	<bean id="fileDeleter" class="com.hys.commons.fileupload.FileDeleter">
+		<property name="sftpFileTransfer" ref="sftpFileTransfer"></property>
+	</bean>
+	<!-- ================= Image and file sftp transfer end ============================== -->
+	
+</beans>

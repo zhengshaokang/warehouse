@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.user.ISysAuthDao">
+
+	<resultMap type="sysAuth" id="sysAuthResult">
+		<id property="id" column="id" />
+		<result property="authName" column="auth_name" />
+		<result property="authUrl" column="auth_url" />
+		<result property="authPic" column="auth_pic" />
+		<result property="parentId" column="parent_id" />
+		<result property="sort" column="sort" />
+		<result property="recordStatus" column="record_status" />
+		<result property="authbutton" column="auth_button" />
+	</resultMap>
+    <!-- 添加权限 -->
+	<insert id="addSysAuth" parameterType="sysAuth" useGeneratedKeys="true" keyProperty="id">
+		insert into sys_auth (id,auth_name,auth_url,auth_pic,parent_id,sort,record_status,auth_button) 
+			values(#{id},#{authName},#{authUrl},#{authPic},#{parentId},#{sort},#{recordStatus},#{authbutton})
+	</insert>
+    <!-- 删除权限 -->
+	<delete id="deleteSysAuth">
+		delete from sys_auth where id = #{authId}
+	</delete>
+	<!-- 修改权限 -->
+	<update id="updateSysAuth" parameterType="sysAuth">
+		update sys_auth
+		<set>
+			<if test="authName != null and authName != ''">auth_name=#{authName},</if>
+			<if test="authUrl != null and authUrl != ''">auth_url=#{authUrl},</if>
+			<if test="authPic != null and authPic != ''">auth_pic=#{authPic},</if>
+			<if test="parentId != null and parentId != ''">parent_id=#{parentId},</if>
+			<if test="sort >= 0">sort=#{sort},</if>
+			<if test="recordStatus >= 0">record_status=#{recordStatus}</if>
+			<if test="authbutton>=0">auth_button=#{authbutton}</if>
+		</set>
+		where id=#{id}
+	</update>
+    <!-- 查询权限 -->
+	<select id="querySysAuth" resultMap="sysAuthResult">
+		select * from sys_auth where id = #{authId}
+	</select>
+	
+	<select id="querySysAuths"  resultMap="sysAuthResult">
+		select * from sys_auth 
+	</select>
+	
+	<!--根据id来进行查找用户权限 -->
+	<select id="queryAuthsByUserId" resultMap="sysAuthResult">
+		select a.* 
+			from sys_user u,sys_role_user ru,sys_role_auth ra,sys_auth a 
+			where u.id=ru.user_id and ru.role_id=ra.role_id and ra.auth_id=a.id and u.id=#{userId}
+			order by a.sort
+	</select>
+	
+	<!--根据角色id来进行查找用户权限 -->
+	<select id="queryAuthsByRoleId" resultMap="sysAuthResult">
+		select a.* from sys_auth a,sys_role_auth ra where a.id=ra.auth_id and ra.role_id=#{roleId} order by a.sort asc;
+	</select>
+	<!-- 查询系统用户进行分页 -->
+	<select id="PageQuerySysAuth" resultMap="sysAuthResult" parameterType="page">
+	      select * from sys_auth where 1=1 
+	   		<if test="p.authName != null and p.authName != ''">and auth_name=#{p.authName}</if>
+			<if test="p.authUrl != null and p.authUrl != ''">and auth_url=#{p.authUrl}</if>
+			<if test="p.authPic != null and p.authPic != ''">and auth_pic=#{p.authPic}</if>
+			<if test="p.parentId != null and p.parentId != ''">and parent_id=#{p.parentId}</if>
+	</select>
+</mapper>	

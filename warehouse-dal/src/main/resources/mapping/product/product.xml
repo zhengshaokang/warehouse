@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.product.IProductDao">
+
+	<resultMap type="product" id="productResult">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="sku" column="sku" />
+		<result property="description" column="description" />
+		<result property="productionDate" column="production_date" />
+		<result property="maturityDate" column="maturity_date" />
+		<result property="effectiveDay" column="effective_day" />
+		<result property="price" column="price" />
+		<result property="inventoryTotal" column="inventory_total" />
+		<result property="inventoryAvailable" column="inventory_available" />
+		<result property="inventoryCheck" column="inventory_check" />
+		<result property="checkDate" column="check_date" />
+		<result property="unit" column="unit" />
+		<result property="picUrl" column="pic_url" />
+		<result property="packType" column="pack_type" />
+		<result property="type" column="type" />
+		<result property="status" column="status" />
+		<result property="creator" column="creator" />
+		<result property="createTime" column="create_time" />
+		<result property="updator" column="updator" />
+		<result property="updateTime" column="update_time" />
+		<result property="sysRemark" column="sys_remark" />
+	</resultMap>
+    <!-- 添加商品 -->
+	<insert id="addProduct" parameterType="product" useGeneratedKeys="true" keyProperty="id">
+		insert  into product (id,name,sku,description,production_date,maturity_date,effective_day,price,inventory_total,inventory_available,inventory_check,check_date,unit,pic_url,pack_type,type,status,creator,create_time,updator,update_time,sys_remark)
+			values (#{id},#{name},#{sku},#{description},#{productionDate},#{maturityDate},#{effectiveDay},#{price},#{inventoryTotal},#{inventoryAvailable},#{inventoryCheck},#{checkDate},#{unit},#{picUrl},#{packType},#{type},#{status},#{creator},#{createTime},#{updator},#{updateTime},#{sysRemark})
+	</insert>
+    <!-- 根据id删除商品-->
+	<delete id="deleteProduct">
+		delete from product where id = #{id}
+	</delete>
+	
+	<!-- 修改商品-->
+	<update id="updateProduct" parameterType="product">
+		update product
+		<set>
+			<if test="name != null and name != ''">name=#{name},</if>
+			<if test="sku != null and sku != ''">sku=#{sku},</if>
+			<if test="description != null and description != ''">description=#{description},</if>
+			<if test="productionDate != null and productionDate != ''">production_date=#{productionDate},</if>
+			<if test="maturityDate != null and maturityDate != ''">maturity_date=#{maturityDate},</if>
+			<if test="effectiveDay >= 0">effective_day=#{effectiveDay},</if>
+			<if test="price >= 0">price=#{price},</if>
+			<if test="inventoryTotal >=0">inventory_total=#{inventoryTotal},</if>
+			<if test="inventoryAvailable >=0">inventory_available=#{inventoryAvailable},</if>
+			<if test="inventoryCheck >=0">inventory_check=#{inventoryCheck},</if>
+			<if test="checkDate != null and checkDate != ''">check_date=#{checkDate},</if>
+			<if test="unit >=0">unit=#{unit},</if>
+			<if test="picUrl != null and picUrl != ''">pic_url=#{picUrl},</if>
+			<if test="packType >=0">pack_type=#{packType},</if>
+			<if test="type >=0">type=#{type},</if>
+			<if test="status >=0">status=#{status},</if>
+			<if test="creator >=0">creator=#{creator},</if>
+			<if test="createTime != null and createTime != ''">create_time=#{createTime},</if>
+			<if test="updator >=0">updator=#{updator},</if>
+			<if test="updateTime != null and updateTime != ''">update_time=#{updateTime},</if>
+			<if test="sysRemark != null and sysRemark != ''">sys_remark=#{sysRemark}</if>
+		</set>
+		where id=#{id}
+	</update>
+    <!-- 根据id查询商品-->
+	<select id="queryProductById" resultMap="productResult">
+		select * from product where id = #{id}
+	</select>
+	
+	 <!-- 根据id查询商品-->
+	<select id="queryProductBySku" resultMap="productResult">
+		select * from product where sku = #{sku}
+	</select>
+	
+	<!-- 查询全部商品 -->
+	<select id="queryProducts"  resultMap="productResult">
+		select * from product 
+	</select>
+	
+	<!-- 查询系统用户进行分页 -->
+	<select id="pageQueryProduct" resultMap="productResult" parameterType="page">
+	      select * from product where 1=1 
+	   		<if test="p.name != null and p.name != ''">and name like concat('%',#{p.name},'%')</if>
+			<if test="p.sku != null and p.sku != ''">and sku like concat('%',#{p.sku},'%')</if>
+			<if test="p.productionDate != null and p.productionDate != ''">and production_date=#{p.productionDate}</if>
+			<if test="p.effectiveDay != null and p.effectiveDay != ''">and effective_day=#{p.effectiveDay}</if>
+	</select>
+</mapper>	

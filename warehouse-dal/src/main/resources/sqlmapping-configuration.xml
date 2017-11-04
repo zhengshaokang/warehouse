@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<!-- 显示致命使用slf4j日志系统 -->
+		<setting name="logImpl" value="SLF4J" />
+		<!-- use lazy loading config -->
+		<!--<setting name="lazyLoadingEnabled" value="true"/> 
+		<setting name="aggressiveLazyLoading" value="false"/>-->
+	</settings>
+	
+	<typeAliases>
+		<!-- page parameter -->
+		<typeAlias alias="page" type="com.hys.commons.page.PageParam"/>
+		<typeAlias alias="pair" type="com.hys.commons.util.Pair"/>
+		<typeAlias alias="triple" type="com.hys.commons.util.Triple"/>	
+		
+		<!-- user -->
+		<typeAlias alias="sysRole" type="com.hys.model.user.SysRole"/>
+		<typeAlias alias="sysAuth" type="com.hys.model.user.SysAuth"/>
+        <typeAlias alias="sysuser" type="com.hys.model.user.SysUser"/>
+        
+        <typeAlias alias="product" type="com.hys.model.product.Product"/>
+        <typeAlias alias="productAttribute" type="com.hys.model.product.ProductAttribute"/>
+        
+        <typeAlias alias="inoutRecord" type="com.hys.model.inout.InoutRecord"/>
+		
+	</typeAliases>
+	<plugins>
+		<plugin interceptor="com.hys.commons.page.PageInterceptor">
+			<property name="dbType" value="mysql"/>
+		</plugin>
+	</plugins>
+	<mappers>
+
+		<!-- user -->
+        <mapper resource="mapping/user/sys_auth.xml" />
+        <mapper resource="mapping/user/sys_role.xml" />
+        <mapper resource="mapping/user/sys_user.xml" />
+        
+        <mapper resource="mapping/product/product.xml" />
+        <mapper resource="mapping/product/product_attribute.xml" />
+        
+        <mapper resource="mapping/inout/inout_record.xml" />
+        
+	</mappers>
+	
+</configuration>
+

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.product.IProductAttributeDao">
+
+	<resultMap type="productAttribute" id="productAttributeResult">
+		<id property="id" column="id" />
+		<result property="productId" column="product_id" />
+		<result property="name" column="name" />
+		<result property="value" column="value" />
+		<result property="remark" column="remark" />
+	</resultMap>
+    <!-- 添加商品属性  -->
+	<insert id="addProductAttribute" parameterType="productAttribute" useGeneratedKeys="true" keyProperty="id">
+		insert into product_attribute (id,product_id,name,value,remark) 
+			values(#{id},#{productId},#{name},#{value},#{remark})
+	</insert>
+    <!-- 根据id删除商品属性 -->
+	<delete id="deleteProductAttribute">
+		delete from product_attribute where id = #{id}
+	</delete>
+	
+	<!-- 根据商品id删除属性 -->
+	<delete id="deleteProductAttributeByProductId">
+		delete from product_attribute where product_id = #{productId}
+	</delete>
+	
+	<!-- 修改商品属性 -->
+	<update id="updateProductAttribute" parameterType="productAttribute">
+		update product_attribute
+		<set>
+			<if test="productId >=0 ">product_id=#{productId},</if>
+			<if test="name != null and name != ''">name=#{name},</if>
+			<if test="value != null and value != ''">value=#{value},</if>
+			<if test="remark != null and remark != ''">remark=#{remark},</if>
+		</set>
+		where id=#{id}
+	</update>
+    <!-- 根据id查询商品属性-->
+	<select id="queryProductAttribute" resultMap="productAttributeResult">
+		select * from product_attribute where id = #{id}
+	</select>
+	
+	<!-- 查询全部商品属性  -->
+	<select id="queryProductAttributes"  resultMap="productAttributeResult">
+		select * from product_attribute 
+	</select>
+	
+	<!--根据商品id查询属性 -->
+	<select id="queryProductAttributeByProductId" resultMap="productAttributeResult">
+		select * from product_attribute where product_id = #{productId}
+	</select>
+</mapper>	

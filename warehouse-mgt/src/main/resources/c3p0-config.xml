@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!-- 文件名不能乱改，须用默认的c3o0-config.xml -->
+<c3p0-config>
+	<default-config>
+		<property name="driverClass">com.mysql.jdbc.Driver</property>
+		<property name="user">${db.user}</property>
+		<property name="password">${db.pwd}</property>
+		<property name="jdbcUrl">jdbc:mysql://${db.host}:${db.port}/${db.dbname}?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+		</property>
+		<!--当连接池中的连接耗尽的时候c3p0一次同时获取的连接数。Default:3 -->
+		<property name="acquireIncrement">3</property>
+	</default-config>
+
+</c3p0-config>
