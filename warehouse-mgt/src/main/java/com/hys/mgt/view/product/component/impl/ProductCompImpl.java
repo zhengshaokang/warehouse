@@ -35,7 +35,7 @@ public class ProductCompImpl implements IProductComp{
 		ResultPrompt rp = new ResultPrompt();
 		try {
 			
-			Product cp = productService.queryProductBySku(product.getSku());
+			Product cp = productService.queryProductBySkuAndProductionDate(product.getSku(),product.getProductionDate());
 			
 			if(LogicUtil.isNotNull(cp)) {
 				 rp.setStatusCode("300");
@@ -75,7 +75,7 @@ public class ProductCompImpl implements IProductComp{
 		ResultPrompt rp = new ResultPrompt();
 		try {
 			
-			Product cp = productService.queryProductBySku(product.getSku());
+			Product cp = productService.queryProductBySkuAndProductionDate(product.getSku(),product.getProductionDate());
 			
 			if(LogicUtil.isNotNull(cp) && cp.getId() != product.getId()) { //要排除查询到的是当前的商品
 				 rp.setStatusCode("300");
@@ -218,6 +218,12 @@ public class ProductCompImpl implements IProductComp{
 		ResultPrompt rp = new ResultPrompt();
 		try {
 			Product p = productService.queryProductById(productId);
+			if(p.getStatus() == 1) {
+				 rp.setStatusCode("300");
+				 rp.setMessage("该商品已经下架，如果需要请先上架！");
+				 return rp;
+			}
+			
 			boolean b = productService.productInSubmit(p, qty, recordType,operator);
 			if(b) {	
 				 rp.setStatusCode("200");
@@ -243,11 +249,98 @@ public class ProductCompImpl implements IProductComp{
 		ResultPrompt rp = new ResultPrompt();
 		try {
 			Product p = productService.queryProductById(productId);
+			
+			if(p.getStatus() == 1) {
+				 rp.setStatusCode("300");
+				 rp.setMessage("该商品已经下架，不能出库！");
+				 return rp;
+			}
+			
+			Integer oldQty = p.getInventoryAvailable();
+			
+			if(oldQty == 0) {
+				 rp.setStatusCode("300");
+				 rp.setMessage("生产日期为"+p.getProductionDate()+"的库存为0！请先下架");
+				 //rp.setCallbackType("closeCurrent"); // 关闭当前窗口
+				 //rp.setNavTabId("product/list"); // 要刷新的tab页id
+				 return rp;
+			}
+			
+			if(oldQty < qty) {
+				 rp.setStatusCode("300");
+				 rp.setMessage("生产日期为"+p.getProductionDate()+"的库存不足！请先出库剩余库存，然后下架！");
+				 //rp.setCallbackType("closeCurrent"); // 关闭当前窗口
+				 //rp.setNavTabId("product/list"); // 要刷新的tab页id
+				 return rp;
+			}
+			
 			boolean b = productService.productOutSubmit(p, qty, recordType,operator);
 			if(b) {	
 				 rp.setStatusCode("200");
 				 rp.setMessage("操作成功！");
-				 rp.setCallbackType("closeCurrent"); // 关闭当前窗口
+				// rp.setCallbackType("closeCurrent"); // 关闭当前窗口
+				 //rp.setNavTabId("product/list"); // 要刷新的tab页id
+		     } else {
+		    	 rp.setStatusCode("300");
+		    	 rp.setMessage("操作失败！");
+		    	 //rp.setNavTabId("product/list"); // 要刷新的tab页id
+		     }
+		} catch (Exception e) {
+			e.printStackTrace();
+		    rp.setStatusCode("300");
+		    rp.setMessage("操作失败！");
+	        //rp.setNavTabId("product/list"); // 要刷新的tab页id
+		}
+		return rp;
+	}
+
+	@Override
+	public ResultPrompt productOutSubmit(String sku, Integer qty,
+			Integer recordType, Integer operator) {
+		ResultPrompt rp = new ResultPrompt();
+		try {
+			Product p = productService.queryProductBySku(sku);
+			if(null == p) {
+				 rp.setStatusCode("300");
+				 rp.setMessage("SKU:"+sku+",不存在或者已经下架！");
+				 return rp;
+			}
+			Integer oldQty = p.getInventoryAvailable();
+			if(oldQty < qty) {
+				 rp.setStatusCode("300");
+				 rp.setMessage("生产日期为"+p.getProductionDate()+"的库存不足！请先下架！");
+				 //rp.setCallbackType("closeCurrent"); // 关闭当前窗口
+				 //rp.setNavTabId("product/list"); // 要刷新的tab页id
+				 return rp;
+			}
+			boolean b = productService.productOutSubmit(p, qty, recordType,operator);
+			if(b) {	
+				 rp.setStatusCode("200");
+				 rp.setMessage("操作成功！");
+				// rp.setCallbackType("closeCurrent"); // 关闭当前窗口
+				// rp.setNavTabId("product/list"); // 要刷新的tab页id
+		     } else {
+		    	 rp.setStatusCode("300");
+		    	 rp.setMessage("操作失败！");
+		    	// rp.setNavTabId("product/list"); // 要刷新的tab页id
+		     }
+		} catch (Exception e) {
+			e.printStackTrace();
+		    rp.setStatusCode("300");
+		    rp.setMessage("操作失败！");
+	     //   rp.setNavTabId("product/list"); // 要刷新的tab页id
+		}
+		return rp;
+	}
+
+	@Override
+	public ResultPrompt productOfflineOrUp(Integer id , Integer status) {
+		ResultPrompt rp = new ResultPrompt();
+		try {
+			boolean b = productService.productOfflineOrUp(id,status);
+			if(b) {	
+				 rp.setStatusCode("200");
+				 rp.setMessage("操作成功！");
 				 rp.setNavTabId("product/list"); // 要刷新的tab页id
 		     } else {
 		    	 rp.setStatusCode("300");

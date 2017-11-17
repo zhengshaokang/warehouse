@@ -81,10 +81,20 @@ public class InoutRecordCompImpl implements IInoutRecordComp{
 	}
 
 	@Override
-	public ResultPrompt returninSubmit(String sku, Integer qty, Integer recordType, Integer operator) {
+	public ResultPrompt returninSubmit(String sku, String productionDate, Integer qty, Integer recordType, Integer operator) {
 		ResultPrompt rp = new ResultPrompt();
 		try {
-			Product p = productService.queryProductBySku(sku);
+			Product p = productService.queryProductBySkuAndProductionDate(sku, productionDate);
+			if(p == null){
+				 rp.setStatusCode("300");
+				 rp.setMessage("生产日期为"+productionDate+"，SKU为"+sku+"的商品不存在！");
+				 return rp;
+			}
+			if(p.getStatus() == 1){
+				 rp.setStatusCode("300");
+				 rp.setMessage("生产日期为"+productionDate+"，SKU为"+sku+"的商品已经下架，如果需要，请先上架！");
+				 return rp;
+			}
 			boolean b = productService.productInSubmit(p, qty, recordType,operator);
 			if(b) {	
 				 rp.setStatusCode("200");
@@ -106,11 +116,21 @@ public class InoutRecordCompImpl implements IInoutRecordComp{
 	}
 
 	@Override
-	public ResultPrompt returnstockSubmit(String sku, Integer qty,
+	public ResultPrompt returnstockSubmit(String sku,String productionDate, Integer qty,
 			Integer recordType, Integer operator) {
 		ResultPrompt rp = new ResultPrompt();
 		try {
-			Product p = productService.queryProductBySku(sku);
+			Product p = productService.queryProductBySkuAndProductionDate(sku, productionDate);
+			if(p == null){
+				 rp.setStatusCode("300");
+				 rp.setMessage("生产日期为"+productionDate+"，SKU为"+sku+"的商品不存在！");
+				 return rp;
+			}
+			if(p.getStatus() == 1){
+				 rp.setStatusCode("300");
+				 rp.setMessage("生产日期为"+productionDate+"，SKU为"+sku+"的商品已经下架，如果需要，请先上架！");
+				 return rp;
+			}
 			boolean b = productService.productInSubmit(p, qty, recordType,operator);
 			if(b) {	
 				 rp.setStatusCode("200");
@@ -137,6 +157,28 @@ public class InoutRecordCompImpl implements IInoutRecordComp{
 		ResultPrompt rp = new ResultPrompt();
 		try {
 			Product p = productService.queryProductBySku(sku);
+			if(null == p) {
+				 rp.setStatusCode("300");
+				 rp.setMessage("SKU:"+sku+",不存在或者已经下架！");
+				 return rp;
+			}
+			Integer oldQty = p.getInventoryAvailable();
+			if(oldQty == 0) {
+				 rp.setStatusCode("300");
+				 rp.setMessage("生产日期为"+p.getProductionDate()+"的库存为0！请先下架");
+				 //rp.setCallbackType("closeCurrent"); // 关闭当前窗口
+				 //rp.setNavTabId("product/list"); // 要刷新的tab页id
+				 return rp;
+			}
+			
+			if(oldQty < qty) {
+				 rp.setStatusCode("300");
+				 rp.setMessage("生产日期为"+p.getProductionDate()+"的库存不足！请先出库剩余库存，然后下架！");
+				 //rp.setCallbackType("closeCurrent"); // 关闭当前窗口
+				 //rp.setNavTabId("product/list"); // 要刷新的tab页id
+				 return rp;
+			}
+			
 			boolean b = productService.productOutSubmit(p, qty, recordType,operator);
 			if(b) {	
 				 rp.setStatusCode("200");

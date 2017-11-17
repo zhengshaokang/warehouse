@@ -27,6 +27,7 @@ public class InoutRecordConverter {
 		d.setRecordType(vo.getRecordType());
 		d.setSku(vo.getSku());
 		d.setName(vo.getName());
+		d.setProductionDate(vo.getProductionDate());
 		return d;
 	}
 	
@@ -52,6 +53,7 @@ public class InoutRecordConverter {
 		v.setRecordType(d.getRecordType());
 		v.setSku(d.getSku());
 		v.setName(d.getName());
+		v.setProductionDate(d.getProductionDate());
 		return v;
 	}
 }

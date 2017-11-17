@@ -16,6 +16,9 @@
 				<td>
 				   SKU：<input type="text" name="sku" value="${productParam.sku!''}"/>
 				</td>
+				<td>
+				        生产日期：<input type="text" name="productionDate" value="${productParam.productionDate!''}"/>
+				</td>
 			</tr>
 		</table>
 		<div class="subBar">
@@ -65,7 +68,8 @@
 						<td>
 							生产日期：${product.productionDate!''}</br>
 							到期日期：${product.maturityDate!''}</br>
-							有效期：${product.effectiveDay!''} 天
+							有效期：${product.effectiveDay!''} 天</br>
+							剩余有效期：${product.effectiveDay1!''} 天
 						</td>
 						<td>
 							总库存：${product.inventoryTotal!''}</br>
@@ -85,6 +89,8 @@
 						<td>
 							<a class="add" href="${DOMAIN}product/productIn?productId=${product.id}" mask="true" target="dialog">商品入库 </a></br>
 							<a class="add" href="${DOMAIN}product/productOut?productId=${product.id}" mask="true" target="dialog">订单出库 </a></br>
+							<a class="add" href="${DOMAIN}product/productUp?productId=${product.id}" mask="true" target="ajaxTodo">上架 </a></br>
+							<a class="add" href="${DOMAIN}product/productOffline?productId=${product.id}" mask="true" target="ajaxTodo">下架 </a></br>
 						</td>
 					</tr>
 				</#list>

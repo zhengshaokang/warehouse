@@ -83,7 +83,8 @@
 						</td>
 						<td>
 							SKU：${inout.sku!''}</br>
-							商品名称：${inout.name!''}
+							商品名称：${inout.name!''}</br>
+							生产日期：${inout.productionDate!''}
 						</td>
 						<td>
 							${inout.beforeInventory!''}

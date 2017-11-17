@@ -26,6 +26,7 @@ import com.hys.dal.select.Users;
 import com.hys.dal.select.conenum.EnumInoutRecordType;
 import com.hys.mgt.view.common.utils.SessionUtils;
 import com.hys.mgt.view.common.vo.ResultPrompt;
+import com.hys.mgt.view.inout.component.IInoutRecordComp;
 import com.hys.mgt.view.product.component.IProductComp;
 import com.hys.mgt.view.product.vo.ProductAttributeVo;
 import com.hys.mgt.view.product.vo.ProductVo;
@@ -155,6 +156,20 @@ public class ProductController {
     		return resultPrompt;
 	    }
 	    
+	    @ResponseBody
+	    @RequestMapping("productOffline")
+	    public ResultPrompt productOffline(String productId, HttpServletRequest reqest) {
+    		ResultPrompt resultPrompt = productComp.productOfflineOrUp(Integer.parseInt(productId),1);
+    		return resultPrompt;
+	    }
+	    
+	    @ResponseBody
+	    @RequestMapping("productUp")
+	    public ResultPrompt productUp(String productId, HttpServletRequest reqest) {
+    		ResultPrompt resultPrompt = productComp.productOfflineOrUp(Integer.parseInt(productId),0);
+    		return resultPrompt;
+	    }
+	    
 	    @RequestMapping("productIn")
 	    public String productIn(String productId,ModelMap modelMap,HttpServletRequest request) {
 	    	 if(LogicUtil.isNotNullAndEmpty(productId)) {
@@ -165,12 +180,28 @@ public class ProductController {
 	    	 return "product/product_in";
 	    }
 	    
+	    
 	    @ResponseBody
 	    @RequestMapping("productInSubmit")
 	    public ResultPrompt productInSubmit(String productId, String qty,String recordType, HttpServletRequest reqest) {
 	    	HttpSession session = SessionUtils.getSession();
 	    	SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
     		ResultPrompt resultPrompt = productComp.productInSubmit(Integer.parseInt(productId),Integer.parseInt(qty),Integer.parseInt(recordType),Integer.parseInt(sysAdminVo.getId()));
+    		return resultPrompt;
+	    }
+	    
+	    @RequestMapping("orderOut")
+	    public String orderOut(ModelMap modelMap,HttpServletRequest request) {
+	    	 modelMap.put("recordType", EnumInoutRecordType.ORDEROUT.getValue());
+	    	 return "product/order_out";
+	    }
+	    
+	    @RequestMapping("orderOutSubmit")
+	    @ResponseBody
+	    public ResultPrompt orderOutSubmit(String sku,String recordType, HttpServletRequest reqest) {
+	    	HttpSession session = SessionUtils.getSession();
+	    	SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
+    		ResultPrompt resultPrompt = productComp.productOutSubmit(sku,1,Integer.parseInt(recordType),Integer.parseInt(sysAdminVo.getId()));
     		return resultPrompt;
 	    }
 	    

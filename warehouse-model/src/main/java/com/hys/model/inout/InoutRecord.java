@@ -15,6 +15,7 @@ public class InoutRecord implements Serializable{
 	private Integer productId; //商品id
 	private String sku;//用于查询
 	private String name;//商品名称  用于查询
+	private String productionDate;//生产日期
 	private Integer inoutType; //出入库类型   0 入库   1出库    3盘点
 	private Integer beforeTotal;//变更前总库存
 	private Integer afterTotal;//变更后总库存
@@ -117,15 +118,22 @@ public class InoutRecord implements Serializable{
 	public void setOperateTimeEnd(String operateTimeEnd) {
 		this.operateTimeEnd = operateTimeEnd;
 	}
+	public String getProductionDate() {
+		return productionDate;
+	}
+	public void setProductionDate(String productionDate) {
+		this.productionDate = productionDate;
+	}
 	@Override
 	public String toString() {
 		return "InoutRecord [id=" + id + ", productId=" + productId + ", sku="
-				+ sku + ", name=" + name + ", inoutType=" + inoutType
-				+ ", beforeTotal=" + beforeTotal + ", afterTotal=" + afterTotal
-				+ ", beforeInventory=" + beforeInventory + ", afterInventory="
-				+ afterInventory + ", changeInventory=" + changeInventory
-				+ ", recordType=" + recordType + ", operator=" + operator
-				+ ", operateTime=" + operateTime + ", operateTimeStart="
-				+ operateTimeStart + ", operateTimeEnd=" + operateTimeEnd + "]";
+				+ sku + ", name=" + name + ", productionDate=" + productionDate
+				+ ", inoutType=" + inoutType + ", beforeTotal=" + beforeTotal
+				+ ", afterTotal=" + afterTotal + ", beforeInventory="
+				+ beforeInventory + ", afterInventory=" + afterInventory
+				+ ", changeInventory=" + changeInventory + ", recordType="
+				+ recordType + ", operator=" + operator + ", operateTime="
+				+ operateTime + ", operateTimeStart=" + operateTimeStart
+				+ ", operateTimeEnd=" + operateTimeEnd + "]";
 	}
 }

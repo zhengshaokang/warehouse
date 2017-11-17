@@ -22,6 +22,12 @@ public class LoginController
     @Autowired
     private ILoginViewComp loginViewComp;
     
+    @RequestMapping(value = "/")
+    public String login1(Model model)
+    {
+    	return "redirect:/login";
+    }
+    
     @RequestMapping(value = "/login")
     public String login(Model model)
     {

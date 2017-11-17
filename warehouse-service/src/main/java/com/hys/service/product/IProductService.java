@@ -10,8 +10,10 @@ public interface IProductService {
 	public boolean addProduct(Product product);
 	public boolean updateProduct(Product product);
 	public boolean deleteProduct(Integer id);
+	public boolean productOfflineOrUp(Integer id,Integer status);
 	public Product queryProductById(Integer id);
 	public Product queryProductBySku(String sku);
+	public Product queryProductBySkuAndProductionDate(String sku,String productionDate);
 	public List<Product> queryProducts();
 	public PageData<Product> pageQueryProduct(PageParam<Product> page);
 	public boolean productInSubmit(Product product, Integer qty,Integer recordType,Integer operator); 

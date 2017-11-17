@@ -39,7 +39,9 @@
 	height:100%;
 }
 .product_attr_d3 {
-	width:80px;
+	width:280px;
+	line-height: 22px;
+	color:red;
 	float:left;
 	border:1px solid #d8bfbf;
 	height:100%;
@@ -401,7 +403,10 @@ function getAddProductPicDatas(){
 						<div class="product_attr_d2">
 							<input alt="请输入属性值！" size="20" value="" name="value">
 						</div>
-						<div class="product_attr_d3"><a onclick='addproductattr()'>增加</a></div>
+						<div class="product_attr_d3">
+							<!--<a onclick='addproductattr()'>增加</a>-->
+							填写相应的属性，例如 红色，150ml等
+						</div>
 					</div>
 				</div>
 			</div>

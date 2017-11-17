@@ -258,4 +258,27 @@ public class ProductServiceImpl implements IProductService{
 		return false;
 	}
 
+	@Override
+	public Product queryProductBySkuAndProductionDate(String sku, String productionDate) {
+		if(null == sku || "".equals(sku)) {
+			return null;
+		}
+		if(null == productionDate || "".equals(productionDate)) {
+			return null;
+		}
+		Product product = productDalComp.queryProductBySkuAndProductionDate(sku, productionDate);
+		if(LogicUtil.isNotNull(product)) {
+			List<ProductAttribute> pal  = productAttributeDalComp.queryProductAttributeByProductId(product.getId());
+			product.setProductAttribute(pal);
+		}
+		return product;
+	}
+
+	@Override
+	public boolean productOfflineOrUp(Integer id,Integer status) {
+		Product p = queryProductById(id);
+		p.setStatus(status);
+		return updateProduct(p);
+	}
+
 }

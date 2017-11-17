@@ -12,7 +12,7 @@ public interface IInoutRecordComp {
 	public List<InoutRecordVo> queryInoutRecordByTime(String operateTimeStart,String operateTimeEnd);
 	public List<InoutRecordVo> queryInoutRecords();
 	public PageData<InoutRecordVo> pageQueryInoutRecord(InoutRecordVo inout);
-	public ResultPrompt returninSubmit(String sku, Integer qty,Integer recordType,Integer operator);
-	public ResultPrompt returnstockSubmit(String sku, Integer qty,Integer recordType,Integer operator);
+	public ResultPrompt returninSubmit(String sku,String productionDate, Integer qty,Integer recordType,Integer operator);
+	public ResultPrompt returnstockSubmit(String sku,String productionDate, Integer qty,Integer recordType,Integer operator);
 	public ResultPrompt discardoutSubmit(String sku, Integer qty,Integer recordType,Integer operator);
 }

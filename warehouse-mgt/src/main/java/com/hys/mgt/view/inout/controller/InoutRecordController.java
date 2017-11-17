@@ -54,10 +54,10 @@ public class InoutRecordController {
 	    
 	    @ResponseBody
 	    @RequestMapping("returninSubmit")
-	    public ResultPrompt returninSubmit(String sku, String qty,String recordType, HttpServletRequest reqest) {
+	    public ResultPrompt returninSubmit(String sku,String productionDate, String qty,String recordType, HttpServletRequest reqest) {
 	    	HttpSession session = SessionUtils.getSession();
 	    	SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
-    		ResultPrompt resultPrompt = inoutComp.returninSubmit(sku,Integer.parseInt(qty),Integer.parseInt(recordType),Integer.parseInt(sysAdminVo.getId()));
+    		ResultPrompt resultPrompt = inoutComp.returninSubmit(sku,productionDate,Integer.parseInt(qty),Integer.parseInt(recordType),Integer.parseInt(sysAdminVo.getId()));
     		return resultPrompt;
 	    }
 	    
@@ -69,10 +69,10 @@ public class InoutRecordController {
 	    
 	    @ResponseBody
 	    @RequestMapping("returnstockSubmit")
-	    public ResultPrompt returnstockSubmit(String sku, String qty,String recordType, HttpServletRequest reqest) {
+	    public ResultPrompt returnstockSubmit(String sku,String productionDate, String qty,String recordType, HttpServletRequest reqest) {
 	    	HttpSession session = SessionUtils.getSession();
 	    	SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
-    		ResultPrompt resultPrompt = inoutComp.returnstockSubmit(sku,Integer.parseInt(qty),Integer.parseInt(recordType),Integer.parseInt(sysAdminVo.getId()));
+    		ResultPrompt resultPrompt = inoutComp.returnstockSubmit(sku, productionDate, Integer.parseInt(qty),Integer.parseInt(recordType),Integer.parseInt(sysAdminVo.getId()));
     		return resultPrompt;
 	    }
 	    

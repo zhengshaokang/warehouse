@@ -10,10 +10,12 @@ public interface IProductComp {
 	public ResultPrompt addProduct(ProductVo product);
 	public ResultPrompt updateProduct(ProductVo product);
 	public ResultPrompt deleteProduct(Integer id);
+	public ResultPrompt productOfflineOrUp(Integer id,Integer status);
 	public ProductVo queryProductById(Integer id);
 	public ProductVo queryProductBySku(String sku);
 	public List<ProductVo> queryProducts();
 	public PageData<ProductVo> pageQueryProduct(ProductVo p);
 	public ResultPrompt productInSubmit(Integer productId, Integer qty,Integer recordType,Integer operator); 
 	public ResultPrompt productOutSubmit(Integer productId, Integer qty,Integer recordType,Integer operator); 
+	public ResultPrompt productOutSubmit(String sku, Integer qty,Integer recordType,Integer operator); 
 }

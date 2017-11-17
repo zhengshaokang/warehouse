@@ -1,8 +1,11 @@
 package com.hys.mgt.view.product.vo;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.util.Date;
 import java.util.List;
 
+import com.hys.commons.util.DateUtil;
 import com.hys.mgt.view.common.constants.WebConstants;
 
 /**
@@ -21,6 +24,7 @@ public class ProductVo implements Serializable{
 	private String productionDate; //生产日期
 	private String maturityDate;//到期日期
 	private Integer effectiveDay;//有效天数
+	private Integer effectiveDay1;//剩余有效天数
 	private Double price;//价格
 	private Integer inventoryTotal;//总库存
 	private Integer inventoryAvailable;//可用库存
@@ -194,6 +198,24 @@ public class ProductVo implements Serializable{
 	}
 	public void setCheckDate(String checkDate) {
 		this.checkDate = checkDate;
+	}
+	
+	public Integer getEffectiveDay1() {
+		try {
+			if(null == maturityDate || "".equals(maturityDate)) {
+				return null;
+			}
+			Date d1 = DateUtil.getCurrentDate();
+			Date d2 = DateUtil.parseDate(maturityDate);
+			int effectiveDay1  = (int) ((d2.getTime()-d1.getTime())/(1000 * 60 * 60 *24)); 
+			return effectiveDay1;
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		return effectiveDay;
+	}
+	public void setEffectiveDay1(Integer effectiveDay1) {
+		this.effectiveDay1 = effectiveDay1;
 	}
 	@Override
 	public String toString() {
