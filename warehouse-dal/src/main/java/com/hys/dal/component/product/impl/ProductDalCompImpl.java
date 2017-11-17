@@ -52,7 +52,18 @@ public class ProductDalCompImpl implements IProductDalComp {
 
 	@Override
 	public Product queryProductBySku(String sku) {
-		return productDao.queryProductBySku(sku);
+		List<Product> list = productDao.queryProductBySku(sku);
+		if(null != list && list.size()>0){
+			return list.get(0);
+		}else{ 
+			return null;
+		}
+	}
+
+	@Override
+	public Product queryProductBySkuAndProductionDate(String sku,
+			String productionDate) {
+		return productDao.queryProductBySkuAndProductionDate(sku, productionDate);
 	}
 
 }

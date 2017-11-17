@@ -12,6 +12,7 @@ public interface IProductDalComp {
 	public boolean deleteProduct(Integer id);
 	public Product queryProductById(Integer id);
 	public Product queryProductBySku(String sku);
+	public Product queryProductBySkuAndProductionDate(String sku,String productionDate);
 	public List<Product> queryProducts();
 	public PageData<Product> pageQueryProduct(PageParam<Product> page);
 }

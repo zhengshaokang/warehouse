@@ -66,17 +66,21 @@
 	</update>
     <!-- 根据id查询商品-->
 	<select id="queryProductById" resultMap="productResult">
-		select * from product where id = #{id}
+		select * from product where id = #{id} 
 	</select>
 	
-	 <!-- 根据id查询商品-->
+	 <!-- 根据sku查询商品-->
 	<select id="queryProductBySku" resultMap="productResult">
-		select * from product where sku = #{sku}
+		select * from product where sku = #{sku} and status = 0 ORDER BY production_date
+	</select>
+	
+	<select id="queryProductBySkuAndProductionDate" resultMap="productResult">
+		select * from product where sku = #{sku} and production_date = #{productionDate}
 	</select>
 	
 	<!-- 查询全部商品 -->
 	<select id="queryProducts"  resultMap="productResult">
-		select * from product 
+		select * from product ORDER BY create_time desc 
 	</select>
 	
 	<!-- 查询系统用户进行分页 -->
@@ -86,5 +90,6 @@
 			<if test="p.sku != null and p.sku != ''">and sku like concat('%',#{p.sku},'%')</if>
 			<if test="p.productionDate != null and p.productionDate != ''">and production_date=#{p.productionDate}</if>
 			<if test="p.effectiveDay != null and p.effectiveDay != ''">and effective_day=#{p.effectiveDay}</if>
+			ORDER BY create_time desc 
 	</select>
 </mapper>	

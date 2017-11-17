@@ -14,6 +14,7 @@
 		<result property="recordType" column="record_type" />
 		<result property="operator" column="operator" />
 		<result property="operateTime" column="operate_time" />
+		<result property="productionDate" column="production_date" />
 	</resultMap>
     <!-- 添加出入库记录 -->
 	<insert id="addInoutRecord" parameterType="inoutRecord" useGeneratedKeys="true" keyProperty="id">
