@@ -1,8 +1,13 @@
+<#if agent?? && agent == "M">
+<#include "../m/product_list.ftl"/>
+<#else>
 <form id="pagerForm" method="post" action="${DOMAIN}product/list">
 	<input type="hidden" name="pageNum" value="${pageParam.pageNo}" />
 	<input type="hidden" name="numPerPage" value="${pageParam.pageSize}" />
 	<input type="hidden" name="name" value="${productParam.name!''}" />
 	<input type="hidden" name="sku" value="${productParam.sku!''}" />
+	<input type="hidden" name="code" value="${productParam.code!''}" />
+	<input type="hidden" name="brandId" value="${productParam.brandId!''}" />
 </form>
 
 <div class="pageHeader">
@@ -11,13 +16,26 @@
 		<table class="searchContent">
 			<tr>
 				<td>
-				        商品名称：<input type="text" name="name" value="${productParam.name!''}"/>
+			       	 商品名称：<input type="text" name="name" value="${productParam.name!''}"/>
 				</td>
 				<td>
-				   SKU：<input type="text" name="sku" value="${productParam.sku!''}"/>
+				   	国际条码：<input type="text" name="code" value="${productParam.code!''}"/>
 				</td>
 				<td>
-				        生产日期：<input type="text" name="productionDate" value="${productParam.productionDate!''}"/>
+				           内部编码：<input type="text" name="sku" value="${productParam.sku!''}"/>
+				</td>
+				<td>
+				           品牌：
+				     <select name="brandId" id="add_product_brand" style="min-width:120px;" class="required">
+						<option value="-1"></option>
+						<#list brands?keys as key> 
+							<#if productParam.brandId ?? && productParam.brandId == key?eval>
+								<option selected="selected" value="${key}">${brands[key]}	</option>	
+							<#else>
+								<option value="${key}">${brands[key]}	</option>	
+							</#if>		
+						</#list>
+					</select>
 				</td>
 			</tr>
 		</table>
@@ -34,20 +52,23 @@
 		<ul class="toolBar">
 			<li><a class="add" href="${DOMAIN}product/productAdd" mask="true" target="navTab" title="新增商品"><span>添加</span></a></li>
 			<li><a class="delete" href="${DOMAIN}product/productDelete?productId={id}" target="ajaxTodo" callback="navTabAjaxDone" title="确定要删除吗?"><span>删除</span></a></li>
-			<li><a class="edit" href="${DOMAIN}product/productUpdate?productId={id}" target="navTab" mask="true" warn="请选择用户" title="修改商品"><span>修改</span></a></li>
+			<li><a class="edit" href="${DOMAIN}product/productUpdate?productId={id}" target="navTab" mask="true" warn="请选择商品" title="修改商品"><span>修改</span></a></li>
 			<li class="line">line</li>
 		</ul>
 	</div>
 	<table class="table" width="100%" layoutH="137">
 		<thead>
 			<tr>
-				<th width="100"></th>
-				<th width="230">商品信息</th>
-				<th width="150">生产信息</th>
-				<th width="150">库存</th>
-				<th width="140">包装信息</th>
-				<th width="80">商品状态</th>
-				<th width="230">备注信息</th>
+				<th width="80"></th>
+				<th width="200">商品名称</th>
+				<th width="100">国际条码</th>
+				<th width="100">内部编码</th>
+				<th width="100">品牌</th>
+				<th width="80">单位</th>
+				<th width="80">规格</th>
+				<th width="80">分类</th>
+				<th width="100">供应商</th>
+				<th width="100">备注</th>
 				<th width="80">操作</th>
 			</tr>
 		</thead>
@@ -55,42 +76,43 @@
 			<#if pageParam ?? && pageParam.getPageData() ??>
 				<#list pageParam.getPageData() as product>
 					<tr target="id" rel="${product.id}" style="height:40px;">
-						<td><img src="${IMGBASEPATH}${product.picUrl!''}_80x80.jpg"></td>
+						<td><img src="${IMGBASEPATH}${product.picUrl!''}_80x80.${product.picType!'jpg'}"></td>
 						<td>
-							商品名称：${product.name!''}</br>
-							SKU：${product.sku!''}</br>
-							单位：${unitsOptions["${product.unit!''}"]}</br>
-							价格(￥)：${product.price!''}</br>
-							属性：<#list product.getProductAttribute() as attr>
-								<span>${attr.value!''}</span><br>
-							</#list>
+							${product.name!''}
 						</td>
 						<td>
-							生产日期：${product.productionDate!''}</br>
-							到期日期：${product.maturityDate!''}</br>
-							有效期：${product.effectiveDay!''} 天</br>
-							剩余有效期：${product.effectiveDay1!''} 天
+							${product.code!''}
 						</td>
 						<td>
-							总库存：${product.inventoryTotal!''}</br>
-							剩余库存：${product.inventoryAvailable!''}</br>
-							盘点库存：${product.inventoryCheck!''}</br>
-							盘点日期：${product.checkDate!''}
+							${product.sku!''}
 						</td>
 						<td>
-							包装类型：${packTypes["${product.packType!''}"]}</br>
-							商品类型：${productTypes["${product.type!''}"]}
+							${brands["${product.brandId!''}"]}
 						</td>
-						<td>${productStatus["${product.status!''}"]}</td>
+						<td>${unitsOptions["${product.unitId!''}"]}</td>
 						<td>
-							${product.description!''}</br>
-							<img src="${BASEPATH}/img/common/system-log.png" onclick="mypopup.log(this,'${product.sysRemark!''}')"/>
+							${productSpecificationss["${product.specificationId1!''}"]}>>>
+							<#if product.specificationId2 ??>
+								${productSpecificationss["${product.specificationId2!''}"]}
+							</#if>
 						</td>
 						<td>
-							<a class="add" href="${DOMAIN}product/productIn?productId=${product.id}" mask="true" target="dialog">商品入库 </a></br>
-							<a class="add" href="${DOMAIN}product/productOut?productId=${product.id}" mask="true" target="dialog">订单出库 </a></br>
-							<a class="add" href="${DOMAIN}product/productUp?productId=${product.id}" mask="true" target="ajaxTodo">上架 </a></br>
-							<a class="add" href="${DOMAIN}product/productOffline?productId=${product.id}" mask="true" target="ajaxTodo">下架 </a></br>
+							${productClassifications["${product.classificationId1!''}"]}>>>
+							<#if product.classificationId2 ??>
+								${productClassifications["${product.classificationId2!''}"]}
+							</#if>
+						</td>
+						<td>
+							${suppliers["${product.supplierId!''}"]}
+						</td>
+						<td>
+							${product.remark!''}
+						</td>
+						<td>
+							<a class="add" href="${DOMAIN}product/productIn?productId=${product.id}" mask="true" target="navTab">入库 </a></br>
+							<a class="add" href="${DOMAIN}product/productOut?productId=${product.id}" mask="true" target="navTab">出库 </a></br>
+							<a class="add" href="${DOMAIN}product/productPrice?productId=${product.id}" mask="true" target="dialog">查看进价 </a></br>
+							<a class="add" href="${DOMAIN}product/productQty?productId=${product.id}" mask="true" target="dialog">查看库存</a></br>
 						</td>
 					</tr>
 				</#list>
@@ -116,3 +138,4 @@
 		<div class="pagination" targetType="navTab" totalCount="${pageParam.dataTotal?c}" numPerPage="${pageParam.pageSize}" pageNumShown="10" currentPage="${pageParam.pageNo}"></div>
 	</div>
 </div>
+</#if>

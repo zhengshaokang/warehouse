@@ -78,17 +78,41 @@ function validateCallback1(form, callback) {
  <div class="pageContent">
 	<form method="post" action="${DOMAIN}product/productInSubmit" class="pageForm required-validate" onsubmit="return validateCallback(this, dialogAjaxDone);">
 		<input type="hidden" name="productId" value="${product.id}"/>
-		<input type="hidden" name="recordType" value="${recordType}"/>
 		<div class="pageFormContent" layoutH="56">
 			<div class="unit">
 				<label style="text-align:right">商品名称：</label>${product.name!''}
 			</div>
 			<div class="unit">
-				<label style="text-align:right">SKU：</label>${product.sku!''}
+				<label style="text-align:right">当前库存：</label> ${qty}
 			</div>
 			<div class="unit">
 				<label style="text-align:right">入库数量：</label>
 				<input name="qty" value="" size="30"  class="required" alt="请输入数量！" />
+			</div>
+			<div class="unit">
+				<label style="text-align:right">到期日期：</label>
+				<input type="text" minDate="{%y}-%M-{%d}" name="maturityDate" value="" alt="请输入到期日期！"  class="date" dateFmt="yyyy-MM-dd"/>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">本次进价：</label>
+				<input type="text"  name="price" value="" alt="请输入进价！"/>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">入库日期：</label>
+				<input type="text" maxDate="{%y}-%M-{%d}" name="inWarehouseDate" value="${currdate!''}" alt="请输入入库日期！"  class="date" dateFmt="yyyy-MM-dd"/>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">存放位置：</label>
+				<select name="warehouseCode" style="min-width:120px;" class="required">
+					<option value="-1"></option>
+					<#list warehouses?keys as key> 
+						<option value="${key}">${warehouses[key]}</option>					
+					</#list>
+				</select>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">备注：</label>
+				<textarea name="remark" alt="商品备注" cols="35" rows="8"></textarea>
 			</div>
 		</div>
 		<div class="formBar">

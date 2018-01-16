@@ -33,6 +33,7 @@
 				<entry key="BASEPATH" value="${mgt.basepath}"></entry><!-- js、css、img地址 -->
 				<entry key="DOMAIN" value="${mgt.domain}"></entry><!-- 跳转地址 -->
  				<entry key="IMGBASEPATH" value="${cdn.imgpath}"></entry>  <!-- 图片ftl地址 -->
+ 				<entry key="UPLOADPATH" value="${upload.path}"></entry>  <!-- 图片ftl地址 -->
  				<entry key="VERSION" value="1.3"></entry>
 			</map>
 		</property>

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.hys.commons.util.LogicUtil;
+import com.hys.mgt.view.common.utils.Agent;
 import com.hys.mgt.view.common.utils.SessionUtils;
 import com.hys.mgt.view.user.vo.SysUserVo;
 import com.hys.mgt.view.user.component.ILoginViewComp;
@@ -21,6 +22,9 @@ public class LoginController
 
     @Autowired
     private ILoginViewComp loginViewComp;
+    
+    @Autowired
+    private Agent agent;
     
     @RequestMapping(value = "/")
     public String login1(Model model)
@@ -35,11 +39,16 @@ public class LoginController
         SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
         if (LogicUtil.isNotNull(sysAdminVo))
         {
-            return "redirect:/index";
+        	if("M".equals(agent.getAgent())) {
+        		return "redirect:/product/list";
+        	} else {
+        		 return "redirect:/index";
+        	}
         }
         else
         {
         	model.addAttribute("loginerror", null);
+        	model.addAttribute("agent", agent.getAgent());
             return "login";
         }
     }
@@ -65,8 +74,11 @@ public class LoginController
             model.addAttribute("loginerror", error);
             return "login";
         }
-
-        return "redirect:/index";
+        if("M".equals(agent.getAgent())) {
+    		return "redirect:/product/list";
+    	} else {
+    		 return "redirect:/index";
+    	}
     }
 
     @RequestMapping(value = "logout")

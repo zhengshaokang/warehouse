@@ -30,8 +30,8 @@ public class ProductDalCompImpl implements IProductDalComp {
 	}
 
 	@Override
-	public boolean deleteProduct(Integer id) {
-		return JdbcUtil.isSuccess(productDao.deleteProduct(id));
+	public boolean deleteProduct(Integer id,Integer creator) {
+		return JdbcUtil.isSuccess(productDao.deleteProduct(id,creator));
 	}
 
 	@Override
@@ -51,8 +51,8 @@ public class ProductDalCompImpl implements IProductDalComp {
 	}
 
 	@Override
-	public Product queryProductBySku(String sku) {
-		List<Product> list = productDao.queryProductBySku(sku);
+	public Product queryProductByName(String name,Integer creator) {
+		List<Product> list = productDao.queryProductByName(name,creator);
 		if(null != list && list.size()>0){
 			return list.get(0);
 		}else{ 
@@ -61,9 +61,9 @@ public class ProductDalCompImpl implements IProductDalComp {
 	}
 
 	@Override
-	public Product queryProductBySkuAndProductionDate(String sku,
-			String productionDate) {
-		return productDao.queryProductBySkuAndProductionDate(sku, productionDate);
+	public Product queryProductByCodeAndMaturityDate(String code,
+			String maturityDate,Integer creator) {
+		return productDao.queryProductByCodeAndMaturityDate(code, maturityDate,creator);
 	}
 
 }

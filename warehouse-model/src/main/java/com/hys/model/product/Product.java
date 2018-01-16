@@ -1,8 +1,6 @@
 package com.hys.model.product;
 
 import java.io.Serializable;
-import java.util.List;
-
 /**
  * 商品
  * @author coonor
@@ -14,29 +12,23 @@ public class Product implements Serializable{
 	
 	private Integer id;
 	private String name;//商品名称
-	private String sku;//商品唯一编码
-	private String description;  //商品描述
-	private String productionDate; //生产日期
+	private String sku;//商品内部编码
+	private String code;//商品国际条码
+	private Integer brandId;  //商品品牌
 	private String maturityDate;//到期日期
-	private Integer effectiveDay;//有效天数
-	private Double price;//价格
-	private Integer inventoryTotal;//总库存
-	private Integer inventoryAvailable;//可用库存
-	private Integer inventoryCheck;//盘点库存
-	private String checkDate; //盘点日期
-	private Integer unit;//单位   1瓶、2盒、3支、4片、5包
+	private Integer specificationId1;//商品规格1
+	private Integer specificationId2;//商品规格2
+	private Integer classificationId1;//商品分类1
+	private Integer classificationId2;//商品分类2
+	private Integer unitId;//单位
+	private Integer warning;//临期警示值
 	private String picUrl;//图片地址
-	private Integer packType;//包装类型 10 玻璃瓶，20塑料瓶，30纸盒，40塑料纸
-	private Integer type;//商品类型 1 固体，2液体
 	private Integer status;//商品状态  0上架，1下架
 	private Integer creator;//创建人
 	private String createTime;//创建时间
-	private Integer updator;//更新人
-	private String updateTime;//更新时间
 	private String sysRemark;//系统备注
-	
-	private List<ProductAttribute> productAttribute;
-	
+	private String remark;//备注
+	private Integer supplierId;//供应商
 	
 	public Integer getId() {
 		return id;
@@ -56,53 +48,17 @@ public class Product implements Serializable{
 	public void setSku(String sku) {
 		this.sku = sku;
 	}
-	public String getDescription() {
-		return description;
-	}
-	public void setDescription(String description) {
-		this.description = description;
-	}
-	public String getProductionDate() {
-		return productionDate;
-	}
-	public void setProductionDate(String productionDate) {
-		this.productionDate = productionDate;
-	}
 	public String getMaturityDate() {
 		return maturityDate;
 	}
 	public void setMaturityDate(String maturityDate) {
 		this.maturityDate = maturityDate;
 	}
-	public Integer getEffectiveDay() {
-		return effectiveDay;
-	}
-	public void setEffectiveDay(Integer effectiveDay) {
-		this.effectiveDay = effectiveDay;
-	}
-	public Integer getUnit() {
-		return unit;
-	}
-	public void setUnit(Integer unit) {
-		this.unit = unit;
-	}
 	public String getPicUrl() {
 		return picUrl;
 	}
 	public void setPicUrl(String picUrl) {
 		this.picUrl = picUrl;
-	}
-	public Integer getPackType() {
-		return packType;
-	}
-	public void setPackType(Integer packType) {
-		this.packType = packType;
-	}
-	public Integer getType() {
-		return type;
-	}
-	public void setType(Integer type) {
-		this.type = type;
 	}
 	public Integer getStatus() {
 		return status;
@@ -122,75 +78,86 @@ public class Product implements Serializable{
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
-	public Integer getUpdator() {
-		return updator;
-	}
-	public void setUpdator(Integer updator) {
-		this.updator = updator;
-	}
-	public String getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(String updateTime) {
-		this.updateTime = updateTime;
-	}
 	public String getSysRemark() {
 		return sysRemark;
 	}
 	public void setSysRemark(String sysRemark) {
 		this.sysRemark = sysRemark;
 	}
-	
-	public Double getPrice() {
-		return price;
+	public String getCode() {
+		return code;
 	}
-	public void setPrice(Double price) {
-		this.price = price;
+	public void setCode(String code) {
+		this.code = code;
 	}
-	public List<ProductAttribute> getProductAttribute() {
-		return productAttribute;
+	public Integer getBrandId() {
+		return brandId;
 	}
-	public void setProductAttribute(List<ProductAttribute> productAttribute) {
-		this.productAttribute = productAttribute;
+	public void setBrandId(Integer brandId) {
+		this.brandId = brandId;
 	}
-	public Integer getInventoryTotal() {
-		return inventoryTotal;
+	public Integer getSpecificationId1() {
+		return specificationId1;
 	}
-	public void setInventoryTotal(Integer inventoryTotal) {
-		this.inventoryTotal = inventoryTotal;
+	public void setSpecificationId1(Integer specificationId1) {
+		this.specificationId1 = specificationId1;
 	}
-	public Integer getInventoryAvailable() {
-		return inventoryAvailable;
+	public Integer getSpecificationId2() {
+		return specificationId2;
 	}
-	public void setInventoryAvailable(Integer inventoryAvailable) {
-		this.inventoryAvailable = inventoryAvailable;
+	public void setSpecificationId2(Integer specificationId2) {
+		this.specificationId2 = specificationId2;
 	}
-	public Integer getInventoryCheck() {
-		return inventoryCheck;
+	public Integer getClassificationId1() {
+		return classificationId1;
 	}
-	public void setInventoryCheck(Integer inventoryCheck) {
-		this.inventoryCheck = inventoryCheck;
+	public void setClassificationId1(Integer classificationId1) {
+		this.classificationId1 = classificationId1;
 	}
-	public String getCheckDate() {
-		return checkDate;
+	public Integer getClassificationId2() {
+		return classificationId2;
 	}
-	public void setCheckDate(String checkDate) {
-		this.checkDate = checkDate;
+	public void setClassificationId2(Integer classificationId2) {
+		this.classificationId2 = classificationId2;
+	}
+	public Integer getUnitId() {
+		return unitId;
+	}
+	public void setUnitId(Integer unitId) {
+		this.unitId = unitId;
+	}
+	public Integer getWarning() {
+		return warning;
+	}
+	public void setWarning(Integer warning) {
+		this.warning = warning;
+	}
+	public String getRemark() {
+		return remark;
+	}
+	public void setRemark(String remark) {
+		this.remark = remark;
+	}
+	public Integer getSupplierId() {
+		return supplierId;
+	}
+	public void setSupplierId(Integer supplierId) {
+		this.supplierId = supplierId;
+	}
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	@Override
 	public String toString() {
 		return "Product [id=" + id + ", name=" + name + ", sku=" + sku
-				+ ", description=" + description + ", productionDate="
-				+ productionDate + ", maturityDate=" + maturityDate
-				+ ", effectiveDay=" + effectiveDay + ", price=" + price
-				+ ", inventoryTotal=" + inventoryTotal
-				+ ", inventoryAvailable=" + inventoryAvailable
-				+ ", inventoryCheck=" + inventoryCheck + ", checkDate="
-				+ checkDate + ", unit=" + unit + ", picUrl=" + picUrl
-				+ ", packType=" + packType + ", type=" + type + ", status="
-				+ status + ", creator=" + creator + ", createTime="
-				+ createTime + ", updator=" + updator + ", updateTime="
-				+ updateTime + ", sysRemark=" + sysRemark
-				+ ", productAttribute=" + productAttribute + "]";
+				+ ", code=" + code + ", brandId=" + brandId + ", maturityDate="
+				+ maturityDate + ", specificationId1=" + specificationId1
+				+ ", specificationId2=" + specificationId2
+				+ ", classificationId1=" + classificationId1
+				+ ", classificationId2=" + classificationId2 + ", unitId="
+				+ unitId + ", warning=" + warning + ", picUrl=" + picUrl
+				+ ", status=" + status + ", creator=" + creator
+				+ ", createTime=" + createTime + ", sysRemark=" + sysRemark
+				+ ", remark=" + remark + ", supplierId=" + supplierId + "]";
 	}
 }

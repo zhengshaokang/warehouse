@@ -1,4 +1,4 @@
-<form id="pagerForm" method="post" action="${DOMAIN}user/list.ithml">
+<form id="pagerForm" method="post" action="${DOMAIN}auth/list.ithml">
 	<input type="hidden" name="pageNum" value="${pageParam.pageNo}" />
 	<input type="hidden" name="numPerPage" value="${pageParam.pageSize}" />
 	<input type="hidden" name="username" value="${authParam.username!''}" />
@@ -13,8 +13,8 @@
 	<div class="panelBar">
 		<ul class="toolBar">
 			<li><a class="add" href="${DOMAIN}auth/authAdd" mask="true" target="dialog"><span>添加</span></a></li>
-			<li><a class="edit" href="${DOMAIN}auth/authUpdate?userId={id}" target="dialog" mask="true" warn="请选择权限"><span>修改</span></a></li>
-			<li><a class="delete" href="${DOMAIN}auth/authDelete?userId={id}" target="ajaxTodo" callback="navTabAjaxDone" title="确定要删除吗?"><span>删除</span></a></li>
+			<li><a class="edit" href="${DOMAIN}auth/authUpdate?id={id}" target="dialog" mask="true" warn="请选择权限"><span>修改</span></a></li>
+			<li><a class="delete" href="${DOMAIN}auth/authDelete?id={id}" target="ajaxTodo" callback="navTabAjaxDone" title="确定要删除吗?"><span>删除</span></a></li>
 			<li class="line">line</li>
 		</ul>
 	</div>
@@ -28,7 +28,6 @@
 				<th width="120">父菜单号</th>
 				<th width="120">菜单排序</th>
 				<th width="60">记录状态</th>
-				<th width="140">按钮权限</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -41,8 +40,7 @@
 						<td>${user.authPic!''}</td>
 						<td>${user.parentId!''}</td>
 						<td>${user.sort!''}</td>
-						<td>${user.recordStatus!''}</td>
-						<td>${user.authbutton!''}</td>
+						<td>${status["${user.recordStatus!''}"]}</td>
 					</tr>
 				</#list>
 			</#if>

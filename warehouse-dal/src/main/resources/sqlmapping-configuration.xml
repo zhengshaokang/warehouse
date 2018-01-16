@@ -21,10 +21,21 @@
 		<typeAlias alias="sysAuth" type="com.hys.model.user.SysAuth"/>
         <typeAlias alias="sysuser" type="com.hys.model.user.SysUser"/>
         
+        <!-- product -->
         <typeAlias alias="product" type="com.hys.model.product.Product"/>
-        <typeAlias alias="productAttribute" type="com.hys.model.product.ProductAttribute"/>
+        <typeAlias alias="productClassification" type="com.hys.model.product.ProductClassification"/>
+        <typeAlias alias="productSpecifications" type="com.hys.model.product.ProductSpecifications"/>
+        <typeAlias alias="productUnit" type="com.hys.model.product.ProductUnit"/>
+        <typeAlias alias="productInPrice" type="com.hys.model.product.ProductInPrice"/>
+        <typeAlias alias="brand" type="com.hys.model.product.Brand"/>
         
-        <typeAlias alias="inoutRecord" type="com.hys.model.inout.InoutRecord"/>
+        <!-- purchase -->
+        <typeAlias alias="supplier" type="com.hys.model.purchase.Supplier"/>
+        
+        <!-- warehouse -->
+        <typeAlias alias="inoutRecord" type="com.hys.model.warehouse.InoutRecord"/>
+        <typeAlias alias="warehouse" type="com.hys.model.warehouse.Warehouse"/>
+        <typeAlias alias="inventory" type="com.hys.model.warehouse.Inventory"/>
 		
 	</typeAliases>
 	<plugins>
@@ -40,9 +51,16 @@
         <mapper resource="mapping/user/sys_user.xml" />
         
         <mapper resource="mapping/product/product.xml" />
-        <mapper resource="mapping/product/product_attribute.xml" />
+        <mapper resource="mapping/product/product_classification.xml" />
+        <mapper resource="mapping/product/product_specifications.xml" />
+        <mapper resource="mapping/product/product_unit.xml" />
+        <mapper resource="mapping/product/product_in_price.xml" />
+        <mapper resource="mapping/purchase/supplier.xml" />
+        <mapper resource="mapping/product/brand.xml" />
         
-        <mapper resource="mapping/inout/inout_record.xml" />
+        <mapper resource="mapping/warehouse/inout_record.xml" />
+        <mapper resource="mapping/warehouse/warehouse.xml" />
+        <mapper resource="mapping/warehouse/inventory.xml" />
         
 	</mappers>
 	

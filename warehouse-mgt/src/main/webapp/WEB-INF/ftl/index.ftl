@@ -17,6 +17,8 @@
 <script>
 var domain = '${DOMAIN}';
 var basepath = '${BASEPATH}';
+var imgbasepath = '${IMGBASEPATH}';
+var uploadpath = '${UPLOADPATH}';
 </script>
 <!-- dwz --> 
 <script src="${BASEPATH}plugin/dwz-ria/dwz-include.js" type="text/javascript"></script>

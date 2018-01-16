@@ -164,7 +164,7 @@ public class SysUserViewCompImpl implements ISysUserViewComp {
 	        try
 	        {
 	        	SysUser user = userService.querySysUserById(userId);
-	        	user.setUserStatus(1);
+	        	user.setUserStatus(0);
 	            userService.updateSysUser(user);
 	            resultPrompt.setStatusCode("200");
 	            resultPrompt.setMessage("操作成功！");

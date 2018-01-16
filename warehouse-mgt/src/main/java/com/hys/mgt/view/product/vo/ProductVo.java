@@ -1,11 +1,7 @@
 package com.hys.mgt.view.product.vo;
 
 import java.io.Serializable;
-import java.text.ParseException;
-import java.util.Date;
-import java.util.List;
 
-import com.hys.commons.util.DateUtil;
 import com.hys.mgt.view.common.constants.WebConstants;
 
 /**
@@ -19,34 +15,29 @@ public class ProductVo implements Serializable{
 	
 	private Integer id;
 	private String name;//商品名称
-	private String sku;//商品唯一编码
-	private String description;  //商品描述
-	private String productionDate; //生产日期
+	private String sku;//商品内部编码
+	private String code;//商品国际条码
+	private Integer brandId;  //商品品牌
 	private String maturityDate;//到期日期
-	private Integer effectiveDay;//有效天数
-	private Integer effectiveDay1;//剩余有效天数
-	private Double price;//价格
-	private Integer inventoryTotal;//总库存
-	private Integer inventoryAvailable;//可用库存
-	private Integer inventoryCheck;//盘点库存
-	private String checkDate; //盘点日期
-	private Integer unit;//单位   1瓶、2盒、3支、4片、5包
+	private Integer specificationId1;//商品规格1
+	private Integer specificationId2;//商品规格2
+	private Integer classificationId1;//商品分类1
+	private Integer classificationId2;//商品分类2
+	private Integer unitId;//单位
+	private Integer warning;//临期警示值
 	private String picUrl;//图片地址
-	private Integer packType;//包装类型 10 玻璃瓶，20塑料瓶，30纸盒，40塑料纸
-	private Integer type;//商品类型 1 固体，2液体
 	private Integer status;//商品状态  0上架，1下架
 	private Integer creator;//创建人
 	private String createTime;//创建时间
-	private Integer updator;//更新人
-	private String updateTime;//更新时间
 	private String sysRemark;//系统备注
+	private String remark;//备注
+	private Integer supplierId;//供应商
+	private Integer updator;
+	
+	private String picType; //图片格式
 	
 	private int pageNum = 1;
     private int numPerPage = WebConstants.PAGESIZE;
-	
-	private List<ProductAttributeVo> productAttribute;
-	
-	
 	public Integer getId() {
 		return id;
 	}
@@ -65,17 +56,17 @@ public class ProductVo implements Serializable{
 	public void setSku(String sku) {
 		this.sku = sku;
 	}
-	public String getDescription() {
-		return description;
+	public String getCode() {
+		return code;
 	}
-	public void setDescription(String description) {
-		this.description = description;
+	public void setCode(String code) {
+		this.code = code;
 	}
-	public String getProductionDate() {
-		return productionDate;
+	public Integer getBrandId() {
+		return brandId;
 	}
-	public void setProductionDate(String productionDate) {
-		this.productionDate = productionDate;
+	public void setBrandId(Integer brandId) {
+		this.brandId = brandId;
 	}
 	public String getMaturityDate() {
 		return maturityDate;
@@ -83,35 +74,47 @@ public class ProductVo implements Serializable{
 	public void setMaturityDate(String maturityDate) {
 		this.maturityDate = maturityDate;
 	}
-	public Integer getEffectiveDay() {
-		return effectiveDay;
+	public Integer getSpecificationId1() {
+		return specificationId1;
 	}
-	public void setEffectiveDay(Integer effectiveDay) {
-		this.effectiveDay = effectiveDay;
+	public void setSpecificationId1(Integer specificationId1) {
+		this.specificationId1 = specificationId1;
 	}
-	public Integer getUnit() {
-		return unit;
+	public Integer getSpecificationId2() {
+		return specificationId2;
 	}
-	public void setUnit(Integer unit) {
-		this.unit = unit;
+	public void setSpecificationId2(Integer specificationId2) {
+		this.specificationId2 = specificationId2;
+	}
+	public Integer getClassificationId1() {
+		return classificationId1;
+	}
+	public void setClassificationId1(Integer classificationId1) {
+		this.classificationId1 = classificationId1;
+	}
+	public Integer getClassificationId2() {
+		return classificationId2;
+	}
+	public void setClassificationId2(Integer classificationId2) {
+		this.classificationId2 = classificationId2;
+	}
+	public Integer getUnitId() {
+		return unitId;
+	}
+	public void setUnitId(Integer unitId) {
+		this.unitId = unitId;
+	}
+	public Integer getWarning() {
+		return warning;
+	}
+	public void setWarning(Integer warning) {
+		this.warning = warning;
 	}
 	public String getPicUrl() {
 		return picUrl;
 	}
 	public void setPicUrl(String picUrl) {
 		this.picUrl = picUrl;
-	}
-	public Integer getPackType() {
-		return packType;
-	}
-	public void setPackType(Integer packType) {
-		this.packType = packType;
-	}
-	public Integer getType() {
-		return type;
-	}
-	public void setType(Integer type) {
-		this.type = type;
 	}
 	public Integer getStatus() {
 		return status;
@@ -131,38 +134,24 @@ public class ProductVo implements Serializable{
 	public void setCreateTime(String createTime) {
 		this.createTime = createTime;
 	}
-	public Integer getUpdator() {
-		return updator;
-	}
-	public void setUpdator(Integer updator) {
-		this.updator = updator;
-	}
-	public String getUpdateTime() {
-		return updateTime;
-	}
-	public void setUpdateTime(String updateTime) {
-		this.updateTime = updateTime;
-	}
 	public String getSysRemark() {
 		return sysRemark;
 	}
 	public void setSysRemark(String sysRemark) {
 		this.sysRemark = sysRemark;
 	}
-	
-	public Double getPrice() {
-		return price;
+	public String getRemark() {
+		return remark;
 	}
-	public void setPrice(Double price) {
-		this.price = price;
+	public void setRemark(String remark) {
+		this.remark = remark;
 	}
-	public List<ProductAttributeVo> getProductAttribute() {
-		return productAttribute;
+	public Integer getSupplierId() {
+		return supplierId;
 	}
-	public void setProductAttribute(List<ProductAttributeVo> productAttribute) {
-		this.productAttribute = productAttribute;
+	public void setSupplierId(Integer supplierId) {
+		this.supplierId = supplierId;
 	}
-	
 	public int getPageNum() {
 		return pageNum;
 	}
@@ -175,63 +164,32 @@ public class ProductVo implements Serializable{
 	public void setNumPerPage(int numPerPage) {
 		this.numPerPage = numPerPage;
 	}
-	public Integer getInventoryTotal() {
-		return inventoryTotal;
+	public String getPicType() {
+		return picType;
 	}
-	public void setInventoryTotal(Integer inventoryTotal) {
-		this.inventoryTotal = inventoryTotal;
+	public void setPicType(String picType) {
+		this.picType = picType;
 	}
-	public Integer getInventoryAvailable() {
-		return inventoryAvailable;
+	public Integer getUpdator() {
+		return updator;
 	}
-	public void setInventoryAvailable(Integer inventoryAvailable) {
-		this.inventoryAvailable = inventoryAvailable;
-	}
-	public Integer getInventoryCheck() {
-		return inventoryCheck;
-	}
-	public void setInventoryCheck(Integer inventoryCheck) {
-		this.inventoryCheck = inventoryCheck;
-	}
-	public String getCheckDate() {
-		return checkDate;
-	}
-	public void setCheckDate(String checkDate) {
-		this.checkDate = checkDate;
-	}
-	
-	public Integer getEffectiveDay1() {
-		try {
-			if(null == maturityDate || "".equals(maturityDate)) {
-				return null;
-			}
-			Date d1 = DateUtil.getCurrentDate();
-			Date d2 = DateUtil.parseDate(maturityDate);
-			int effectiveDay1  = (int) ((d2.getTime()-d1.getTime())/(1000 * 60 * 60 *24)); 
-			return effectiveDay1;
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
-		return effectiveDay;
-	}
-	public void setEffectiveDay1(Integer effectiveDay1) {
-		this.effectiveDay1 = effectiveDay1;
+	public void setUpdator(Integer updator) {
+		this.updator = updator;
 	}
 	@Override
 	public String toString() {
 		return "ProductVo [id=" + id + ", name=" + name + ", sku=" + sku
-				+ ", description=" + description + ", productionDate="
-				+ productionDate + ", maturityDate=" + maturityDate
-				+ ", effectiveDay=" + effectiveDay + ", price=" + price
-				+ ", inventoryTotal=" + inventoryTotal
-				+ ", inventoryAvailable=" + inventoryAvailable
-				+ ", inventoryCheck=" + inventoryCheck + ", checkDate="
-				+ checkDate + ", unit=" + unit + ", picUrl=" + picUrl
-				+ ", packType=" + packType + ", type=" + type + ", status="
-				+ status + ", creator=" + creator + ", createTime="
-				+ createTime + ", updator=" + updator + ", updateTime="
-				+ updateTime + ", sysRemark=" + sysRemark + ", pageNum="
-				+ pageNum + ", numPerPage=" + numPerPage
-				+ ", productAttribute=" + productAttribute + "]";
+				+ ", code=" + code + ", brandId=" + brandId + ", maturityDate="
+				+ maturityDate + ", specificationId1=" + specificationId1
+				+ ", specificationId2=" + specificationId2
+				+ ", classificationId1=" + classificationId1
+				+ ", classificationId2=" + classificationId2 + ", unitId="
+				+ unitId + ", warning=" + warning + ", picUrl=" + picUrl
+				+ ", status=" + status + ", creator=" + creator
+				+ ", createTime=" + createTime + ", sysRemark=" + sysRemark
+				+ ", remark=" + remark + ", supplierId=" + supplierId
+				+ ", picType=" + picType + ", pageNum=" + pageNum
+				+ ", numPerPage=" + numPerPage + "]";
 	}
+	
 }

@@ -36,7 +36,7 @@ public interface IAuthViewComp {
      * @param user
      * @return
      */
-    public ResultPrompt addAuth(SysAuthVo user);
+    public ResultPrompt addAuth(SysAuthVo auth);
     
     /**
      * 修改权限信息
@@ -44,14 +44,14 @@ public interface IAuthViewComp {
      * @param user
      * @return
      */
-    public ResultPrompt updateUser(SysAuthVo user);
+    public ResultPrompt updateAuth(SysAuthVo auth);
     /**
      * 查询权限信息
      * 
      * @param user
      * @return
      */
-    public SysAuthVo QuerySysAuth(String userId,ModelMap modelMap);
+    public SysAuthVo QuerySysAuth(String id,ModelMap modelMap);
 
     /**
      * 删除权限信息
@@ -59,7 +59,7 @@ public interface IAuthViewComp {
      * @param user
      * @return
      */
-    public ResultPrompt authDel(String userId);
+    public ResultPrompt authDel(String id);
     
     
    

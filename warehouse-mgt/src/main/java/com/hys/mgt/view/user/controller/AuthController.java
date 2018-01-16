@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hys.commons.logutil.LogProxy;
 import com.hys.commons.page.PageData;
+import com.hys.dal.select.Status;
 import com.hys.mgt.view.common.vo.ResultPrompt;
 import com.hys.mgt.view.user.component.IAuthViewComp;
 import com.hys.mgt.view.user.vo.SysAuthVo;
@@ -40,6 +41,7 @@ public class AuthController
     	PageData<SysAuthVo> pageParam=authViewComp.pageQuerySysAuth(vo);
         modelMap.put("pageParam", pageParam);
         modelMap.put("authParam", vo);// 查询时传入的参数
+        modelMap.put("status", Status.getOptions());
         return "auth/auth_list";
     }
     
@@ -58,9 +60,9 @@ public class AuthController
     }
     
     @RequestMapping(value = "authUpdate")
-    public String userUpdate(String userId, ModelMap modelMap)
+    public String userUpdate(String id, ModelMap modelMap)
     {
-    	authViewComp.QuerySysAuth(userId,modelMap);
+    	authViewComp.QuerySysAuth(id,modelMap);
         return "auth/auth_update";
     }
 
@@ -68,15 +70,15 @@ public class AuthController
     @RequestMapping(value = "authUpdateSubmit", method = RequestMethod.POST)
     public ResultPrompt userUpdateSubmit(SysAuthVo vo, HttpServletRequest request)
     {
-        ResultPrompt resultPrompt = authViewComp.updateUser(vo);
+        ResultPrompt resultPrompt = authViewComp.updateAuth(vo);
         return resultPrompt;
     }
   
     @ResponseBody
     @RequestMapping(value = "authDelete")
-    public ResultPrompt authDelete(String userId)
+    public ResultPrompt authDelete(String id)
     {
-        ResultPrompt resultPrompt = authViewComp.authDel(userId);
+        ResultPrompt resultPrompt = authViewComp.authDel(id);
         return resultPrompt;
     }
 

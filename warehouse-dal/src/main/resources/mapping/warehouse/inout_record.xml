@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.warehouse.IInoutRecordDao">
+
+	<resultMap type="inoutRecord" id="inoutRecordResult">
+		<id property="id" column="id" />
+		<result property="productId" column="product_id" />
+		<result property="maturityDate" column="maturity_date" />
+		<result property="warehouseCode" column="warehouse_code" />
+		<result property="beforeInventory" column="before_inventory" />
+		<result property="afterInventory" column="after_inventory" />
+		<result property="changeInventory" column="change_inventory" />
+		<result property="recordType" column="record_type" />
+		<result property="operator" column="operator" />
+		<result property="operateTime" column="operate_time" />
+		<result property="bacthNo" column="bacth_no" />
+		<result property="remark" column="remark" />
+		<result property="creator" column="creator" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+    <!-- 添加出入库记录 -->
+	<insert id="addInoutRecord" parameterType="inoutRecord" useGeneratedKeys="true" keyProperty="id">
+		insert  into warehouse_inout_record (id,product_id,maturity_date,warehouse_code,before_inventory,after_inventory,change_inventory,record_type,operator,operate_time,bacth_no,remark,creator,create_time)
+			values (#{id},#{productId},#{maturityDate},#{warehouseCode},#{beforeInventory},#{afterInventory},#{changeInventory},#{recordType},#{operator},#{operateTime},#{bacthNo},#{remark},#{creator},#{createTime})
+	</insert>
+	
+    <!-- 根据商品id查询出入记录-->
+	<select id="queryInoutRecordByProductId" resultMap="inoutRecordResult">
+		select * from warehouse_inout_record where product_id = #{productId}
+	</select>
+	
+	 <!-- 根据出入库时间查询-->
+	<select id="queryInoutRecordByTime" resultMap="inoutRecordResult">
+		select * from warehouse_inout_record where operate_time &gt; #{operateTimeStart} and operate_time &lt;= #{operateTimeEnd}
+	</select>
+	
+	<!-- 查询全部 -->
+	<select id="queryInoutRecords"  resultMap="inoutRecordResult">
+		select * from warehouse_inout_record 
+	</select>
+	
+	<!-- 分页查询 -->
+	<select id="pageQueryInoutRecord" resultMap="inoutRecordResult" parameterType="page">
+	 	select * from warehouse_inout_record ir, product pr where pr.id = ir.product_id
+		<if test="p.sku != null and p.sku !=''">
+			 and pr.sku like concat('%',#{p.sku},'%')
+		</if>
+		<if test="p.code != null and p.code !=''">
+			 and pr.code =#{p.code}
+		</if>
+		<if test="p.sku != null and p.sku !=''">
+			 and pr.name like concat('%',#{p.name},'%')
+		</if>
+		<if test="p.recordType > 0 ">and ir.record_type=#{p.recordType}</if>
+		<if test="p.warehouseCode != null and p.warehouseCode !=''"> and ir.warehouse_code like concat('%',#{p.warehouseCode},'%')</if>
+		<if test="p.operateTimeStart != null and p.operateTimeStart != '' and p.operateTimeEnd != null and p.operateTimeEnd != ''">
+			and ir.operate_time &gt; #{p.operateTimeStart} and ir.operate_time &lt;= #{p.operateTimeEnd}
+		</if>
+		<if test="p.creator != null and p.creator > 1">and ir.creator=#{p.creator}</if>
+		order by ir.operate_time desc
+	</select>
+	
+</mapper>	

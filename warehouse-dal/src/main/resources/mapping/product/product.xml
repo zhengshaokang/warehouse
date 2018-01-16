@@ -6,34 +6,32 @@
 		<id property="id" column="id" />
 		<result property="name" column="name" />
 		<result property="sku" column="sku" />
-		<result property="description" column="description" />
-		<result property="productionDate" column="production_date" />
+		<result property="code" column="code" />
+		<result property="brandId" column="brand_id" />
 		<result property="maturityDate" column="maturity_date" />
-		<result property="effectiveDay" column="effective_day" />
-		<result property="price" column="price" />
-		<result property="inventoryTotal" column="inventory_total" />
-		<result property="inventoryAvailable" column="inventory_available" />
-		<result property="inventoryCheck" column="inventory_check" />
-		<result property="checkDate" column="check_date" />
-		<result property="unit" column="unit" />
+		<result property="specificationId1" column="specification_id_1" />
+		<result property="specificationId2" column="specification_id_2" />
+		<result property="classificationId1" column="classification_id_1" />
+		<result property="classificationId2" column="classification_id_2" />
+		<result property="unitId" column="unit_id" />
+		<result property="warning" column="warning" />
 		<result property="picUrl" column="pic_url" />
-		<result property="packType" column="pack_type" />
-		<result property="type" column="type" />
+		<result property="supplierId" column="supplier_id" />
 		<result property="status" column="status" />
 		<result property="creator" column="creator" />
 		<result property="createTime" column="create_time" />
-		<result property="updator" column="updator" />
-		<result property="updateTime" column="update_time" />
+		<result property="remark" column="remark" />
 		<result property="sysRemark" column="sys_remark" />
 	</resultMap>
     <!-- 添加商品 -->
 	<insert id="addProduct" parameterType="product" useGeneratedKeys="true" keyProperty="id">
-		insert  into product (id,name,sku,description,production_date,maturity_date,effective_day,price,inventory_total,inventory_available,inventory_check,check_date,unit,pic_url,pack_type,type,status,creator,create_time,updator,update_time,sys_remark)
-			values (#{id},#{name},#{sku},#{description},#{productionDate},#{maturityDate},#{effectiveDay},#{price},#{inventoryTotal},#{inventoryAvailable},#{inventoryCheck},#{checkDate},#{unit},#{picUrl},#{packType},#{type},#{status},#{creator},#{createTime},#{updator},#{updateTime},#{sysRemark})
+		insert  into product (id,name,sku,code,brand_id,maturity_date,specification_id_1,specification_id_2,classification_id_1,classification_id_2,unit_id,warning,pic_url,supplier_id,status,creator,create_time,remark,sys_remark)
+			values (#{id},#{name},#{sku},#{code},#{brandId},#{maturityDate},#{specificationId1},#{specificationId2},#{classificationId1},#{classificationId2},#{unitId},#{warning},#{picUrl},#{supplierId},#{status},#{creator},#{createTime},#{remark},#{sysRemark})
 	</insert>
     <!-- 根据id删除商品-->
 	<delete id="deleteProduct">
 		delete from product where id = #{id}
+		<if test="creator != null and creator > 1">and creator=#{creator}</if>
 	</delete>
 	
 	<!-- 修改商品-->
@@ -42,40 +40,41 @@
 		<set>
 			<if test="name != null and name != ''">name=#{name},</if>
 			<if test="sku != null and sku != ''">sku=#{sku},</if>
-			<if test="description != null and description != ''">description=#{description},</if>
-			<if test="productionDate != null and productionDate != ''">production_date=#{productionDate},</if>
+			<if test="code != null and code != ''">code=#{code},</if>
+			<if test="brandId >=0">brand_id=#{brandId},</if>
 			<if test="maturityDate != null and maturityDate != ''">maturity_date=#{maturityDate},</if>
-			<if test="effectiveDay >= 0">effective_day=#{effectiveDay},</if>
-			<if test="price >= 0">price=#{price},</if>
-			<if test="inventoryTotal >=0">inventory_total=#{inventoryTotal},</if>
-			<if test="inventoryAvailable >=0">inventory_available=#{inventoryAvailable},</if>
-			<if test="inventoryCheck >=0">inventory_check=#{inventoryCheck},</if>
-			<if test="checkDate != null and checkDate != ''">check_date=#{checkDate},</if>
-			<if test="unit >=0">unit=#{unit},</if>
+			<if test="specificationId1 >= 0">specification_id_1=#{specificationId1},</if>
+			<if test="specificationId2 >= 0">specification_id_2=#{specificationId2},</if>
+			<if test="classificationId1 >=0">classification_id_1=#{classificationId1},</if>
+			<if test="classificationId2 >=0">classification_id_2=#{classificationId2},</if>
+			<if test="unitId >=0">unit_id=#{unitId},</if>
+			<if test="warning >=0">warning=#{warning},</if>
 			<if test="picUrl != null and picUrl != ''">pic_url=#{picUrl},</if>
-			<if test="packType >=0">pack_type=#{packType},</if>
-			<if test="type >=0">type=#{type},</if>
+			<if test="supplierId >=0">supplier_id=#{supplierId},</if>
 			<if test="status >=0">status=#{status},</if>
 			<if test="creator >=0">creator=#{creator},</if>
 			<if test="createTime != null and createTime != ''">create_time=#{createTime},</if>
-			<if test="updator >=0">updator=#{updator},</if>
-			<if test="updateTime != null and updateTime != ''">update_time=#{updateTime},</if>
+			<if test="remark != null and remark != ''">remark=#{remark},</if>
 			<if test="sysRemark != null and sysRemark != ''">sys_remark=#{sysRemark}</if>
 		</set>
 		where id=#{id}
+		<if test="creator != null and creator > 1">and creator=#{creator}</if>
 	</update>
     <!-- 根据id查询商品-->
 	<select id="queryProductById" resultMap="productResult">
 		select * from product where id = #{id} 
 	</select>
 	
-	 <!-- 根据sku查询商品-->
-	<select id="queryProductBySku" resultMap="productResult">
-		select * from product where sku = #{sku} and status = 0 ORDER BY production_date
+	 <!-- 根据国际条码查询商品-->
+	<select id="queryProductByName" resultMap="productResult">
+		select * from product where name = #{name} and status = 0
+		<if test="creator != null and creator > 1">and creator=#{creator}</if>
+	    ORDER BY maturity_date
 	</select>
 	
-	<select id="queryProductBySkuAndProductionDate" resultMap="productResult">
-		select * from product where sku = #{sku} and production_date = #{productionDate}
+	<select id="queryProductByCodeAndMaturityDate" resultMap="productResult">
+		select * from product where code = #{code} and maturity_date = #{maturityDate}
+		<if test="creator != null and creator > 1">and creator=#{creator}</if>
 	</select>
 	
 	<!-- 查询全部商品 -->
@@ -88,8 +87,9 @@
 	      select * from product where 1=1 
 	   		<if test="p.name != null and p.name != ''">and name like concat('%',#{p.name},'%')</if>
 			<if test="p.sku != null and p.sku != ''">and sku like concat('%',#{p.sku},'%')</if>
-			<if test="p.productionDate != null and p.productionDate != ''">and production_date=#{p.productionDate}</if>
-			<if test="p.effectiveDay != null and p.effectiveDay != ''">and effective_day=#{p.effectiveDay}</if>
+			<if test="p.code != null and p.code != ''">and code = #{code}</if>
+			<if test="p.maturityDate != null and p.maturityDate != ''">and maturity_date=#{p.maturityDate}</if>
+			<if test="p.creator != null and p.creator > 1">and creator=#{p.creator}</if>
 			ORDER BY create_time desc 
 	</select>
 </mapper>	

@@ -10,10 +10,10 @@ import com.hys.model.product.Product;
 public interface IProductDao {
 	public int addProduct(Product Product);
 	public int updateProduct(Product Product);
-	public int deleteProduct(Integer id);
+	public int deleteProduct(@Param("id") Integer id,@Param("creator") Integer creator);
 	public Product queryProductById(Integer id);
-	public List<Product> queryProductBySku(String sku);
-	public Product queryProductBySkuAndProductionDate(@Param("sku") String sku,@Param("productionDate") String productionDate);
+	public List<Product> queryProductByName(@Param("name")String name,@Param("creator") Integer creator);
+	public Product queryProductByCodeAndMaturityDate(@Param("code") String code,@Param("maturityDate") String maturityDate,@Param("creator") Integer creator);
 	public List<Product> queryProducts();
 	public List<Product> pageQueryProduct(PageParam<Product> page);
 }

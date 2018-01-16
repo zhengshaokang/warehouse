@@ -145,7 +145,7 @@ public class RoleViewCompImpl implements IRoleViewComp
     {
         SysRole sysRole = new SysRole();
         sysRole.setId(roleId);
-        sysRole.setRoleStatus(1);
+        sysRole.setRoleStatus(0);
         boolean bb = sysRoleService.updateSysRole(sysRole);
         ResultPrompt resultPrompt = new ResultPrompt();
         if (bb)

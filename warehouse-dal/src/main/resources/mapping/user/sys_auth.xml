@@ -48,13 +48,13 @@
 	<select id="queryAuthsByUserId" resultMap="sysAuthResult">
 		select a.* 
 			from sys_user u,sys_role_user ru,sys_role_auth ra,sys_auth a 
-			where u.id=ru.user_id and ru.role_id=ra.role_id and ra.auth_id=a.id and u.id=#{userId}
+			where u.id=ru.user_id and ru.role_id=ra.role_id and ra.auth_id=a.id and u.id=#{userId} and a.record_status=0
 			order by a.sort
 	</select>
 	
 	<!--根据角色id来进行查找用户权限 -->
 	<select id="queryAuthsByRoleId" resultMap="sysAuthResult">
-		select a.* from sys_auth a,sys_role_auth ra where a.id=ra.auth_id and ra.role_id=#{roleId} order by a.sort asc;
+		select a.* from sys_auth a,sys_role_auth ra where a.id=ra.auth_id and ra.role_id=#{roleId} and a.record_status=0 order by a.sort asc;
 	</select>
 	<!-- 查询系统用户进行分页 -->
 	<select id="PageQuerySysAuth" resultMap="sysAuthResult" parameterType="page">

@@ -180,7 +180,7 @@ function uploadSuccess2(file, serverData) {
 		progress.setStatus("上传成功");
 		progress.toggleCancel(false);
 		var json = eval("("+serverData+")");
-		var img = '<div style="float:left"><img picUrl="'+json.returnPath+'" src= '+basepath+'file/'+json.returnPath+' width="50" height="50"/><a href="javascript:void(0)" onclick="deletePic(this)">X</a></div>';
+		var img = '<div style="float:left"><img picUrl="'+json.returnPath+'" src= '+uploadpath+'/'+json.returnPath+' width="50" height="50"/><a href="javascript:void(0)" onclick="deletePic(this)">X</a></div>';
 		$("#addProductPicDiv").append(img);
 	} catch (ex) {	
 	}
@@ -208,46 +208,16 @@ function checkNum(obj) {
 }
 //验证天数是否为整数
 function validateInteger(obj) {
-	 var re = /^-?\\d+$/;
+	 var re = /^[1-9]\d*$/;
      if (!re.test(obj.value)) {
-	      if(isNaN(obj.value)){  
-		      obj.value="";
-		      obj.focus();
-		      return false;
-		  }
+		  obj.value="";
+	      obj.focus();
+	      return false;
      }
 }
 
-var attrs = '${productAttrstr}';
-//增加属性
-function addproductattr() {
-	var attr = eval('(' + attrs + ')');
-	var html = "<div class='product_attr_row'><div class='product_attr_d1'><select name='type'><option value=''></option>";	
-			$.each(attr,function(v,k){
-				html += "<option value='"+v+"'>"+k+"</option>";		
-			});
-		html += "</select></div><div class='product_attr_d2' ><input alt='请输入库存！' size='20' value='' name='count'></div><div class='product_attr_d3'><a class='ddd' onclick='deleteproductattr(this)'>删除</a></div></div>";						
-	$(".product_attr").append(html);						
-}
-
-function deleteproductattr(obj) {
-   $(obj).parent().parent().remove();
-}
-
-//统计有效期天数
-function countmaturitydate(obj) {
-	var d1 = $("#add_product_maturitydate").val();
-	var d2 = $("#add_product_productiondate").val();
-	var day = countDays(d2,d1);
-	$(obj).val(day);
-}
-
 (function($){ 
-	$.validator.addMethod("effectiveDay", function(value, element) {                 
-		var chcheck = /^-?\\d+$/; 
-		return this.optional(element) || chcheck.test(value);            
-	}, "请输入整数"); 
-	$.validator.addMethod("count", function(value, element) {                 
+	$.validator.addMethod("warning", function(value, element) {                 
 		var chcheck = /^-?\\d+$/; 
 		return this.optional(element) || chcheck.test(value);            
 	}, "请输入整数"); 
@@ -259,33 +229,12 @@ function validateCallback1(form, callback) {
 	if (!$form.valid()) {
 		return false;
 	}
-	var productattrs = $(".product_attr_row"); 
-	var flag= false;
-	var attrsStr = "";
-	$.each(productattrs,function(i,d){
-		var s = $(d).find("select").val();
-		var i = $(d).find("input").val();
-		if(s == "" || i == "") {
-			flag = true;
-			return false;
-		}
-		attrsStr += s+"|"+i +",";
-	});
-	if(attrsStr == "") {
-		alertMsg.error("商品属性必须有一个！");
-		return false;
-	}
-	if(flag){
-		alertMsg.error("商品属性请填写完整！");
-		return false;
-	}
 	
 	//验证图片是否上传
-	if(!validProductsPic()){
-		return false;
-	}
+	//if(!validProductsPic()){
+	//	return false;
+	//}
     $("#productpic").val(getAddProductPicDatas());
-	$("#productattrs").val(attrsStr.substring(0,attrsStr.length-1));
 	var _submitFn = function(){
 		$.ajax({
 			type: form.method || 'POST',
@@ -322,11 +271,50 @@ function getAddProductPicDatas(){
 	}
 	return str;
 }
+function specificationSelectSub(obj){
+	var changeValue = $(obj).val();
+	$.ajax({
+		type: 'POST',
+		url:"${DOMAIN}product/specificationSelectSub",
+		data:{"parentId":changeValue},
+		dataType:"json",
+		cache: false,
+		success: function(d){
+			var html="<option value='-1'></option>";
+			$.each(d,function(i,v){
+				html+= "<option value='"+i+"'>"+v+"</option>"
+			});
+			$("#addproductspecification").html("").append(html);
+		},
+		error: function(){
+			
+		}
+	});
+}
 
+function classificationSelectSub(obj){
+	var changeValue = $(obj).val();
+	$.ajax({
+		type: 'POST',
+		url:"${DOMAIN}product/classificationSelectSub",
+		data:{"parentId":changeValue},
+		dataType:"json",
+		cache: false,
+		success: function(d){
+			var html="<option value='-1'></option>";
+			$.each(d,function(i,v){
+				html+= "<option value='"+i+"'>"+v+"</option>"
+			});
+			$("#addproductclassification").html("").append(html);
+		},
+		error: function(){
+			
+		}
+	});
+}
 </script>
  <div class="pageContent">
 	<form method="post" action="${DOMAIN}product/productAddSubmit" class="pageForm required-validate" onsubmit="return validateCallback1(this, navTabAjaxDone);">
-		<input type="hidden" id="productattrs" name="productattrs"/>
 		<input type="hidden" id="productpic" name="productpic"/>
 		<div class="pageFormContent" layoutH="56">
 			<div class="unit">
@@ -334,12 +322,25 @@ function getAddProductPicDatas(){
 				<input name="name" class="required" type="text" size="30" value="" alt="请输入商品名称"/>
 			</div>
 			<div class="unit">
-				<label style="text-align:right">SKU：</label>
-				<input name="sku" id="add_product_sku" class="required" type="text" size="30" value="" alt="请输入SKU"/>
+				<label style="text-align:right">国际条码：</label>
+				<input name="code" id="add_product_code" type="text" size="30" value="" alt="请输入国际条码"/>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">内部编码：</label>
+				<input name="sku" id="add_product_sku"  type="text" size="30" value="" alt="请输入内部编码"/>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">品牌：</label>
+				<select name="brandId" id="add_product_brand" style="min-width:120px;" class="required">
+					<option value="-1"></option>
+					<#list brands?keys as key> 
+						<option value="${key}">${brands[key]}</option>					
+					</#list>
+				</select>
 			</div>
 			<div class="unit">
 				<label style="text-align:right">单位：</label>
-				<select name="unit">
+				<select name="unitId" style="min-width:120px;" class="required">
 					<option value="-1"></option>
 					<#list unitsOptions?keys as key> 
 						<option value="${key}">${unitsOptions[key]}	</option>					
@@ -347,68 +348,49 @@ function getAddProductPicDatas(){
 				</select>
 			</div>
 			<div class="unit">
-				<label style="text-align:right">价格：</label>
-				<input name="price" value="" size="30" onkeyup="checkNum(this)" class="required" alt="请输入价格！" />
+				<label style="text-align:right">商品规格：</label>
+				<span style="display:inline;">
+					<select name="specificationId1" style="min-width:120px;height:22px;" onchange="specificationSelectSub(this)">
+						<option value="-1"></option>
+						<#list productSpecificationss?keys as key> 
+							<option value="${key}">${productSpecificationss[key]}</option>					
+						</#list>
+					</select>
+				</span>
+				<span style="display:inline;">
+					<select name="specificationId2" id="addproductspecification" style="min-width:120px;height:22px;margin-left:10px;">
+						<option value="-1"></option>
+					</select>
+				</span>
 			</div>
 			<div class="unit">
-				<label style="text-align:right">生产日期：</label>
-				<input type="text" id="add_product_productiondate" name="productionDate" class="date" dateFmt="yyyy-MM-dd" value="" readonly="true"/>
-				<a class="inputDateButton" href="javascript:;">选择</a>
-				<span class="info">yyyy-MM-dd</span>
+				<label style="text-align:right">商品分类：</label>
+				<span style="display:inline;">
+					<select name="classificationId1" style="min-width:120px;height:22px;" onchange="classificationSelectSub(this)">
+						<option value="-1"></option>
+						<#list productClassifications?keys as key> 
+							<option value="${key}">${productClassifications[key]}</option>					
+						</#list>
+					</select>
+				</span>
+				<span style="display:inline;">
+					<select name="classificationId2" id="addproductclassification" style="min-width:120px;margin-left:10px;height:22px;">
+						<option value="-1"></option>
+					</select>
+				</span>
 			</div>
 			<div class="unit">
-				<label style="text-align:right">到期日期：</label>
-				<input type="text" id="add_product_maturitydate" name="maturityDate" class="date" dateFmt="yyyy-MM-dd" value="" readonly="true"/>
-				<a class="inputDateButton" href="javascript:;">选择</a>
-				<span class="info">yyyy-MM-dd</span>
+				<label style="text-align:right">临期警示：</label>
+				<input name="warning" value="" onkeyup="validateInteger(this)" size="30" alt="请输入临期警示！" />
 			</div>
 			<div class="unit">
-				<label style="text-align:right">有效天数：</label>
-				<input name="effectiveDay" value="" size="30" onfocus="countmaturitydate(this)" alt="请输入有效天数！" />
-			</div>
-			<div class="unit">
-				<label style="text-align:right">库存：</label>
-				<input name="inventoryAvailable" value="" size="30"  class="required" alt="请输入库存！" />
-			</div>
-			<div class="unit">
-				<label style="text-align:right">包装类型：</label>
-				<select name="packType">
+				<label style="text-align:right">供应商：</label>
+				<select name="supplierId" style="min-width:120px;" class="required">
 					<option value="-1"></option>
-					<#list packTypes?keys as key> 
-						<option value="${key}">${packTypes[key]}	</option>					
+					<#list suppliers?keys as key> 
+						<option value="${key}">${suppliers[key]}	</option>					
 					</#list>
 				</select>
-			</div>
-			<div class="unit">
-				<label style="text-align:right">商品类型：</label>
-				<select name="type">
-					<option value="-1"></option>
-					<#list productTypes?keys as key> 
-						<option value="${key}">${productTypes[key]}	</option>					
-					</#list>
-				</select>
-			</div>
-			<div class="unit">
-				<label style="text-align:right">商品属性：</label>
-				<div class="product_attr">
-					<div class="product_attr_row">
-						<div class="product_attr_d1">
-							<select name="type">
-								<option value=""></option>
-								<#list productAttrs?keys as key> 
-									<option value="${key}">${productAttrs[key]}	</option>					
-								</#list>
-							</select>
-						</div>
-						<div class="product_attr_d2">
-							<input alt="请输入属性值！" size="20" value="" name="value">
-						</div>
-						<div class="product_attr_d3">
-							<!--<a onclick='addproductattr()'>增加</a>-->
-							填写相应的属性，例如 红色，150ml等
-						</div>
-					</div>
-				</div>
 			</div>
 			<div class="unit">
 				<label style="text-align:right">商品图片上传：</label>
@@ -424,8 +406,8 @@ function getAddProductPicDatas(){
 				</span>
 			</div>
 			<div class="unit">
-				<label style="text-align:right">商品描述：</label>
-				<textarea name="description" alt="商品描述" cols="35" rows="8"></textarea>
+				<label style="text-align:right">备注：</label>
+				<textarea name="remark" alt="商品备注" cols="35" rows="8"></textarea>
 			</div>
 		</div>
 		<div class="formBar">

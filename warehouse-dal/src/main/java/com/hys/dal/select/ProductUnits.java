@@ -1,24 +1,41 @@
 package com.hys.dal.select;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.hys.dal.component.product.IProductUnitDalComp;
 import com.hys.dal.select.conenum.EnumProductUnit;
+import com.hys.model.product.ProductUnit;
 
-
+@Component
 public class ProductUnits {
-	public static Map<Integer,String> getStatus(){
-		Map<Integer,String> map = new LinkedHashMap<Integer,String>();
-		for (EnumProductUnit es : EnumProductUnit.values()) {
-			map.put(es.getValue(), es.getName());
+	@Autowired
+	private IProductUnitDalComp productUnitDalComp;
+	
+	public Map<String,String> getOptions(){
+		
+		List<ProductUnit> list = productUnitDalComp.queryProductUnits();
+		Map<String,String> map = new LinkedHashMap<String,String>();
+		if(null !=list) {
+			for (ProductUnit productUnit : list) {
+				map.put(productUnit.getId().toString(), productUnit.getName());
+			}
 		}
 		return map;
 	}
 	
-	public static Map<String,String> getOptions(){
+	public Map<String,String> getOptions(Integer creator){
+		
+		List<ProductUnit> list = productUnitDalComp.queryProductUnitsByCreator(creator);
 		Map<String,String> map = new LinkedHashMap<String,String>();
-		for (EnumProductUnit es : EnumProductUnit.values()) {
-			map.put(es.getValue().toString(), es.getName());
+		if(null !=list) {
+			for (ProductUnit productUnit : list) {
+				map.put(productUnit.getId().toString(), productUnit.getName());
+			}
 		}
 		return map;
 	}

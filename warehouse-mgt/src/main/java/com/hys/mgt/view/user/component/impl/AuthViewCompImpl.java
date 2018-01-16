@@ -61,11 +61,11 @@ public class AuthViewCompImpl implements IAuthViewComp{
 	}
 
 	@Override
-	public ResultPrompt addAuth(SysAuthVo user) {
+	public ResultPrompt addAuth(SysAuthVo auth) {
 		 ResultPrompt resultPrompt = new ResultPrompt();
 	        try
 	        {
-	            SysAuth u = (SysAuth) SysAuthConverter.convert2Do(user);
+	            SysAuth u = (SysAuth) SysAuthConverter.convert2Do(auth);
 	            String id = sysAuthService.addSysAuth(u);
 	            if (StringUtils.isNotBlank(id))
 	            {
@@ -90,18 +90,18 @@ public class AuthViewCompImpl implements IAuthViewComp{
 	            resultPrompt.setStatusCode("300");
 	            resultPrompt.setMessage("操作失败！");
 	            resultPrompt.setCallbackType("closeCurrent"); // 关闭当前窗口
-	            resultPrompt.setNavTabId("userlist"); // 要刷新的tab页id
+	            resultPrompt.setNavTabId("auth/list"); // 要刷新的tab页id
 	            return resultPrompt;
 	        }
 
 	}
 
 	@Override
-	public ResultPrompt updateUser(SysAuthVo user) {
+	public ResultPrompt updateAuth(SysAuthVo auth) {
 		  ResultPrompt resultPrompt = new ResultPrompt();
           try
           {
-              SysAuth u = (SysAuth)SysAuthConverter.convert2Do(user);
+              SysAuth u = (SysAuth)SysAuthConverter.convert2Do(auth);
               sysAuthService.updateSysAuth(u);
               resultPrompt.setStatusCode("200");
               resultPrompt.setMessage("操作成功！");
@@ -135,8 +135,7 @@ public class AuthViewCompImpl implements IAuthViewComp{
 	        	sysAuthService.deleteSysAuth(userId);
 	            resultPrompt.setStatusCode("200");
 	            resultPrompt.setMessage("操作成功！");
-	            resultPrompt.setCallbackType("auth/list"); // 关闭当前窗口
-	            resultPrompt.setNavTabId("userlist"); // 要刷新的tab页id
+	            resultPrompt.setNavTabId("auth/list"); // 要刷新的tab页id
 	            return resultPrompt;
 	        }
 	        catch (Exception e)
@@ -144,8 +143,7 @@ public class AuthViewCompImpl implements IAuthViewComp{
 	            log.debug("add user exceprtion=>" + e);
 	            resultPrompt.setStatusCode("300");
 	            resultPrompt.setMessage("操作失败！");
-	            resultPrompt.setCallbackType("auth/list"); // 关闭当前窗口
-	            resultPrompt.setNavTabId("userlist"); // 要刷新的tab页id
+	            resultPrompt.setNavTabId("auth/list"); // 要刷新的tab页id
 	            return resultPrompt;
 	        }
 	}
