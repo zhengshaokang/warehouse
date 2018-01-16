@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.product.IProductInPriceDao">
+
+	<resultMap type="productInPrice" id="productInPriceResult">
+		<id property="id" column="id" />
+		<result property="productId" column="product_id" />
+		<result property="price" column="price" />
+		<result property="inDate" column="in_date" />
+		<result property="inQty" column="in_qty" />
+		<result property="creator" column="creator" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+	<insert id="addProductInPrice" parameterType="productInPrice" useGeneratedKeys="true" keyProperty="id">
+		insert  into product_in_price (id,product_id,price,in_date,in_qty,creator,create_time)
+			values (#{id},#{productId},#{price},#{inDate},#{inQty},#{creator},#{createTime})
+	</insert>
+	
+	<update id="updateProductInPrice" parameterType="productInPrice">
+		update product_in_price
+		<set>
+			<if test="productId != null and productId>0">product_id=#{productId},</if>
+			<if test="price != null and price>0">price=#{price},</if>
+			<if test="inQty != null and inQty > 0">in_qty=#{inQty},</if>
+			<if test="inDate != null and inDate != ''">in_date=#{inDate},</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<select id="queryProductInPriceByProductId"  resultMap="productInPriceResult">
+		select * from product_in_price where product_id = #{productId}
+	</select>
+	
+	<select id="queryProductInPriceByProductIdAndDate"  resultMap="productInPriceResult">
+		select * from product_in_price where product_id = #{productId} and in_date = #{inDate}
+	</select>
+	
+	<select id="pageQueryProductInPrice" resultMap="productInPriceResult" parameterType="page">
+	      select * from product_in_price where 1=1 
+	   		<if test="p.productId != null and p.productId > 0 ">and product_id=#{p.productId}</if>
+	   		<if test="p.creator != null and p.creator > 1">and creator=#{p.creator}</if>
+	</select>
+</mapper>	

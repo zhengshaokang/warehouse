@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.product.IProductSpecificationsDao">
+
+	<resultMap type="productSpecifications" id="productSpecificationsResult">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="parentId" column="parent_id" />
+		<result property="remark" column="remark" />
+		<result property="status" column="status" />
+		<result property="creator" column="creator" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+	<insert id="addProductSpecifications" parameterType="productSpecifications" useGeneratedKeys="true" keyProperty="id">
+		insert  into product_specifications (id,name,parent_id,remark,status,creator,create_time)
+			values (#{id},#{name},#{parentId},#{remark},#{status},#{creator},#{createTime})
+	</insert>
+    
+	<delete id="deleteProductSpecifications">
+		delete from product_specifications where id = #{id}
+		<if test="creator != null and creator > 1">and creator=#{creator}</if>
+	</delete>
+	
+	
+	<update id="updateProductSpecifications" parameterType="productSpecifications">
+		update product_specifications
+		<set>
+			<if test="name != null and name != ''">name=#{name},</if>
+			<if test="remark != null and remark != ''">remark=#{remark},</if>
+			<if test="parentId != null and parentId >=0">parent_id=#{parentId},</if>
+			<if test="status != null and status >=0">status=#{status},</if>
+			<if test="creator != null and creator >=0">creator=#{creator},</if>
+			<if test="createTime != null and createTime != ''">create_time=#{createTime},</if>
+		</set>
+		where id=#{id}
+		<if test="creator != null and creator > 1">and creator=#{creator}</if>
+	</update>
+    
+	<select id="queryProductSpecificationsById" resultMap="productSpecificationsResult">
+		select * from product_specifications where id = #{id} 
+	</select>
+	 
+	<select id="queryProductSpecificationsByParentId" resultMap="productSpecificationsResult">
+		select * from product_specifications where parent_id = #{parentId} and status = 0
+	</select>
+	
+	<select id="queryProductSpecificationsByParentIdAndCreator" resultMap="productSpecificationsResult">
+		select * from product_specifications where parent_id = #{parentId} and status = 0
+		<if test="creator != null and creator > 1">and creator=#{creator}</if>
+	</select>
+	
+	<select id="queryProductSpecificationsOne" resultMap="productSpecificationsResult">
+		select * from product_specifications where parent_id = -1 and status = 0
+	</select>
+	<select id="queryProductSpecificationsOneByCreator" resultMap="productSpecificationsResult">
+		select * from product_specifications where parent_id = -1 and status = 0
+		<if test="creator != null and creator > 1">and creator=#{creator}</if>
+	</select>
+	
+	<select id="queryProductSpecificationsByName" resultMap="productSpecificationsResult">
+		select * from product_specifications where name = #{name} and status = 0
+		<if test="creator != null and creator > 1">and creator=#{creator}</if>
+	</select>
+	
+	<select id="queryProductSpecificationss"  resultMap="productSpecificationsResult">
+		select * from product_specifications
+	</select>
+	<select id="queryProductSpecificationssByCreator"  resultMap="productSpecificationsResult">
+		select * from product_specifications where 1=1
+		<if test="creator != null and creator > 1">and creator=#{creator}</if>
+	</select>
+	
+	<select id="pageQueryProductSpecifications" resultMap="productSpecificationsResult" parameterType="page">
+	      select * from product_specifications where 1=1 
+	   		<if test="p.name != null and p.name != ''">and name like concat('%',#{p.name},'%')</if>
+			<if test="p.remark != null and p.remark != ''">and remark like concat('%',#{p.remark},'%')</if>
+			<if test="p.status != null and p.status > -1">and status=#{p.status}</if>
+			<if test="p.parentId != null and p.parentId >-1">and parent_id=#{p.parentId}</if>
+			<if test="p.creator != null and p.creator > 1">and creator=#{p.creator}</if>
+			ORDER BY create_time desc 
+	</select>
+</mapper>	

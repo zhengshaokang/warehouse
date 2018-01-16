@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.warehouse.IWarehouseDao">
+
+	<resultMap type="warehouse" id="warehouseResult">
+		<id property="id" column="id" />
+		<result property="name" column="name" />
+		<result property="code" column="code" />
+		<result property="address" column="address" />
+		<result property="remark" column="remark" />
+		<result property="createTime" column="create_time" />
+		<result property="creator" column="creator" />
+	</resultMap>
+   
+	<insert id="addWarehouse" parameterType="warehouse" useGeneratedKeys="true" keyProperty="id">
+		insert  into warehouse (id,name,code,address,remark,create_time,creator)
+			values (#{id},#{name},#{code},#{address},#{remark},#{createTime},#{creator})
+	</insert>
+	
+	<delete id="deleteWarehouse">
+		delete from warehouse where id = #{id}
+	</delete>
+	
+	<update id="updateWarehouse" parameterType="warehouse">
+		update warehouse
+		<set>
+			<if test="name != null and name != ''">name=#{name},</if>
+			<if test="address != null and address != ''">address=#{address},</if>
+			<if test="code != null and code != ''">code=#{code},</if>
+			<if test="remark != null and remark != ''">remark=#{remark},</if>
+		</set>
+		where id=#{id}
+	</update>
+    
+	<select id="queryWarehouseById" resultMap="warehouseResult">
+		select * from warehouse where id = #{id}
+	</select>
+	
+	<select id="queryWarehouseByName" resultMap="warehouseResult">
+		select * from warehouse where name = #{name}
+		<if test="creator != null and creator > 1">and creator=#{creator}</if>
+	</select>
+	
+	<select id="queryWarehouseByCode" resultMap="warehouseResult">
+		select * from warehouse where code = #{code}
+	</select>
+	
+	<select id="queryWarehouses"  resultMap="warehouseResult">
+		select * from warehouse 
+	</select>
+	
+	<select id="queryWarehousesByCreator"  resultMap="warehouseResult">
+		select * from warehouse where 1=1
+		<if test="creator != null and creator > 1">and creator=#{creator}</if>
+	</select>
+	
+	<!-- 分页查询 -->
+	<select id="pageQueryWarehouse" resultMap="warehouseResult" parameterType="page">
+	 	select * from warehouse where 1=1
+		<if test="p.name != null and p.name !=''">
+			 and name like concat('%',#{p.name},'%')
+		</if>
+		<if test="p.code != null and p.code !=''">
+			 and code like concat('%',#{p.code},'%')
+		</if>
+		<if test="p.address != null and p.address !=''">
+			 and address like concat('%',#{p.address},'%')
+		</if>
+		<if test="p.creator != null and p.creator > 1">and creator=#{p.creator}</if>
+		order by create_time desc
+	</select>
+	
+</mapper>	

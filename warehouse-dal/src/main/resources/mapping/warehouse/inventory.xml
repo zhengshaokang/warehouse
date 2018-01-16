@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.warehouse.IInventoryDao">
+
+	<resultMap type="inventory" id="inventoryResult">
+		<id property="id" column="id" />
+		<result property="productId" column="product_id" />
+		<result property="warehouseCode" column="warehouse_code" />
+		<result property="qty" column="qty" />
+		<result property="maturityDate" column="maturity_date" />
+		<result property="inWarehouseDate" column="in_warehouse_date" />
+		<result property="batchNo" column="batch_no" />
+		<result property="creator" column="creator" />
+		<result property="createTime" column="create_time" />
+	</resultMap>
+   
+	<insert id="addInventory" parameterType="inventory" useGeneratedKeys="true" keyProperty="id">
+		insert  into warehouse_inventory (id,product_id,warehouse_code,qty,maturity_date,in_warehouse_date,batch_no,creator,create_time)
+			values (#{id},#{productId},#{warehouseCode},#{qty},#{maturityDate},#{inWarehouseDate},#{batchNo},#{creator},#{createTime})
+	</insert>
+	
+	<update id="updateInventory" parameterType="inventory">
+		update warehouse_inventory
+		<set>
+			<if test="productId != null and productId>0">product_id=#{productId},</if>
+			<if test="warehouseCode != null and warehouseCode != ''">warehouse_code=#{warehouseCode},</if>
+			<if test="qty != null and qty > 0">qty=#{qty},</if>
+			<if test="maturityDate != null and maturityDate != ''">maturity_date=#{maturityDate},</if>
+			<if test="batchNo != null and batchNo != ''">batch_no=#{batchNo},</if>
+			<if test="inWarehouseDate != null and inWarehouseDate != ''">in_warehouse_date=#{inWarehouseDate},</if>
+		</set>
+		where id=#{id}
+	</update>
+    
+	<select id="queryInventoryByProductId" resultMap="inventoryResult">
+		select * from warehouse_inventory where product_id = #{productId} and qty >0
+	</select>
+	
+	<select id="queryInventoryByBatchNo" resultMap="inventoryResult">
+		select * from warehouse_inventory where batch_no = #{batchNo}
+	</select>
+</mapper>	
