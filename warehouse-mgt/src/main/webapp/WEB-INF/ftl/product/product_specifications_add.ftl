@@ -31,7 +31,6 @@
 			<div class="unit">
 				<label style="text-align:right">上级分类：</label>
 				<select name="parentId" style="min-width:80px;">
-					<option value="-1"></option>
 					<#list productSpecificationssOne?keys as key> 
 						<option value="${key}">${productSpecificationssOne[key]}	</option>					
 					</#list>

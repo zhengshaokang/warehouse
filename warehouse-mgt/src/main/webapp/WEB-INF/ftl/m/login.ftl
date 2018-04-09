@@ -12,7 +12,7 @@
 <script type="text/javascript">
 $(function(){
 	if(location.href.indexOf("login") == -1){
-		window.location.href = "${DOMAIN}m/login";
+		window.location.href = "${DOMAIN}/login";
 	}
 })
 </script>

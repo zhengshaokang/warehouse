@@ -1,3 +1,6 @@
+<#if agent?? && agent == "M">
+<#include "../m/product_in.ftl"/>
+<#else>
 <style>
 </style>
 
@@ -125,5 +128,5 @@ function validateCallback1(form, callback) {
 		</div>
 	</form>
 </div>
-  
+</#if>  
 

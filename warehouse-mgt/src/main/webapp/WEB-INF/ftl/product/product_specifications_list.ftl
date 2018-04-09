@@ -17,7 +17,6 @@
 				<td>
 				   一级规格：
 					  <select name="parentId"  style="min-width:80px;">
-						<option value="-1"></option>
 						<#list productSpecificationssOne?keys as key> 
 							<option value="${key}" <#if productSpecificationssParam.parentId?? && productSpecificationssParam.parentId?c == key>selected="selected"</#if>>${productSpecificationssOne[key]}</option>					
 						</#list>

@@ -292,7 +292,6 @@ function getAddProductPicDatas(){
 			<div class="unit">
 				<label style="text-align:right">品牌：</label>
 				<select name="brandId" id="add_product_brand" style="min-width:120px;" class="required">
-					<option value="-1"></option>
 					<#list brands?keys as key> 
 						<#if product.brandId == key?eval>
 							<option selected="selected" value="${key}">${brands[key]}	</option>	
@@ -305,7 +304,6 @@ function getAddProductPicDatas(){
 			<div class="unit">
 				<label style="text-align:right">单位：</label>
 				<select name="unitId" style="min-width:120px;" class="required">
-					<option value="-1"></option>
 					<#list unitsOptions?keys as key> 
 						<#if product.unitId == key?eval>
 							<option selected="selected" value="${key}">${unitsOptions[key]}	</option>	
@@ -319,26 +317,32 @@ function getAddProductPicDatas(){
 				<label style="text-align:right">商品规格：</label>
 				<span style="display:inline;">
 					<select name="specificationId1" style="min-width:120px;height:22px;" onchange="specificationSelectSub(this)">
-						<option value="-1"></option>
-						<#list productSpecificationss?keys as key> 
-							<#if product.specificationId1 == key?eval>
-								<option selected="selected" value="${key}">${productSpecificationss[key]}	</option>	
-							<#else>
-								<option value="${key}">${productSpecificationss[key]}</option>	
-							</#if>
-						</#list>
+						<#if productSpecificationss ??>
+							<#list productSpecificationss?keys as key> 
+								<#if product.specificationId1 == key?eval>
+									<option selected="selected" value="${key}">${productSpecificationss[key]}	</option>	
+								<#else>
+									<option value="${key}">${productSpecificationss[key]}</option>	
+								</#if>
+							</#list>
+						<#else>
+							<option value='-1'></option>
+						</#if>
 					</select>
 				</span>
 				<span style="display:inline;">
 					<select name="specificationId2" id="addproductspecification" style="min-width:120px;height:22px;margin-left:10px;">
-						<option value="-1"></option>
-						<#list productSpecificationssSub?keys as key> 
-							<#if product.specificationId2 == key?eval>
-								<option selected="selected" value="${key}">${productSpecificationssSub[key]}</option>	
-							<#else>
-								<option value="${key}">${productSpecificationssSub[key]}</option>	
-							</#if>
-						</#list>
+						<#if productSpecificationssSub ??>
+							<#list productSpecificationssSub?keys as key> 
+								<#if product.specificationId2 == key?eval>
+									<option selected="selected" value="${key}">${productSpecificationssSub[key]}</option>	
+								<#else>
+									<option value="${key}">${productSpecificationssSub[key]}</option>	
+								</#if>
+							</#list>
+						<#else>
+							<option value='-1'></option>
+						</#if>
 					</select>
 				</span>
 			</div>
@@ -346,26 +350,32 @@ function getAddProductPicDatas(){
 				<label style="text-align:right">商品分类：</label>
 				<span style="display:inline;">
 					<select name="classificationId1" style="min-width:120px;height:22px;" onchange="classificationSelectSub(this)">
-						<option value="-1"></option>
-						<#list productClassifications?keys as key> 
-								<#if product.classificationId1 == key?eval>
-									<option selected="selected" value="${key}">${productClassifications[key]}	</option>	
-								<#else>
-									<option value="${key}">${productClassifications[key]}</option>		
-								</#if>	
-						</#list>
+						<#if productClassificationsSub ??>
+							<#list productClassifications?keys as key> 
+									<#if product.classificationId1 == key?eval>
+										<option selected="selected" value="${key}">${productClassifications[key]}	</option>	
+									<#else>
+										<option value="${key}">${productClassifications[key]}</option>		
+									</#if>	
+							</#list>
+						<#else>
+							<option value='-1'></option>
+						</#if>
 					</select>
 				</span>
 				<span style="display:inline;">
 					<select name="classificationId2" id="addproductclassification" style="min-width:120px;margin-left:10px;height:22px;">
-						<option value="-1"></option>
-						<#list productClassificationsSub?keys as key> 
-							<#if product.classificationId2 == key?eval>
-								<option selected="selected" value="${key}">${productClassificationsSub[key]}	</option>	
-							<#else>
-								<option value="${key}">${productClassificationsSub[key]}</option>	
-							</#if>
-						</#list>
+						<#if productClassificationsSub ??>
+							<#list productClassificationsSub?keys as key> 
+								<#if product.classificationId2 == key?eval>
+									<option selected="selected" value="${key}">${productClassificationsSub[key]}	</option>	
+								<#else>
+									<option value="${key}">${productClassificationsSub[key]}</option>	
+								</#if>
+							</#list>
+						<#else>
+							<option value='-1'></option>
+						</#if>
 					</select>
 				</span>
 			</div>
@@ -376,7 +386,6 @@ function getAddProductPicDatas(){
 			<div class="unit">
 				<label style="text-align:right">供应商：</label>
 				<select name="supplierId" style="min-width:120px;" class="required">
-					<option value="-1"></option>
 					<#list suppliers?keys as key> 
 						<#if product.supplierId ?? && product.supplierId == key?eval>
 							<option selected="selected" value="${key}">${suppliers[key]}</option>	

@@ -21,6 +21,7 @@ public class ProductSpecificationss {
 		List<ProductSpecifications> lsit = productSpecificationsDalComp.queryProductSpecificationsOne();
 		
 		Map<String,String> map = new LinkedHashMap<String,String>();
+		map.put("-1", "");
 		if(null !=map) {
 			for (ProductSpecifications productSpecifications : lsit) {
 				map.put(productSpecifications.getId().toString(), productSpecifications.getName());
@@ -35,6 +36,7 @@ public class ProductSpecificationss {
 		List<ProductSpecifications> lsit = productSpecificationsDalComp.queryProductSpecificationsOneByCreator(creator);
 		
 		Map<String,String> map = new LinkedHashMap<String,String>();
+		map.put("-1", "");
 		if(null !=map) {
 			for (ProductSpecifications productSpecifications : lsit) {
 				map.put(productSpecifications.getId().toString(), productSpecifications.getName());
@@ -49,6 +51,7 @@ public class ProductSpecificationss {
 		List<ProductSpecifications> lsit = productSpecificationsDalComp.queryProductSpecificationss();
 		
 		Map<String,String> map = new LinkedHashMap<String,String>();
+		map.put("-1", "");
 		if(null !=map) {
 			for (ProductSpecifications productSpecifications : lsit) {
 				map.put(productSpecifications.getId().toString(), productSpecifications.getName());
@@ -63,6 +66,7 @@ public class ProductSpecificationss {
 		List<ProductSpecifications> lsit = productSpecificationsDalComp.queryProductSpecificationsByCreator(creator);
 		
 		Map<String,String> map = new LinkedHashMap<String,String>();
+		map.put("-1", "");
 		if(null !=map) {
 			for (ProductSpecifications productSpecifications : lsit) {
 				map.put(productSpecifications.getId().toString(), productSpecifications.getName());
@@ -77,6 +81,7 @@ public class ProductSpecificationss {
 		List<ProductSpecifications> lsit = productSpecificationsDalComp.queryProductSpecificationsByParentId(parentId);
 		
 		Map<String,String> map = new LinkedHashMap<String,String>();
+		map.put("-1", "");
 		if(null !=lsit) {
 			for (ProductSpecifications productSpecifications : lsit) {
 				map.put(productSpecifications.getId().toString(), productSpecifications.getName());
@@ -91,6 +96,7 @@ public  Map<String,String> getSpecificationssSub(Integer parentId,Integer creato
 		List<ProductSpecifications> lsit = productSpecificationsDalComp.queryProductSpecificationsByParentIdAndCreator(parentId, creator);
 		
 		Map<String,String> map = new LinkedHashMap<String,String>();
+		map.put("-1", "");
 		if(null !=lsit) {
 			for (ProductSpecifications productSpecifications : lsit) {
 				map.put(productSpecifications.getId().toString(), productSpecifications.getName());

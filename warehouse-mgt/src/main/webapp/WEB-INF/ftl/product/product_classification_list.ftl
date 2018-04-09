@@ -17,7 +17,6 @@
 				<td>
 				   一级分类：
 					  <select name="parentId" style="min-width:80px;">
-						<option value="-1"></option>
 						<#list productClassificationOne?keys as key> 
 							<option value="${key}" <#if productClassificationParam.parentId?? && productClassificationParam.parentId?c == key>selected="selected"</#if>>${productClassificationOne[key]}</option>					
 						</#list>

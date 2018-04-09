@@ -32,7 +32,6 @@
 			<div class="unit">
 				<label style="text-align:right">上级规格：</label>
 				<select name="parentId"  style="min-width:80px;">
-					<option value="-1"></option>
 					<#list productSpecificationssOne?keys as key> 
 					
 						<#if productSpecifications.parentId == key?eval>

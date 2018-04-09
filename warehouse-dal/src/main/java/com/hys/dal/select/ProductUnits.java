@@ -32,6 +32,7 @@ public class ProductUnits {
 		
 		List<ProductUnit> list = productUnitDalComp.queryProductUnitsByCreator(creator);
 		Map<String,String> map = new LinkedHashMap<String,String>();
+		map.put("-1", "");
 		if(null !=list) {
 			for (ProductUnit productUnit : list) {
 				map.put(productUnit.getId().toString(), productUnit.getName());

@@ -282,7 +282,9 @@ function specificationSelectSub(obj){
 		success: function(d){
 			var html="<option value='-1'></option>";
 			$.each(d,function(i,v){
-				html+= "<option value='"+i+"'>"+v+"</option>"
+				if(i != -1) {
+					html+= "<option value='"+i+"'>"+v+"</option>"
+				}
 			});
 			$("#addproductspecification").html("").append(html);
 		},
@@ -303,7 +305,9 @@ function classificationSelectSub(obj){
 		success: function(d){
 			var html="<option value='-1'></option>";
 			$.each(d,function(i,v){
-				html+= "<option value='"+i+"'>"+v+"</option>"
+				if(i != -1) {
+					html+= "<option value='"+i+"'>"+v+"</option>"
+				}
 			});
 			$("#addproductclassification").html("").append(html);
 		},
@@ -332,7 +336,6 @@ function classificationSelectSub(obj){
 			<div class="unit">
 				<label style="text-align:right">品牌：</label>
 				<select name="brandId" id="add_product_brand" style="min-width:120px;" class="required">
-					<option value="-1"></option>
 					<#list brands?keys as key> 
 						<option value="${key}">${brands[key]}</option>					
 					</#list>
@@ -341,7 +344,6 @@ function classificationSelectSub(obj){
 			<div class="unit">
 				<label style="text-align:right">单位：</label>
 				<select name="unitId" style="min-width:120px;" class="required">
-					<option value="-1"></option>
 					<#list unitsOptions?keys as key> 
 						<option value="${key}">${unitsOptions[key]}	</option>					
 					</#list>
@@ -351,7 +353,6 @@ function classificationSelectSub(obj){
 				<label style="text-align:right">商品规格：</label>
 				<span style="display:inline;">
 					<select name="specificationId1" style="min-width:120px;height:22px;" onchange="specificationSelectSub(this)">
-						<option value="-1"></option>
 						<#list productSpecificationss?keys as key> 
 							<option value="${key}">${productSpecificationss[key]}</option>					
 						</#list>
@@ -367,7 +368,6 @@ function classificationSelectSub(obj){
 				<label style="text-align:right">商品分类：</label>
 				<span style="display:inline;">
 					<select name="classificationId1" style="min-width:120px;height:22px;" onchange="classificationSelectSub(this)">
-						<option value="-1"></option>
 						<#list productClassifications?keys as key> 
 							<option value="${key}">${productClassifications[key]}</option>					
 						</#list>
@@ -386,7 +386,6 @@ function classificationSelectSub(obj){
 			<div class="unit">
 				<label style="text-align:right">供应商：</label>
 				<select name="supplierId" style="min-width:120px;" class="required">
-					<option value="-1"></option>
 					<#list suppliers?keys as key> 
 						<option value="${key}">${suppliers[key]}	</option>					
 					</#list>

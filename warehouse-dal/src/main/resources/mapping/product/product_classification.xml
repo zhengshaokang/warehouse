@@ -28,7 +28,7 @@
 		<set>
 			<if test="name != null and name != ''">name=#{name},</if>
 			<if test="remark != null and remark != ''">remark=#{remark},</if>
-			<if test="parentId !=null and parentId >=0">parent_id=#{parentId},</if>
+			<if test="parentId !=null and parentId >=-1">parent_id=#{parentId},</if>
 			<if test="status !=null and status >=0">status=#{status},</if>
 			<if test="creator !=null and creator >=0">creator=#{creator},</if>
 			<if test="createTime != null and createTime != ''">create_time=#{createTime},</if>

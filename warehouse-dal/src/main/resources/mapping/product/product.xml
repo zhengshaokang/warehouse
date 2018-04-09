@@ -41,18 +41,18 @@
 			<if test="name != null and name != ''">name=#{name},</if>
 			<if test="sku != null and sku != ''">sku=#{sku},</if>
 			<if test="code != null and code != ''">code=#{code},</if>
-			<if test="brandId >=0">brand_id=#{brandId},</if>
+			<if test="brandId >=-1">brand_id=#{brandId},</if>
 			<if test="maturityDate != null and maturityDate != ''">maturity_date=#{maturityDate},</if>
-			<if test="specificationId1 >= 0">specification_id_1=#{specificationId1},</if>
-			<if test="specificationId2 >= 0">specification_id_2=#{specificationId2},</if>
-			<if test="classificationId1 >=0">classification_id_1=#{classificationId1},</if>
-			<if test="classificationId2 >=0">classification_id_2=#{classificationId2},</if>
+			<if test="specificationId1 >= -1">specification_id_1=#{specificationId1},</if>
+			<if test="specificationId2 >= -1">specification_id_2=#{specificationId2},</if>
+			<if test="classificationId1 >=-1">classification_id_1=#{classificationId1},</if>
+			<if test="classificationId2 >=-1">classification_id_2=#{classificationId2},</if>
 			<if test="unitId >=0">unit_id=#{unitId},</if>
 			<if test="warning >=0">warning=#{warning},</if>
 			<if test="picUrl != null and picUrl != ''">pic_url=#{picUrl},</if>
-			<if test="supplierId >=0">supplier_id=#{supplierId},</if>
-			<if test="status >=0">status=#{status},</if>
-			<if test="creator >=0">creator=#{creator},</if>
+			<if test="supplierId >=-1">supplier_id=#{supplierId},</if>
+			<if test="status >=-1">status=#{status},</if>
+			<if test="creator >=-1">creator=#{creator},</if>
 			<if test="createTime != null and createTime != ''">create_time=#{createTime},</if>
 			<if test="remark != null and remark != ''">remark=#{remark},</if>
 			<if test="sysRemark != null and sysRemark != ''">sys_remark=#{sysRemark}</if>

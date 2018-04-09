@@ -1,15 +1,55 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 <meta charset="UTF-8">
 <meta content="width=device-width,user-scalable=no" name="viewport">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>商品列表</title>
-<link type="text/css" rel="stylesheet" href="${DOMAIN}res/css/m/login.css?v=${VERSION!''}" />
+<link type="text/css" rel="stylesheet" href="${BASEPATH}css/m/product.css" />
 <script src="${BASEPATH}plugin/dwz-ria/js/jquery-1.7.2.js" type="text/javascript"></script>
 </head>
+<script>
+$(function(){
+	$("#queryProductsList").click(function() {
+		queryList();
+	});
+})
+function queryList() {
+	$("#pagerForm").submit();
+}
+function openProductDes(productId) {
+	window.location.href = "${DOMAIN}product/productPreview?productId="+productId;
+}
+</script>
 <body>
-<h1>还在开发中。。。</h1>
+	<div class="p_list_c">
+		<div class="p_list_q">
+			<form id="pagerForm" method="post" action="${DOMAIN}product/list">
+				<input type="text" name="name" value="${productParam.name!''}">
+				<span id="queryProductsList">搜索</span>
+			</form>
+		</div>
+		<div class="p_list_r" id="produtResults">
+			<#if pageParam ?? && pageParam.getPageData() ??>
+				<#list pageParam.getPageData() as product>
+				<div class="p_list_r_d" onclick="openProductDes(${product.id!''})">
+					<span class="p_list_r_d_pic">
+						<img src="${IMGBASEPATH}${product.picUrl!''}_80x80.${product.picType!'jpg'}"/>
+					</span>
+					<span class="p_list_r_d_title">
+						<p>${product.name!''}</p>
+						<p>
+							${productSpecificationss["${product.specificationId1!''}"]}>>>
+								<#if product.specificationId2 ??>
+									${productSpecificationss["${product.specificationId2!''}"]}
+								</#if>
+						</p>
+					</span>
+				</div>
+			</#list>
+			</#if>
+		</div>
+	</div>
 </body>
 </html>

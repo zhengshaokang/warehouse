@@ -31,6 +31,7 @@ public class Brands {
 	public Map<String,String> getOptions(Integer creator){
 		List<Brand> list = brandDalComp.queryBrandsByCreator(creator);
 		Map<String,String> map = new LinkedHashMap<String,String>();
+		map.put("-1", "");
 		if(null !=list) {
 			for (Brand b : list) {
 				map.put(b.getId().toString(), b.getName());

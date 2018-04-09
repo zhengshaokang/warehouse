@@ -1,4 +1,6 @@
-
+<#if agent?? && agent == "M">
+<#include "../m/product_out.ftl"/>
+<#else>
  <div class="pageContent">
 	<form method="post" action="${DOMAIN}product/productOutSubmit" class="pageForm required-validate" onsubmit="return validateCallback(this, navTabAjaxDone);">
 		<input type="hidden" name="productId" value="${product.id}"/>
@@ -55,5 +57,5 @@
 		</div>
 	</form>
 </div>
-  
+</#if> 
 

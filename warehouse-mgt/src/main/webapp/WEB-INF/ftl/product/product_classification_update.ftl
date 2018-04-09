@@ -32,7 +32,6 @@
 			<div class="unit">
 				<label style="text-align:right">上级分类：</label>
 				<select name="parentId">
-					<option value="-1"></option>
 					<#list productClassificationOne?keys as key> 
 						<#if productClassification.parentId == key?eval>
 							<option selected="selected" value="${key}">${productClassificationOne[key]}</option>	

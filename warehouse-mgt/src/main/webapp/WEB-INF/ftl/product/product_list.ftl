@@ -27,7 +27,6 @@
 				<td>
 				           品牌：
 				     <select name="brandId" id="add_product_brand" style="min-width:120px;" class="required">
-						<option value="-1"></option>
 						<#list brands?keys as key> 
 							<#if productParam.brandId ?? && productParam.brandId == key?eval>
 								<option selected="selected" value="${key}">${brands[key]}	</option>	
@@ -67,6 +66,7 @@
 				<th width="80">单位</th>
 				<th width="80">规格</th>
 				<th width="80">分类</th>
+				<th width="80">临期警示</th>
 				<th width="100">供应商</th>
 				<th width="100">备注</th>
 				<th width="80">操作</th>
@@ -101,6 +101,9 @@
 							<#if product.classificationId2 ??>
 								${productClassifications["${product.classificationId2!''}"]}
 							</#if>
+						</td>
+						<td>
+							${product.warning!''}天
 						</td>
 						<td>
 							${suppliers["${product.supplierId!''}"]}
