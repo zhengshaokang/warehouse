@@ -7,10 +7,13 @@ package com.hys.dal.select.conenum;
  */
 public enum EnumInoutRecordType {
 	PRODUCTIN("采购入库",10), 
-	RETURNORDERIN("退件入库",11), 
-	RETURNPRODUCTIN("退库入库",12), 
+	RETURNORDERIN("退货入库",11), 
+	OTHERIN("其他入库",12), 
 	ORDEROUT("销售出库",20),
 	PRODUCTOUT("废品出库",21),
+	ALLOCATIONOUT("调拨出库",22),
+	GIVETOUT("赠送出库",23),
+	OTHEROUT("其他出库",24),
 	CHECK("盘点",30);
 
 	private String name;

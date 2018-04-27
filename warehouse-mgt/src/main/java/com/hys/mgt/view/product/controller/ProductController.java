@@ -280,6 +280,7 @@ public class ProductController {
 					map.put(inventoryVo.getBatchNo(), "批次:"+inventoryVo.getBatchNo()+",库存:"+inventoryVo.getQty());
 				}
 	    	 }
+	    	 modelMap.put("currdate", DateUtil.getCurrentDateAsString("yyyy-MM-dd"));
 	    	 modelMap.put("qty", count);
 	    	 modelMap.put("warehouses", warehouses.getWarehouses(Integer.parseInt(sysAdminVo.getId())));
 	    	 modelMap.put("qtys", map);

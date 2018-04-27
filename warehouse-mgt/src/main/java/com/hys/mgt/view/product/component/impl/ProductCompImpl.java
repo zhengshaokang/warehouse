@@ -275,14 +275,15 @@ public class ProductCompImpl implements IProductComp{
 			inoutRecord.setWarehouseCode(productInVo.getWarehouseCode());
 			inoutRecord.setMaturityDate(productInVo.getMaturityDate());
 			inoutRecord.setCreator(operator);
-			inoutRecord.setCreateTime(DateUtil.getCurrentDateTime("yyyy-MM-dd hh:mm:ss"));
+			inoutRecord.setCreateTime(productInVo.getInWarehouseDate());
+			inoutRecord.setRemark(productInVo.getRemark());
 			boolean b2 = inoutRecordService.addInoutRecord(inoutRecord);
 			
 			if(b && b1 && b2) {	
 				 rp.setStatusCode("200");
 				 rp.setMessage("操作成功！");
-				 //rp.setCallbackType("closeCurrent"); // 关闭当前窗口
-				 //rp.setNavTabId("product/list"); // 要刷新的tab页id
+				 rp.setCallbackType("closeCurrent"); // 关闭当前窗口
+				 rp.setNavTabId("warehouse/inoutlist"); // 要刷新的tab页id
 		     } else {
 		    	 rp.setStatusCode("300");
 		    	 rp.setMessage("操作失败！");
@@ -349,14 +350,15 @@ public class ProductCompImpl implements IProductComp{
 			inoutRecord.setWarehouseCode(productOutVo.getWarehouseCode());
 			inoutRecord.setMaturityDate(maturityDate);
 			inoutRecord.setCreator(operator);
-			inoutRecord.setCreateTime(DateUtil.getCurrentDateTime("yyyy-MM-dd hh:mm:ss"));
+			inoutRecord.setCreateTime(productOutVo.getOutWarehouseDate());
+			inoutRecord.setRemark(productOutVo.getRemark());
 			boolean b2 = inoutRecordService.addInoutRecord(inoutRecord);
 			
 			if(b2 && b) {	
 				 rp.setStatusCode("200");
 				 rp.setMessage("操作成功！");
-				// rp.setCallbackType("closeCurrent"); // 关闭当前窗口
-				 //rp.setNavTabId("product/list"); // 要刷新的tab页id
+				 rp.setCallbackType("closeCurrent"); // 关闭当前窗口
+				 rp.setNavTabId("warehouse/inoutlist"); // 要刷新的tab页id
 		     } else {
 		    	 rp.setStatusCode("300");
 		    	 rp.setMessage("操作失败！");

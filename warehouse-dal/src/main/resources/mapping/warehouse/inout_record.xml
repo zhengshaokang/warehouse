@@ -52,6 +52,7 @@
 			 and pr.name like concat('%',#{p.name},'%')
 		</if>
 		<if test="p.recordType > 0 ">and ir.record_type=#{p.recordType}</if>
+		<if test="p.createTime != null and p.createTime !=''">and ir.create_time=#{p.createTime}</if>
 		<if test="p.warehouseCode != null and p.warehouseCode !=''"> and ir.warehouse_code like concat('%',#{p.warehouseCode},'%')</if>
 		<if test="p.operateTimeStart != null and p.operateTimeStart != '' and p.operateTimeEnd != null and p.operateTimeEnd != ''">
 			and ir.operate_time &gt; #{p.operateTimeStart} and ir.operate_time &lt;= #{p.operateTimeEnd}

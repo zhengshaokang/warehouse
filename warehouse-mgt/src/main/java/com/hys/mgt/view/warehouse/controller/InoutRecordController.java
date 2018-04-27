@@ -67,7 +67,7 @@ public class InoutRecordController {
 	    
 	    @RequestMapping("returnstock")
 	    public String returnstock(ModelMap modelMap,HttpServletRequest request) {
-	    	 modelMap.put("recordType", EnumInoutRecordType.RETURNPRODUCTIN.getValue());
+	    	 modelMap.put("recordType", EnumInoutRecordType.OTHERIN.getValue());
 	    	 return "warehouse/returnstock";
 	    }
 	    

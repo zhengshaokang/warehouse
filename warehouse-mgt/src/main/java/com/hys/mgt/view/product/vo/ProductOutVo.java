@@ -8,6 +8,7 @@ public class ProductOutVo implements Serializable {
 	private Integer productId;//商品id
 	private String warehouseCode;//仓库编码
 	private String inoutRecordType;//出库类型
+	private String outWarehouseDate;//出库日期
 	private Integer qty;//库存
 	private String batchNo;//批次号
 	private String remark;
@@ -53,12 +54,18 @@ public class ProductOutVo implements Serializable {
 	public void setInoutRecordType(String inoutRecordType) {
 		this.inoutRecordType = inoutRecordType;
 	}
+	public String getOutWarehouseDate() {
+		return outWarehouseDate;
+	}
+	public void setOutWarehouseDate(String outWarehouseDate) {
+		this.outWarehouseDate = outWarehouseDate;
+	}
 	@Override
 	public String toString() {
 		return "ProductOutVo [id=" + id + ", productId=" + productId
 				+ ", warehouseCode=" + warehouseCode + ", inoutRecordType="
-				+ inoutRecordType + ", qty=" + qty + ", batchNo=" + batchNo
-				+ ", remark=" + remark + "]";
+				+ inoutRecordType + ", outWarehouseDate=" + outWarehouseDate
+				+ ", qty=" + qty + ", batchNo=" + batchNo + ", remark="
+				+ remark + "]";
 	}
-	
 }

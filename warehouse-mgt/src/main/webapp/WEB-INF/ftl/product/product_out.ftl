@@ -43,6 +43,10 @@
 				<input name="qty" value="" size="30"  class="required" alt="请输入数量！" />
 			</div>
 			<div class="unit">
+				<label style="text-align:right">出库日期：</label>
+				<input type="text" maxDate="{%y}-%M-{%d}" name="outWarehouseDate" value="${currdate!''}"   class="date" dateFmt="yyyy-MM-dd"/>
+			</div>
+			<div class="unit">
 				<label style="text-align:right">备注：</label>
 				<textarea name="remark" alt="商品备注" cols="35" rows="8"></textarea>
 			</div>
