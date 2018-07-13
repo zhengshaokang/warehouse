@@ -91,8 +91,16 @@ public class SysUserViewCompImpl implements ISysUserViewComp {
 	          try
 	          {
 	              SysUser u = (SysUser)SysUserConverter.convert2Do(user);
-	              List<String> addRoleIdlist = Arrays.asList(addRoleIds);
-	              List<String> delRoleIdlist = Arrays.asList(delRoleIds);
+	              List<String> addRoleIdlist = new ArrayList<String>();
+	              List<String> delRoleIdlist = new ArrayList<String>();
+	              if(LogicUtil.isNotNullAndEmpty(addRoleIds)){
+	            	  addRoleIdlist = Arrays.asList(addRoleIds);
+	              }
+	              
+	              if(LogicUtil.isNotNullAndEmpty(delRoleIds)){
+	            	  delRoleIdlist = Arrays.asList(delRoleIds);
+	              }
+	             
 	              if (StringUtils.isNotBlank(u.getPassword()))
 	              {
 	                  u.setPassword(MD5Coding.encode2HexStr(u.getPassword().getBytes()));

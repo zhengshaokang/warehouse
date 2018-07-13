@@ -34,6 +34,16 @@ public class SysUserVo implements Serializable
     private int numPerPage = WebConstants.PAGESIZE;
     private List<SysAuth> auths;
     private List<SysRole> role;
+    
+    private int isWarhouse;//是否仓库用户
+    private int isComment;//是否测评用户
+    private int vipLevel;//会员级别
+    private String vipDate;//会员到期日期
+    private String commentUrl ;//测评模板路径
+    private String loginTime ;//用户登录时间
+    private String loginIp ;//用户登录ip
+    private Integer systemType;// 1 仓库系统  0 评价系统
+    
 	public String getId() {
 		return id;
 	}
@@ -148,6 +158,54 @@ public class SysUserVo implements Serializable
 	public void setRole(List<SysRole> role) {
 		this.role = role;
 	}
+	public int getIsWarhouse() {
+		return isWarhouse;
+	}
+	public void setIsWarhouse(int isWarhouse) {
+		this.isWarhouse = isWarhouse;
+	}
+	public int getIsComment() {
+		return isComment;
+	}
+	public void setIsComment(int isComment) {
+		this.isComment = isComment;
+	}
+	public int getVipLevel() {
+		return vipLevel;
+	}
+	public void setVipLevel(int vipLevel) {
+		this.vipLevel = vipLevel;
+	}
+	public String getVipDate() {
+		return vipDate;
+	}
+	public void setVipDate(String vipDate) {
+		this.vipDate = vipDate;
+	}
+	public String getCommentUrl() {
+		return commentUrl;
+	}
+	public void setCommentUrl(String commentUrl) {
+		this.commentUrl = commentUrl;
+	}
+	public String getLoginTime() {
+		return loginTime;
+	}
+	public void setLoginTime(String loginTime) {
+		this.loginTime = loginTime;
+	}
+	public String getLoginIp() {
+		return loginIp;
+	}
+	public void setLoginIp(String loginIp) {
+		this.loginIp = loginIp;
+	}
+	public Integer getSystemType() {
+		return systemType;
+	}
+	public void setSystemType(Integer systemType) {
+		this.systemType = systemType;
+	}
 	@Override
 	public String toString() {
 		return "SysUserVo [id=" + id + ", loginname=" + loginname
@@ -159,6 +217,9 @@ public class SysUserVo implements Serializable
 				+ createUserId + ", updateDatetime=" + updateDatetime
 				+ ", updateUserId=" + updateUserId + ", pageNum=" + pageNum
 				+ ", numPerPage=" + numPerPage + ", auths=" + auths + ", role="
-				+ role + "]";
+				+ role + ", isWarhouse=" + isWarhouse + ", isComment="
+				+ isComment + ", vipLevel=" + vipLevel + ", vipDate=" + vipDate
+				+ ", commentUrl=" + commentUrl + ", loginTime=" + loginTime
+				+ ", loginIp=" + loginIp + ", systemType=" + systemType + "]";
 	}
 }

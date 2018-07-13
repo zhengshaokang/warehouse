@@ -23,6 +23,15 @@ public class SysUserConverter
         user.setMobile(TrimUtils.getTrim(userVo.getMobile()));
         user.setPassword(userVo.getPassword());
         user.setBirthday(userVo.getBirthday());
+        
+        user.setVipLevel(userVo.getVipLevel());
+        user.setVipDate(userVo.getVipDate());
+        user.setIsComment(userVo.getIsComment());
+        user.setIsWarhouse(userVo.getIsWarhouse());
+        user.setCommentUrl(userVo.getCommentUrl());
+        user.setLoginIp(userVo.getLoginIp());
+        user.setLoginTime(userVo.getLoginTime());
+        
         return user;
     }
 
@@ -47,6 +56,15 @@ public class SysUserConverter
         userVo.setCreateUserId(sysuser.getCreateUserId());
         userVo.setUpdateDatetime(sysuser.getUpdateDatetime());
         userVo.setUpdateUserId(sysuser.getUpdateUserId());
+        userVo.setVipLevel(sysuser.getVipLevel());
+        userVo.setVipDate(sysuser.getVipDate());
+        userVo.setIsComment(sysuser.getIsComment());
+        userVo.setIsWarhouse(sysuser.getIsWarhouse());
+        userVo.setCommentUrl(sysuser.getCommentUrl());
+        userVo.setLoginIp(sysuser.getLoginIp());
+        userVo.setLoginTime(sysuser.getLoginTime());
+        
+        
         return userVo;
     }
 

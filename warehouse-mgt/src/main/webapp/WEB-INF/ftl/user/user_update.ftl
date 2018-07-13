@@ -44,20 +44,25 @@ function validateCallback1(form, callback) {
 		return false;
 	}
 	
-	var roles = $("#role").find("input"); 
-	var flag= false;
-	var rolesStr = "";
-	$.each(roles,function(i,d){
-		if($(d).attr("checked") == "checked"){
-			flag = true;
-			 rolesStr= rolesStr +d.value+",";
+	var isWarhouse = $("input[name='isWarhouse']").val();
+	if(isWarhouse == 1) {
+		var roles = $("#role").find("input"); 
+		var flag= false;
+		var rolesStr = "";
+		$.each(roles,function(i,d){
+			if($(d).attr("checked") == "checked"){
+				flag = true;
+				 rolesStr= rolesStr +d.value+",";
+			}
+		});
+		if(!flag){
+			alertMsg.error("请选择角色");
+			return false;
 		}
-	});
-	if(!flag){
-		alertMsg.error("请选择角色");
-		return false;
+		$("#roles").val(rolesStr.substring(0,rolesStr.length-1));
+	} else {
+		$("#roles").val("");
 	}
-	$("#roles").val(rolesStr.substring(0,rolesStr.length-1));
 	
 	var _submitFn = function(){
 		$.ajax({
@@ -92,6 +97,33 @@ function validateCallback1(form, callback) {
 				<label style="text-align:right">手机号：</label>
 				<input name="mobile" class="required mobile" type="text" size="30" value="${userUpdatevo.mobile!''}" alt="请输入手机号"/>
 			</div>
+			
+			<div class="unit">
+				<label style="text-align:right">是否仓库用户：</label>
+				<input name="isWarhouse"  type="radio" size="30" value="0" <#if userUpdatevo.isWarhouse==0>checked="checked"</#if> />否
+				<input name="isWarhouse"  type="radio" size="30" value="1" <#if userUpdatevo.isWarhouse==1>checked="checked"</#if> />是
+			</div>
+			<div class="unit">
+				<label style="text-align:right">是否评价用户：</label>
+				<input name="isComment"  type="radio" size="30" value="0" <#if userUpdatevo.isComment==0>checked="checked"</#if> />否
+				<input name="isComment"  type="radio" size="30" value="1" <#if userUpdatevo.isComment==1>checked="checked"</#if> />是
+			</div>
+			<div class="unit">
+				<label style="text-align:right">会员级别：</label>
+				<select name="vipLevel" style="min-width:120px;" >
+					<option value="1" <#if userUpdatevo.vipLevel==1>selected="selected" </#if>>试用会员</option>	
+					<option value="2" <#if userUpdatevo.vipLevel==2>selected="selected" </#if>>正式会员</option>					
+				</select>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">会员到期日期：</label>
+				<input type="text" minDate="{%y}-%M-{%d}" name="vipDate" value="${userUpdatevo.vipDate!''}"  class="date" dateFmt="yyyy-MM-dd"/>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">测评模板路径：</label>
+				<input name="commentUrl" class="" type="text" size="30" value="${userUpdatevo.commentUrl!''}" alt="请输入测评模板路径"/>
+			</div>
+			
 			<div class="unit">
 				<div><label style="text-align:right">角色：</label></div>
 				<div id='role' class="test">

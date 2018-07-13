@@ -1,0 +1,109 @@
+html,body{
+	margin: 0;
+	padding: 0;
+	height:100%;
+	background-color:#F2F2F2;
+}
+body {
+    color: #333;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-size: 14px;
+    line-height: 1.42857;
+}
+.upload_c {
+	height: 100px;
+    overflow: hidden;
+    width: 100%;
+    text-align: center;
+}
+.upload_c .upload-c1 {
+    display: inline-block;
+    height: 100px;
+    vertical-align: top;
+    width: 100px;
+    position: relative;
+}
+.upload_c .upload-itme {
+    display: inline-block;
+    height: 100px;
+    vertical-align: top;
+    width: 100px;
+    position: relative;
+    background-color: #000;
+}
+.upload_c .upload-itme img{
+  
+    height: 100%;
+    width: 70%;
+}
+.upload_c .upload-itme .image-close {
+	color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+    height: 15px;
+    line-height: 15px;
+    margin: 0 0 0 85px;
+    position: absolute;
+    text-align: center;
+    vertical-align: inherit;
+    width: 15px;
+}
+
+.upload-c1 input {
+	width:1%;
+	height:100%;
+	clip: auto;
+    left: 0;
+    opacity: 0;
+    position: absolute;
+    top: 0;
+    width: 1%;
+}
+.upload-c1 .upload-btn {
+	background: rgba(0, 0, 0, 0) url("../../img/app/btn-upload-wx.png") no-repeat scroll center center / contain ;
+    bottom: 0;
+    height: 100%;
+    left: 0;
+    overflow: hidden;
+    position: absolute;
+    right: 0;
+    top: 0;
+    width: 100%;
+    z-index: 99;
+}
+.order-box{
+	height:50px;
+	line-height:50px;
+}
+.order-box input{
+	height:40px;
+	width:95%;
+	background-color: #fff;
+    border: 0 none;
+    border-radius: 8px;
+    color: #333;
+    display: block;
+    font-size: 18px;
+    margin: 5px auto 0;
+    padding: 0;
+    top: 0;
+}
+
+.order-submit{
+	height:50px;
+	line-height:50px;
+	text-align: center;
+}
+.order-submit  button{
+	background-color: #feed4b;
+    border: 2px solid rgba(89, 0, 7, 0.15);
+    border-radius: 8px;
+    color: #d13638;
+    display: block;
+    font-size: 18px;
+    height: 40px;
+	margin: 5px auto 0;
+    padding: 0;
+    top: 0;
+    width: 95%;
+}

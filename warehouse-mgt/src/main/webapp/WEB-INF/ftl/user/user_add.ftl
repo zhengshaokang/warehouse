@@ -59,20 +59,26 @@ function validateCallback1(form, callback) {
 	if (!$form.valid()) {
 		return false;
 	}
-	var roles = $("#role").find("input"); 
-	var flag= false;
-	var rolesStr = "";
-	$.each(roles,function(i,d){
-		if($(d).attr("checked") == "checked"){
-			flag = true;
-			 rolesStr= rolesStr +d.value+",";
+	
+	var isWarhouse = $("input[name='isWarhouse']").val();
+	if(isWarhouse == 1) {
+		var roles = $("#role").find("input"); 
+		var flag= false;
+		var rolesStr = "";
+		$.each(roles,function(i,d){
+			if($(d).attr("checked") == "checked"){
+				flag = true;
+				 rolesStr= rolesStr +d.value+",";
+			}
+		});
+		if(!flag){
+			alertMsg.error("请选择角色");
+			return false;
 		}
-	});
-	if(!flag){
-		alertMsg.error("请选择角色");
-		return false;
+		$("#roles").val(rolesStr.substring(0,rolesStr.length-1));
+	} else {
+		$("#roles").val("");
 	}
-	$("#roles").val(rolesStr.substring(0,rolesStr.length-1));
 	var _submitFn = function(){
 		$.ajax({
 			type: form.method || 'POST',
@@ -103,6 +109,31 @@ function validateCallback1(form, callback) {
 			<div class="unit">
 				<label style="text-align:right">手机号：</label>
 				<input name="mobile" class="required mobile" type="text" size="30" value="" alt="请输入手机号"/>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">是否仓库用户：</label>
+				<input name="isWarhouse"  type="radio" size="30" value="0" />否
+				<input name="isWarhouse"  type="radio" size="30" value="1" checked="checked"/>是
+			</div>
+			<div class="unit">
+				<label style="text-align:right">是否评价用户：</label>
+				<input name="isComment"  type="radio" size="30" value="0" checked="checked"/>否
+				<input name="isComment"  type="radio" size="30" value="1" />是
+			</div>
+			<div class="unit">
+				<label style="text-align:right">会员级别：</label>
+				<select name="vipLevel" style="min-width:120px;" >
+					<option value="1">试用会员</option>	
+					<option value="2">正式会员</option>					
+				</select>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">会员到期日期：</label>
+				<input type="text" minDate="{%y}-%M-{%d}" name="vipDate" value=""  class="date" dateFmt="yyyy-MM-dd"/>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">测评模板路径：</label>
+				<input name="commentUrl" class="" type="text" size="30" value="" alt="请输入测评模板路径"/>
 			</div>
 			<div class="unit">
 				<div><label style="text-align:right">角色：</label></div>

@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import com.hys.commons.crypto.MD5Coding;
+import com.hys.commons.util.DateUtil;
 import com.hys.commons.util.LogicUtil;
 import com.hys.mgt.view.common.utils.SessionUtils;
 import com.hys.mgt.view.user.common.SysUserConverter;
@@ -20,6 +21,7 @@ import com.hys.model.user.SysRole;
 import com.hys.model.user.SysUser;
 import com.hys.service.user.component.ISyAuthService;
 import com.hys.service.user.component.ISysRoleService;
+import com.hys.service.user.component.ISysUserService;
 
 /**
  * 登录view实现
@@ -33,6 +35,9 @@ public class LoginViewCompImpl implements ILoginViewComp
     @Autowired
     private ISyAuthService sysAuthService;
     
+    @Autowired
+    private ISysUserService userService;
+    
     @Override
     public String login(Model model, SysUserVo sysAdminVo)
     {
@@ -45,6 +50,9 @@ public class LoginViewCompImpl implements ILoginViewComp
         sysAdminVo.setPassword(MD5Coding.encode2HexStr(sysAdminVo.getPassword().getBytes()));
         SysUser sysAdmin = sysAuthService.querySysUserByUsernamePwd(sysAdminVo.getLoginname(),
                 sysAdminVo.getPassword());
+        
+        sysAdmin.setLoginIp(sysAdminVo.getLoginIp());
+        
         sysAdminVo =SysUserConverter.convert2Vo(sysAdmin);
         if (LogicUtil.isNull(sysAdminVo)) {
             return "帐号或密码错误";
@@ -78,7 +86,10 @@ public class LoginViewCompImpl implements ILoginViewComp
                 }
             }
         }
-
+        sysAdmin.setLoginTime(DateUtil.getCurrentDateTime("yyyy-MM-dd HH:mm:ss"));
+       
+        userService.updateSysUser(sysAdmin);
+        
         session.setAttribute("authListIndex", authList);
         session.setAttribute("authListSubIndex", authListSub);
         return null;

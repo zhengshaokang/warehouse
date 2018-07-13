@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.comment.IWxPicDao">
+	<resultMap type="wxPic" id="wxPicResult">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="orderNo" column="order_no" />
+		<result property="uploadTime" column="upload_time" />
+		<result property="uploadIp" column="upload_ip" />
+		<result property="picUrl" column="pic_url" />
+	</resultMap>
+	
+   
+	<insert id="addWxPic" parameterType="wxPic" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		c_pic(id,user_id,order_no,upload_time,upload_ip,pic_url)
+		values(#{id},#{userId},#{orderNo},#{uploadTime},#{uploadIp},#{picUrl})
+	</insert>
+	
+	<update id="updateWxPic" parameterType="wxPic">
+		update c_pic
+		<set>
+	        <if test="orderNo != null and orderNo != ''">order_no=#{orderNo},</if>
+			<if test="uploadTime != null and uploadTime!=''">upload_time=#{uploadTime},</if>
+			<if test="uploadIp != null and uploadIp != ''">upload_ip=#{uploadIp},</if>
+			<if test="picUrl != null and picUrl != ''">pic_url=#{picUrl}</if>
+			
+		</set>
+		where id=#{id}
+	</update>
+	
+	<select id="queryWxPicByOrderNo" resultMap="wxPicResult">
+		    select * from c_pic where user_id = #{userId} and order_no = #{orderNo}
+	</select>
+	
+	<select id="pageQueryWxPics" resultMap="wxPicResult" parameterType="page">
+		select * from c_pic where 1=1
+			<if test="p.id != null and p.id != ''">
+			    and	id = #{p.id}
+			</if>
+			<if test="p.orderNo != null and p.orderNo != ''">
+				and order_no like concat('%',#{p.orderNo},'%')
+			</if>
+			<if test="p.userId != null and p.userId > 1">
+				and user_id = #{p.userId}
+			</if>
+	</select>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.comment.IWxUserDao">
+	<resultMap type="wxUser" id="wxUserResult">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="nickname" column="nickname" />
+		<result property="sex" column="sex" />
+		<result property="city" column="city" />
+		<result property="province" column="province" />
+		<result property="country" column="country" />
+		<result property="language" column="language" />
+		<result property="headimgurl" column="headimgurl"/>
+		<result property="logintime" column="logintime"/>
+	</resultMap>
+	
+    <!-- 添加系统用户-->
+	<insert id="addWxUser" parameterType="wxUser" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		c_wx_user(id,user_id,nickname,sex,city,province,country,language,headimgurl,logintime)
+		values(#{id},#{userId},#{nickname},#{sex},#{city},#{province},#{country},#{language},#{headimgurl},#{logintime})
+	</insert>
+    <!-- 修改系统用户 -->
+	<update id="updateWxUser" parameterType="wxUser">
+		update c_wx_user 
+		<set>
+			<if test="nickname != null and nickname != ''">nickname=#{nickname},</if>
+			<if test="sex != null and sex >0">sex=#{sex},</if>
+			<if test="city != null and city != ''">city=#{city},</if>
+			<if test="province != null and province != ''">province=#{province},</if>
+	        <if test="country != null and country != ''">country=#{country},</if>
+			<if test="language != null and language!=''">language=#{language},</if>
+			<if test="headimgurl != null and headimgurl != ''">headimgurl=#{headimgurl},</if>
+			<if test="logintime != null">logintime=#{logintime},</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<select id="pageQueryWxUsers" resultMap="wxUserResult" parameterType="page">
+		select * from c_wx_user where 1=1
+			<if test="p.nickname != null and p.nickname != ''">
+				and nickname like concat('%',#{p.nickname},'%')
+			</if>
+	</select>
+	
+</mapper>

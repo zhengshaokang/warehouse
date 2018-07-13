@@ -58,6 +58,8 @@ public class LoginInterceptor implements HandlerInterceptor
 		localArrayList.add("/denied");
 		localArrayList.add("/timeout");
 		localArrayList.add("/fileupload/uploadpic");
+		localArrayList.add("/wxpicadd");
+		localArrayList.add("/wxaddpicsubmit");
 
 		return Boolean.valueOf(localArrayList.contains(paramString));
 	}

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.hys.dal.component.product.IBrandDalComp;
-import com.hys.dal.select.conenum.EnumProductUnit;
 import com.hys.model.product.Brand;
 
 @Component

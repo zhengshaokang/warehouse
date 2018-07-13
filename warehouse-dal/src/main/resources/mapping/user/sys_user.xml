@@ -17,13 +17,20 @@
 		<result property="createDatetime" column="create_datetime" />
 		<result property="updateUserId" column="update_user_id" />
 		<result property="updateDatetime" column="update_datetime" />
+		<result property="isWarhouse" column="is_warhouse" />
+		<result property="isComment" column="is_comment" />
+		<result property="vipLevel" column="vip_level" />
+		<result property="vipDate" column="vip_date" />
+		<result property="commentUrl" column="comment_url" />
+		<result property="loginTime" column="login_time" />
+		<result property="loginIp" column="login_ip" />
 	</resultMap>
 	
     <!-- 添加系统用户-->
 	<insert id="addSysUser" parameterType="sysuser" useGeneratedKeys="true" keyProperty="id">
 		insert into
-		sys_user(id,login_name,password,real_name,sex,age,birthday,mobile,office_phone,user_status,create_datetime,create_user_id,update_datetime, update_user_id)
-		values(#{id},#{loginname},#{password},#{realname},#{sex},#{age},#{birthday},#{mobile},#{officephone},#{userStatus},#{createUserId},#{createDatetime},#{updateUserId},#{updateDatetime})
+		sys_user(id,login_name,password,real_name,sex,age,birthday,mobile,office_phone,user_status,create_datetime,create_user_id,update_datetime, update_user_id,is_warhouse,is_comment,vip_level,vip_date,comment_url,login_time,login_ip)
+		values(#{id},#{loginname},#{password},#{realname},#{sex},#{age},#{birthday},#{mobile},#{officephone},#{userStatus},#{createUserId},#{createDatetime},#{updateUserId},#{updateDatetime},#{isWarhouse},#{isComment},#{vipLevel},#{vipDate},#{commentUrl},#{loginTime},#{loginIp})
 	</insert>
     <!-- 修改系统用户 -->
 	<update id="updateSysUser" parameterType="sysuser">
@@ -38,7 +45,14 @@
 			<if test="userStatus >= 0">user_status=#{userStatus},</if>
 			<if test="createDatetime != null and createDatetime!=''">create_datetime=#{createDatetime},</if>
 			<if test="updateUserId != null and updateUserId != ''">update_user_id=#{updateUserId},</if>
-			<if test="updateDatetime != null">update_datetime=#{updateDatetime}</if>
+			<if test="updateDatetime != null">update_datetime=#{updateDatetime},</if>
+			<if test="isWarhouse >=0">is_warhouse=#{isWarhouse},</if>
+			<if test="isComment >=0">is_comment=#{isComment},</if>
+			<if test="vipLevel >=0">vip_level=#{vipLevel},</if>
+			<if test="vipDate != null">vip_date=#{vipDate},</if>
+			<if test="commentUrl != null">comment_url=#{commentUrl},</if>
+			<if test="loginTime != null">login_time=#{loginTime},</if>
+			<if test="loginIp != null">login_ip=#{loginIp}</if>
 		</set>
 		where id=#{id}
 	</update>

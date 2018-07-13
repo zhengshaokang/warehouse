@@ -36,7 +36,13 @@
         <typeAlias alias="inoutRecord" type="com.hys.model.warehouse.InoutRecord"/>
         <typeAlias alias="warehouse" type="com.hys.model.warehouse.Warehouse"/>
         <typeAlias alias="inventory" type="com.hys.model.warehouse.Inventory"/>
-		
+        
+        <!-- comment -->
+        <typeAlias alias="order" type="com.hys.model.comment.Order"/>
+        <typeAlias alias="shop" type="com.hys.model.comment.Shop"/>
+        <typeAlias alias="wxPic" type="com.hys.model.comment.WxPic"/>
+        <typeAlias alias="wxUser" type="com.hys.model.comment.WxUser"/>
+        
 	</typeAliases>
 	<plugins>
 		<plugin interceptor="com.hys.commons.page.PageInterceptor">
@@ -61,6 +67,11 @@
         <mapper resource="mapping/warehouse/inout_record.xml" />
         <mapper resource="mapping/warehouse/warehouse.xml" />
         <mapper resource="mapping/warehouse/inventory.xml" />
+        
+        <mapper resource="mapping/comment/c_order.xml" />
+        <mapper resource="mapping/comment/c_shop.xml" />
+        <mapper resource="mapping/comment/c_wx_pic.xml" />
+        <mapper resource="mapping/comment/c_wx_user.xml" />
         
 	</mappers>
 	

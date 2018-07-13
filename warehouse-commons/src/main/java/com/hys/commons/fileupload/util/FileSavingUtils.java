@@ -223,7 +223,7 @@ public class FileSavingUtils
      *        文件路径
      * @return 删除成功返回true，失败返回false。
      */
-    public boolean deleteFile(String filePath)
+    public static boolean deleteFile(String filePath)
     {
         File f = new File(filePath);
         if (f.exists())

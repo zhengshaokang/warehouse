@@ -1,8 +1,11 @@
 package com.hys.commons.fileupload.util;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStream;
+
+import javax.imageio.ImageIO;
 
 import org.slf4j.Logger;
 
@@ -210,7 +213,6 @@ public class FileImgProcess
         {
             // 保存源图
             FileSavingUtils.writeFileToDisc(new File(originalImgSavingPath), originalImgInputStream);
-
             // 保存缩略图
             String targetDir = FileSavingUtils.getDirPath(originalImgSavingPath);
             for (int i = 0; i < thumbSizes.length; i++)
@@ -231,18 +233,49 @@ public class FileImgProcess
 
         return false;
     }
+    
+    public static String thumbingAndSavingImgs(String originalImgSavingPath,int srcWidth, int srcHeight,InputStream originalImgInputStream)
+    {
+        try
+        {
+        	 
+        	// 保存源图
+            FileSavingUtils.writeFileToDisc(new File(originalImgSavingPath), originalImgInputStream);
+
+            // 保存缩略图
+            String targetDir = FileSavingUtils.getDirPath(originalImgSavingPath);
+            String fileName = FileSavingUtils.getFileName(originalImgSavingPath);
+            String newFileName = FileSavingUtils.getPreName(fileName)+"TH."+FileSavingUtils.getExtName(fileName);
+            String targetImgPath = targetDir + newFileName;
+            
+            ImageThumbUtils.thumbImage(originalImgSavingPath, srcWidth, srcHeight, targetImgPath);
+            
+            FileSavingUtils.deleteFile(targetDir+fileName);
+            
+            return targetDir+newFileName;
+        }
+        catch (Exception e)
+        {
+            log.error("Image thumbing failed.", e);
+        }
+
+        return null;
+    }
+    
 
     public static void main(String[] args) throws Exception
     {
         int thumbsize[][] = { { 10, 10 }, { 20, 20 } };
         new FileImgProcess();
 
-        InputStream is = new FileInputStream("C:/Users/Public/Pictures/Sample Pictures/Desert.jpg");
-        FileSavingUtils.getNewFileName("C:/Users/Public/Pictures/Sample Pictures/Desert.jpg");
-        System.out.println(thumbsize);
-        FileImgProcess
-                .thumbingAndSavingAllImgs(
-                        "",
-                        thumbsize, is);
+//        InputStream is = new FileInputStream("C:/Users/Public/Pictures/Sample Pictures/Desert.jpg");
+//        FileSavingUtils.getNewFileName("C:/Users/Public/Pictures/Sample Pictures/Desert.jpg");
+//        System.out.println(thumbsize);
+//        FileImgProcess
+//                .thumbingAndSavingAllImgs(
+//                        "",
+//                        thumbsize, is);
+        
+        FileSavingUtils.deleteFile("D:/apache-tomcat-8.0.15/mgt/wtpwebapps/warehouse-mgt/res/file/ather/20180713/0F305D0BE6DDBD829719B240A07792E4.jpg");
     }
 }

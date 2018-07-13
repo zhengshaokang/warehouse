@@ -58,7 +58,7 @@ $(function(){
 						<a href="#" width="600">${sysadmin.realname!''}</a>
            	    	</li>
 					<li><a href="${DOMAIN}user/updatepwdinit" target="dialog" width="600">修改密码</a></li>
-					<li><a href="${DOMAIN}/logout">退 出</a></li>
+					<li><a href="${DOMAIN}logout">退 出</a></li>
 				</ul>
 			</div>
 		</div>
@@ -92,26 +92,6 @@ $(function(){
 						</#list>
 					</#if>
 				
-					<!--
-					<div class="accordionHeader">
-						<h2><span>Folder</span>用户管理</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree treeFolder">
-								<li><a href="${DOMAIN}user/list" rel="userlist" target="navTab">用户管理</a></li>
-								<li><a href="${DOMAIN}role/toList" rel="rolelist" target="navTab">角色管理</a></li>
-								<li><a href="${DOMAIN}user/power" rel="rolelist" target="navTab">权限管理</a></li>
-						</ul>
-					</div>
-					<div class="accordionHeader">
-						<h2><span>Folder</span>商品管理</h2>
-					</div>
-					<div class="accordionContent">
-						<ul class="tree treeFolder">
-								<li><a href="${DOMAIN}goods/list" rel="goodslist" target="navTab">影片管理</a></li>
-						</ul>
-					</div>
-					-->
 				</div>
 			</div>
 		</div>
@@ -150,5 +130,7 @@ $(function(){
 		</div>
 
 	</div>
+	
+	<div id="footer">Copyright &copy;2018 VVA  &nbsp;<a target="_blank" href="http://www.miitbeian.gov.cn">粤ICP备18085048号-1</a></div>
 </body>
 </html>

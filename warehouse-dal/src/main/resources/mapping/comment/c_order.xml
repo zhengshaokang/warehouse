@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.comment.IOrderDao">
+	<resultMap type="order" id="orderResult">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="shopId" column="shop_id" />
+		<result property="isJoin" column="is_join" />
+		<result property="isPay" column="is_pay" />
+		<result property="orderNo" column="order_no" />
+		<result property="orderStatus" column="order_status" />
+		<result property="customerName" column="customer_name" />
+		<result property="customerMobile" column="customer_mobile"/>
+		<result property="orderTime" column="order_time"/>
+		<result property="remark" column="remark" />
+	</resultMap>
+	
+   
+	<insert id="addOrder" parameterType="order" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		c_order(id,user_id,shop_id,is_join,is_pay,order_no,order_status,customer_name,customer_mobile,order_time,remark)
+		values(#{id},#{userId},#{shopId},#{isJoin},#{isPay},#{orderNo},#{orderStatus},#{customerName},#{customerMobile},#{orderTime},#{remark})
+	</insert>
+	
+	<update id="updateOrder" parameterType="order">
+		update c_order
+		<set>
+			<if test="shopId >= 0">shop_id=#{shopId},</if>
+			<if test="isJoin >= 0">is_join=#{isJoin},</if>
+			<if test="isPay >= 0">is_pay=#{isPay},</if>
+	        <if test="orderNo != null and orderNo != ''">order_no=#{orderNo},</if>
+			<if test="orderStatus >= 0">order_status=#{orderStatus},</if>
+			<if test="customerName != null and customerName!=''">customer_name=#{customerName},</if>
+			<if test="customerMobile != null and customerMobile != ''">customer_mobile=#{customerMobile},</if>
+			<if test="orderTime != null and orderTime !='' ">order_time=#{orderTime},</if>
+			<if test="remark != null and remark != ''">remark=#{remark}</if>
+			
+		</set>
+		where id=#{id}
+	</update>
+	
+	<delete id="deleteOrder">
+		delete from c_order where id = #{id}
+		<if test="userId != null and userId > 1">and user_id=#{userId}</if>
+	</delete>
+	
+	<select id="queryOrderByNo" resultMap="orderResult">
+		    select * from c_order where user_id = #{userId} and order_no = #{orderNo}
+	</select>
+	<select id="queryOrderById" resultMap="orderResult">
+		    select * from c_order where user_id = #{userId} and id = #{id}
+	</select>
+	
+	<select id="pageQueryOrders" resultMap="orderResult" parameterType="page">
+		select * from c_order where 1=1
+			<if test="p.id != null and p.id != ''">
+			    and	id = #{p.id}
+			</if>
+			<if test="p.orderNo != null and p.orderNo != ''">
+				and order_no like concat('%',#{p.orderNo},'%')
+			</if>
+			<if test="p.shopId != null and p.shopId >=0">
+				and shop_id = #{p.shopId}
+			</if>
+			<if test="p.userId != null and p.userId > 1">
+				and user_id = #{p.userId}
+			</if>
+			<if test="p.orderStatus != null and p.orderStatus >= 0">
+				and order_status = #{p.orderStatus}
+			</if>
+			<if test="p.isPay != null and p.isPay >= 0">
+				and is_pay = #{p.isPay}
+			</if>
+	</select>
+	
+
+	
+</mapper>

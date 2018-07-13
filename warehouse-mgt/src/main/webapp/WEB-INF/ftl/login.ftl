@@ -17,13 +17,18 @@ $(function(){
 })
 </script>
 <body>
-<div class="login_bg">
-</div>
-
 <div class="login_div">
     <div class="loginBox" style=" font-size:20px">
-    	<form action="${DOMAIN}/loginSubmit" method="post" id="sysform">
+    	<form action="${DOMAIN}loginSubmit" method="post" id="sysform">
 			<table width="320" border="0" cellpadding="5" cellspacing="5">
+				<tr>
+		            <td colspan="2">
+		                <select name="systemType" style="min-width:120px;" class="select_system">
+							<option value="1">仓库系统</option>	
+							<option value="2">评价系统</option>					
+						</select>
+		            </td>
+	          </tr>
 	          <tr>
 	            <td colspan="2">
 	              <input type="text" name="loginname" id="loginname" class="inputUser"/>
@@ -44,6 +49,9 @@ $(function(){
 
   </div>
 </div>
+
+<div class="login-footer">Copyright &copy;2018 VVA  &nbsp;<a target="_blank" href="http://www.miitbeian.gov.cn">粤ICP备18085048号-1</a></div>
+
 </body>
 </html>
 </#if>

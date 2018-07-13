@@ -37,7 +37,7 @@ var mypopup={
 		html += "<div class=\"prompt_info_content\">";
 		html += "<div class=\"prompt_info_msg\">"+msg+"</div>";
 		html += "<div class=\"prompt_info_bottom\">";
-		html += "<div class=\"prompt_info_btn\"><div class=\"prompt_info_btn_ok\" onclick=\"prompt.close('"+id+"')\">确定</div></div></div></div></div>";
+		html += "<div class=\"prompt_info_btn\"><div class=\"prompt_info_btn_ok\" onclick=\"mypopup.close('"+id+"')\">确定</div></div></div></div></div>";
 		$("body").append(html);
 		setTimeout(function(){mypopup.close(id);}, 3500);
 	},
@@ -48,7 +48,7 @@ var mypopup={
 		html += "<div class=\"prompt_confirm_msg\">"+msg+"</div>";
 		html += "<div class=\"prompt_confirm_bottom\">";
 		html += "<div class=\"prompt_confirm_btn\"><div class='prompt_confirm_btn_ok' id='promptCofirm_"+id+"'>确定</div></div>";
-		html += "<div class=\"prompt_confirm_btn\"><div class='prompt_confirm_btn_close' onclick=\"prompt.close('"+id+"')\">取消</div></div>";
+		html += "<div class=\"prompt_confirm_btn\"><div class='prompt_confirm_btn_close' onclick=\"mypopup.close('"+id+"')\">取消</div></div>";
 		html += "</div></div></div>";
 		$("body").append(html);
 		$("#promptCofirm_"+id).click(function(){

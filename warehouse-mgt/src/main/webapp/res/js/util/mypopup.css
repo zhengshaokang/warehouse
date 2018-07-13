@@ -1,0 +1,15 @@
+/*-提示-*/
+.hide{display: none}
+.prompt_bg{ position:fixed;width:100%; top:0; left:0; height:100%;	background-color:#666;filter:alpha(Opacity=80);-moz-opacity:0.8;opacity: 0.8; text-align:center; display:block; z-index:300;}
+.prompt_info_content{ position:absolute; width:70%;z-index:303;  background-color:#fff; top:35%; left:15%; }
+.prompt_info_msg{height:68px;padding: 20px;color: #014083; text-align: center;margin: auto;word-break: break-all}
+.prompt_info_bottom{ height:40px;text-align:center;line-height:40px;}
+.prompt_info_btn{width:100%;float:left;}
+.prompt_info_btn_ok{width:96%;height:30px;line-height:30px;margin:5px auto;border-radius:5px;color:#d13638;background-color:#feed4b;}
+
+.prompt_confirm_content{ position:absolute; width:70%;z-index:301;  background-color:#fff; top:35%; left:15%; }
+.prompt_confirm_msg{height:108px;padding: 10px 0 0 10px;color: #014083;line-height: 108px; text-align: center;}
+.prompt_confirm_bottom{background-color:#eeeeee; height:40px;text-align:center;line-height:40px;}
+.prompt_confirm_btn{width:50%;float:left;}
+.prompt_confirm_btn_ok{background-color:#808080;color:#fff;width:60%;height:30px;line-height:30px;margin:5px 5px 5px auto;text-algin:center;border-radius:5px;}
+.prompt_confirm_btn_close{background-color:#808080;color:#fff;width:60%;height:30px;line-height:30px;margin:5px auto 5px 5px;text-algin:center;border-radius:5px;}

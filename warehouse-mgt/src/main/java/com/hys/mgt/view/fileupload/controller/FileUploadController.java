@@ -1,11 +1,13 @@
 package com.hys.mgt.view.fileupload.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileItemFactory;
@@ -98,30 +100,57 @@ public class FileUploadController
                 return null;
             }
             InputStream is = file.getInputStream();
-
+            
+            InputStream is1 = file.getInputStream();
+            
+            
             // 获取文件的新名称,并生成文件新路径=文件所在目录路径+文件名称
             String newFilePath = newDirPath + FileSavingUtils.getNewFileName(fileName);
 
             // 保存源图及其缩略图到所在web容器的指定目录里
-            int thumbSizes[][] = getThumbSizes();// 获取图片压缩数组
-            boolean isSuccess = FileImgProcess.thumbingAndSavingAllImgs(newFilePath, thumbSizes, is);
-            if (!isSuccess)  {
-                return null;
+           //int thumbSizes[][] = getThumbSizes();// 获取图片压缩数组
+            //boolean isSuccess = FileImgProcess.thumbingAndSavingAllImgs(newFilePath, thumbSizes, is);
+            
+            
+            BufferedImage image = ImageIO.read(is1);  
+            
+            int srcWidth = image .getWidth();      // 源图宽度
+            int srcHeight = image .getHeight();    // 源图高度
+            
+            if(srcWidth > 600) {
+            	double reg  = (double)srcWidth/600;
+            	Double height = srcHeight/reg;
+            	srcHeight = height.intValue();
+            	srcWidth = 600;
+            }
+            
+            
+            String uploadFilePath = FileImgProcess.thumbingAndSavingImgs(newFilePath,srcWidth, srcHeight,is);
+            
+            String localFileRelativePath = getRelativePath(locasBaseDirPath,uploadFilePath);
+            
+            ReturnUpload ru = new ReturnUpload();
+            
+            ru.setTagId(RequestUtil.getStringParameter(request, "tagId", ""));
+            ru.setReturnCode("0");
+            ru.setReturnPath("");
+            ru.setPicType(picType);
+            
+            if (null !=uploadFilePath)  {
+            	 ru.setReturnCode("1");
+                 ru.setReturnPath(localFileRelativePath);
             }
 
             // 根据某一长图片的路径获取该图片所在目录下的所有图平的相对路径(相对于基础路径)
-            localFileRelativePaths.addAll(FileSavingUtils.getFileRelativePaths(locasBaseDirPath, newFilePath));
-            String localFileRelativePath = getRelativePath(locasBaseDirPath, newFilePath);
+            //localFileRelativePaths.addAll(FileSavingUtils.getFileRelativePaths(locasBaseDirPath, newFilePath));
+          //  String localFileRelativePath = getRelativePath(locasBaseDirPath, newFilePath);
 
             // 把web服务器上的源图和缩略图发送到远程服务器
             // this.asyncTransFile(locasBaseDirPath, localFileRelativePaths);
-            this.saveLocahostFile(locasBaseDirPath, localFileRelativePaths);
+           // this.saveLocahostFile(locasBaseDirPath, localFileRelativePaths);
 
-            ReturnUpload ru = new ReturnUpload();
-            ru.setTagId(RequestUtil.getStringParameter(request, "tagId", ""));
-            ru.setReturnCode("1");
-            ru.setReturnPath(localFileRelativePath);
-            ru.setPicType(picType);
+           
+          
             // 把上传后的图片相对路径返回给网页
             return JsonConverter.format(ru);
         }  catch (Exception e) {
@@ -232,10 +261,15 @@ public class FileUploadController
 
     public static void main(String[] args)
     {
-        List<String> relativePaths = new ArrayList<String>();
-        relativePaths.add("aaa");
-        relativePaths.add("bbbb");
-        System.out.println(ArrayUtils.toString(relativePaths.toArray()).replace("{", "").replace("}", ""));
+//        List<String> relativePaths = new ArrayList<String>();
+//        relativePaths.add("aaa");
+//        relativePaths.add("bbbb");
+//        System.out.println(ArrayUtils.toString(relativePaths.toArray()).replace("{", "").replace("}", ""));
+    	
+    	System.out.println((double)(1080)/600);
+    	double reg  = Math.round(((1080/600)*100)/100);
+    	System.out.println(reg);
+    	System.out.println(1920/reg);
     }
 
     @SuppressWarnings("all")

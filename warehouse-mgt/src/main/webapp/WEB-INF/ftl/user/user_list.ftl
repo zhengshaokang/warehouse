@@ -39,30 +39,28 @@
 	<table class="table" width="100%" layoutH="137">
 		<thead>
 			<tr>
-				<th width="120">用户名称</th>
-				<th width="120">真实姓名</th>
-				<th width="120">手机</th>
-				<th width="120">邮箱</th>
-				<th width="60">年龄</th>
-				<th width="140">用户状态</th>
-				<th width="140">记录状态</th>
+				<th width="80">用户ID</th>
+				<th width="220">基本信息</th>
+				<th width="80">用户状态</th>
+				<th width="120">用户性质</th>
+				<th width="180">会员信息</th>
+				<th width="220">测评模板路径</th>
+				<th width="220">登录信息</th>
 				<th width="100">更新时间</th>
-				<th width="140">操作</th>
+				<th width="100">操作</th>
 			</tr>
 		</thead>
 		<tbody>
 			<#if pageParam ?? && pageParam.getPageData() ??>
 				<#list pageParam.getPageData() as user>
 					<tr target="id" rel="${user.id}">
-						<td>${user.loginname!''}</td>
-						<td>${user.realname!''}</td>
-						<td>${user.mobile!''}</td>
-						<td>${user.email!''}</td>
-						<#assign age = ''>
-						<#if user.age gt 0>
-							<#assign age = '${user.age}'>
-						</#if>
-						<td>${age}</td>
+						<td>${user.id}</td>
+						<td>
+							用户名称：${user.loginname!''} <BR>
+							真实姓名:${user.realname!''}<BR>
+							手机:${user.mobile!''}<BR>
+						</td>
+						
 						<#if user.userStatus == 1>
 							<td>正常</td>
 						<#elseif user.userStatus ==0>
@@ -70,11 +68,21 @@
 						<#elseif user.userStatus == -1>
 							<td></td>
 						</#if>
-						<#if user.updateDatetime ??>
-							<td>${user.updateDatetime?string("yyyy-MM-dd HH:mm:ss")}</td>
-						<#else>
-							<td></td>
-						</#if>
+						
+						<td>
+							仓库用户：<#if user.isWarhouse == 1> 是 <#else>否</#if><br>
+							测评用户：<#if user.isComment == 1> 是 <#else>否</#if>
+						</td>
+						<td>
+							级别：<#if user.vipLevel == 2> 正式会员 <#else>试用会员</#if><br>
+							到期日期：${user.vipDate!''}
+						</td>
+						<td>${user.commentUrl!''}</td>
+						<td>
+							登录时间：${user.loginTime!''}<br>
+							登录IP：${user.loginIp!''}<br>
+						</td>
+						
 						<#if user.updateDatetime ??>
 							<td>${user.updateDatetime?string("yyyy-MM-dd HH:mm:ss")}</td>
 						<#else>
