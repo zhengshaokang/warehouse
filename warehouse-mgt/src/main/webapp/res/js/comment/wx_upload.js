@@ -12,19 +12,19 @@ $(function(){
        
         this_.next("input").click().off("change").on('change',function(){
             var size = (this_.next("input")[0].files[0].size / 1024).toFixed(2);
-            if(size <= 5120){
+            if(size <= 1024){
                 var img = this_.next("input")[0].files[0];
                 var formData = new FormData();
                 formData.append("picture",img);
                 formData.append("picType","3");
                 uploadPic(formData,this_);
             } else {
-            	mypopup.alert("您的图片超过5M");
+            	mypopup.alert("您的图片超过1M");
             }
         });
     });
     $("#orderSubmit").click(function() {
-    	var imglen = $(".upload_c").find("img").length;
+    	var imglen = $(".upload-img").length;
     	if(imglen == 0) {
     		mypopup.alert("请上传图片");
     		return false;
@@ -35,7 +35,7 @@ $(function(){
     		return false;
     	}
     	var pics ="";
-    	$(".upload_c").find("img").each(function(){
+    	$(".upload-img").each(function(){
 		    pics += $(this).attr("picUrl")+",";
 		});
     	if(pics != "") {
@@ -99,10 +99,16 @@ var uploadPic = function(formData,this_){
            // swal.close();
             var msg = $.parseJSON(data);
             if(msg.returnCode == 1){
-				var html = '<div class="upload-itme"><div onclick="uploadImageRemove(this)" class="image-close">x</div><img picUrl="'+msg.returnPath+'" src="'+picUrl+msg.returnPath+'"/></div>'
+            	
+            	//var imgPath = msg.returnPath.split(".");
+            	
+            	//var newPath = imgPath[0].substring(0,imgPath[0].length-2) +"40x40."+imgPath[1];
+            	
+				var html = '<div class="upload-itme"><div onclick="uploadImageRemove(this)" class="image-close">x</div>'
+					html +='<div class="upload-img" picUrl="'+msg.returnPath+'" style="background: url('+picUrl+msg.returnPath+')  no-repeat center center;background-size:contain;"></div></div>';
 				$(".upload_c").prepend(html);
 				
-				 var imglen = $(".upload_c").find("img").length;
+				 var imglen = $(".upload-img").length;
 			     if(imglen == 3) {
 			        	$(".upload-c1").remove();
 			        	//return false;

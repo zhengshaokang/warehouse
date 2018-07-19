@@ -45,6 +45,15 @@
 			</if>
 		    
 	</select>
+	<select id="queryShopByUserIdAndPlatfrom" resultMap="shopResult">
+		    select * from c_shop where  1=1
+		    <if test="userId != null and userId > 1">
+				and user_id = #{userId}
+			</if>
+		    <if test="platform != null and platform > 1">
+				and platform = #{platform}
+			</if>
+	</select>
 	
 	<select id="queryShopById" resultMap="shopResult">
 		    select * from c_shop where id = #{id}

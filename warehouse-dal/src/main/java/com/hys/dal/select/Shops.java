@@ -19,10 +19,21 @@ public class Shops {
 	public Map<String,String> getOptions(Integer userId){
 		List<Shop> list = shopDalComp.queryShopByUserId(userId);
 		Map<String,String> map = new LinkedHashMap<String,String>();
-		map.put("-1", "");
+		map.put("-1", "请选择");
 		if(null !=list) {
 			for (Shop b : list) {
 				map.put(b.getId().toString(), b.getName());
+			}
+		}
+		return map;
+	}
+	
+	public LinkedHashMap<Integer,String> getOptions(Integer userId,Integer platform){
+		List<Shop> list = shopDalComp.queryShopByUserIdAndPlatfrom(userId,platform);
+		LinkedHashMap<Integer,String> map = new LinkedHashMap<Integer,String>();
+		if(null !=list) {
+			for (Shop b : list) {
+				map.put(b.getId(), b.getName());
 			}
 		}
 		return map;

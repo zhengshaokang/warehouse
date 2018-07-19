@@ -8,7 +8,7 @@ import com.hys.dal.select.conenum.EnumInoutRecordType;
 public class InoutRecordTypes {
 	public static Map<String,String> getOptions(){
 		Map<String,String> map = new LinkedHashMap<String,String>();
-		map.put("", "");
+		map.put("", "请选择");
 		for (EnumInoutRecordType es : EnumInoutRecordType.values()) {
 			map.put(es.getValue().toString(), es.getName());
 		}

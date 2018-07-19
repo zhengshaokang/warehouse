@@ -52,7 +52,7 @@ $(function(){
 	<div id="layout">
 		<div id="header">
 			<div class="headerNav">
-				        <a class="logo">标志</a>
+				        <a class="logo logo_w">标志</a>
 				<ul class="nav">
 					<li>
 						<a href="#" width="600">${sysadmin.realname!''}</a>
@@ -131,6 +131,6 @@ $(function(){
 
 	</div>
 	
-	<div id="footer">Copyright &copy;2018 VVA  &nbsp;<a target="_blank" href="http://www.miitbeian.gov.cn">粤ICP备18085048号-1</a></div>
+	<div id="footer">Copyright &copy;2018 VVA  &nbsp;<a target="_blank" href="http://www.miitbeian.gov.cn" style="cursor: pointer;">粤ICP备18085048号-1</a></div>
 </body>
 </html>

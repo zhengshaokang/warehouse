@@ -126,11 +126,11 @@ public class Base64Ext
 
     public static void main(String[] args) throws UnsupportedEncodingException
     {
-        System.out.println(Base64Ext.encode("我是中国人！哈哈，你个小日本！工作上不喜欢rtx或者qq这样的沟通方式，还是电话效率高。".getBytes()));
+        System.out.println(Base64Ext.encode("我是中国人！哈哈，你个小日本！工作上不喜欢rtx或者|qq这样的沟通方式，还是电话效率高。".getBytes()));
         System.out
                 .println(new String(
                         Base64Ext
-                                .decode("5oiR5piv5Lit5Zu95Lq677yB5ZOI5ZOI77yM5L2g5Liq5bCP5pel5pys77yB5bel5L2c5LiK5LiN5Zac5qyicnR45oiW6ICFcXHov5nmoLfnmoTmsp_pgJrmlrnlvI_vvIzov5jmmK_nlLXor53mlYjnjofpq5jjgII."),
+                                .decode("5oiR5piv5Lit5Zu95Lq677yB5ZOI5ZOI77yM5L2g5Liq5bCP5pel5pys77yB5bel5L2c5LiK5LiN5Zac5qyicnR45oiW6ICFfHFx6L-Z5qC355qE5rKf6YCa5pa55byP77yM6L-Y5piv55S16K-d5pWI546H6auY44CC"),
                         "UTF-8"));
     }
 

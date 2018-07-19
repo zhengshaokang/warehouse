@@ -10,7 +10,6 @@
 			var aStyles = [];
 			var $tc = $table.parent().addClass("j-resizeGrid"); // table parent container
 			var layoutH = $(this).attr("layoutH");
-			var tdH = $(this).attr("tdH");
 
 			var oldThs = $table.find("thead>tr:last-child").find("th");
 
@@ -46,7 +45,7 @@
 			var tbody = $grid.find(">tbody");
 			var layoutStr = layoutH ? " layoutH='" + layoutH + "'" : "";
 			
-			tbody.wrap("<div class='gridScroller'" + layoutStr + " style='width:" + $tc.width() + "px;'><div class='gridTbody'><table style='width:" + (tlength - 20) + "px;'></table></div></div>");
+			tbody.wrap("<div class='gridScroller'" + layoutStr + "><div class='gridTbody'><table style='width:" + (tlength - 20) + "px;'></table></div></div>");
 			var ftr = $(">tr:first-child", tbody);
 			var $trs = tbody.find('>tr');
 			
@@ -56,7 +55,7 @@
 
 				for (var i=0; i < $ftds.size(); i++) {
 					var $ftd = $($ftds[i]);
-					if (nowrapTD != "false") $ftd.html("<div style='height:"+tdH+"px;line-height:"+tdH+"px'>" + $ftd.html() + "</div>");
+					if (nowrapTD != "false") $ftd.html("<div>" + $ftd.html() + "</div>");
 					if (i < aStyles.length) $ftd.addClass(aStyles[i][1]);
 				}		
 				$tr.click(function(){
@@ -147,15 +146,15 @@
 				});
 			});
 		
-			function _resizeGrid(){
-				$("div.j-resizeGrid").each(function(){
-					var width = $(this).innerWidth();
-					if (width){
-						$("div.gridScroller", this).width(width+"px");
-					}
-				});
-			}
-			$(window).unbind(DWZ.eventType.resizeGrid).bind("resizeGrid", _resizeGrid);
+			// function _resizeGrid(){
+			// 	$("div.j-resizeGrid").each(function(){
+			// 		var width = $(this).innerWidth();
+			// 		if (width){
+			// 			$("div.gridScroller", this).width(width+"px");
+			// 		}
+			// 	});
+			// }
+			// $(window).unbind(DWZ.eventType.resizeGrid).bind("resizeGrid", _resizeGrid);
 		});
 	};
 	
@@ -216,7 +215,7 @@
 			return coord;
 		},
 		getOffset:function(obj, evt){
-			if($.browser.msie ) {
+			if(/msie/.test(navigator.userAgent.toLowerCase())) {
 				var objset = $(obj).offset();
 				var evtset = {
 					offsetX:evt.pageX || evt.screenX,
@@ -245,3 +244,4 @@
 		}
 	};
 })(jQuery);
+

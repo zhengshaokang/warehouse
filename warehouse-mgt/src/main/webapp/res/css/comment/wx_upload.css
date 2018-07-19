@@ -30,9 +30,10 @@ body {
     width: 100px;
     position: relative;
     background-color: #000;
+    margin: 0 2px;
 }
-.upload_c .upload-itme img{
-  
+.upload_c .upload-itme .upload-img{
+  	margin: auto;
     height: 100%;
     width: 70%;
 }

@@ -2,6 +2,9 @@
 	<input type="hidden" name="pageNum" value="${pageParam.pageNo}" />
 	<input type="hidden" name="numPerPage" value="${pageParam.pageSize}" />
 	<input type="hidden" name="nickname" value="${wxUserParam.nickname!''}" />
+	<#if userId == 1>
+	<input type="hidden" name="userId" value="${wxUserParam.userId!''}" />
+	</#if>
 </form>
 <div class="pageHeader">
 	<form onsubmit="return navTabSearch(this);" action="${DOMAIN}comment/wxuser-list" method="post">
@@ -9,7 +12,7 @@
 		<table class="searchContent">
 			<tr>
 				<td>
-				       用户名称：<input type="text" name="orderNo" value="${wxUserParam.nickname!''}"/>
+				       用户名称：<input type="text" name="nickname" value="${wxUserParam.nickname!''}"/>
 				</td>
 				<#if userId == 1>
 					<td>

@@ -5,8 +5,8 @@ package com.hys.dal.select.conenum;
  *
  */
 public enum EnumYesNo {
-	YES("否",0), 
-	NO("是",1);
+	NO("否",0), 
+	YES("是",1);
 	
 	private String name;
 	private Integer status;

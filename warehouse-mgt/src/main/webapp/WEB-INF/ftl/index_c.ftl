@@ -52,7 +52,7 @@ $(function(){
 	<div id="layout">
 		<div id="header">
 			<div class="headerNav">
-				        <a class="logo_c">标志</a>
+				        <a class="logo logo_c">标志</a>
 				<ul class="nav">
 					<li>
 						<a href="#" width="600">${sysadmin.realname!''}</a>
@@ -86,6 +86,9 @@ $(function(){
 						</ul>
 						<ul class="tree treeFolder">
 							<li><a href="${DOMAIN}comment/wxuser-list" rel="comment/wxuser-list" target="navTab">客户管理</a></li>
+						</ul>
+						<ul class="tree treeFolder">
+							<li><a href="${DOMAIN}comment/activ-list" rel="comment/activ-list" target="navTab">活动管理</a></li>
 						</ul>
 					</div>
 					
@@ -127,6 +130,6 @@ $(function(){
 		</div>
 
 	</div>
-	<div id="footer">Copyright &copy;2018 VVA  &nbsp;<a target="_blank" href="http://www.miitbeian.gov.cn">粤ICP备18085048号-1</a></div>
+	<div id="footer">Copyright &copy;2018 VVA  &nbsp;<a target="_blank" href="http://www.miitbeian.gov.cn" style="cursor: pointer;">粤ICP备18085048号-1</a></div>
 </body>
 </html>

@@ -48,6 +48,8 @@
 
 	<!-- Access Static Resource file configuration -->
 	<mvc:resources mapping="/res/**" location="/res/" cache-period="31556926" />
+	<mvc:resources mapping="/*.html" location="/" cache-period="31556926" />
+	<mvc:resources mapping="/*.txt" location="/" cache-period="31556926" />
 	
 	<!-- Exception handling configuration -->
 	<bean id="exceptionResolver" class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
@@ -113,6 +115,9 @@
 		<mvc:interceptor>  
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/res/**"/>
+            <mvc:exclude-mapping path="/*.html"/>
+            <mvc:exclude-mapping path="/*.jsp"/>
+            <mvc:exclude-mapping path="/*.txt"/>
 			<mvc:exclude-mapping path="/login*"/> 
             <bean class="com.hys.mgt.view.common.interceptor.LoginInterceptor" />
         </mvc:interceptor> 	

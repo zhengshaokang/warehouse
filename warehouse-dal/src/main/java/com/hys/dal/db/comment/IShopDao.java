@@ -18,6 +18,7 @@ public interface IShopDao {
     public int deleteShop(@Param("id") Integer id,@Param("userId") Integer userId);
     public Shop queryShopById(@Param("id")Integer id,@Param("userId")Integer userId);
     public List<Shop> queryShopByUserId(@Param("userId")Integer userId);
+    public List<Shop> queryShopByUserIdAndPlatfrom(@Param("userId")Integer userId,@Param("platform")Integer platform);
     public Shop validateShopName(@Param("name")String name,@Param("platform")Integer platform,@Param("userId")Integer userId);
     /**
      * 分页查询

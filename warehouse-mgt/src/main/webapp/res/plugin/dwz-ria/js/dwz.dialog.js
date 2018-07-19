@@ -42,13 +42,16 @@
 					dialog.find(".dialogHeader").find("h1").html(title);
 					this.switchDialog(dialog);
 					var jDContent = dialog.find(".dialogContent");
-					jDContent.loadUrl(null,url, {}, function(){
-						jDContent.find("[layoutH]").layoutH(jDContent);
-						$(".pageContent", dialog).width($(dialog).width()-14);
-						$("button.close").click(function(){
-							$.pdialog.close(dialog);
-							return false;
-						});
+
+					jDContent.ajaxUrl({
+						type:options.type||'GET', url:url, data:options.data || {}, callback:function(){
+							jDContent.find("[layoutH]").layoutH(jDContent);
+							$(".pageContent", dialog).width($(dialog).width()-14);
+							$("button.close", dialog).click(function(){
+								$.pdialog.close(dialog);
+								return false;
+							});
+						}
 					});
 				}
 			
@@ -120,13 +123,15 @@
 				$.pdialog.attachShadow(dialog);
 				//load data
 				var jDContent = $(".dialogContent",dialog);
-				jDContent.loadUrl(null,url, {}, function(){
-					jDContent.find("[layoutH]").layoutH(jDContent);
-					$(".pageContent", dialog).width($(dialog).width()-14);
-					$("button.close").click(function(){
-						$.pdialog.close(dialog);
-						return false;
-					});
+				jDContent.ajaxUrl({
+					type:options.type||'GET', url:url, data:options.data || {}, callback:function(){
+						jDContent.find("[layoutH]").layoutH(jDContent);
+						$(".pageContent", dialog).width($(dialog).width()-14);
+						$("button.close", dialog).click(function(){
+							$.pdialog.close(dialog);
+							return false;
+						});
+					}
 				});
 			}
 			if (op.mask) {
@@ -300,10 +305,12 @@
 		closeCurrent:function(){
 			this.close($.pdialog._current);
 		},
-		checkTimeout:function(){
-			var $conetnt = $(".dialogContent", $.pdialog._current);
-			var json = DWZ.jsonEval($conetnt.html());
-			if (json && json.statusCode == DWZ.statusCode.timeout) this.closeCurrent();
+		checkCloseCurrent:function(json){
+			if (!json) return;
+			if (json[DWZ.keys.statusCode] == DWZ.statusCode.timeout
+				|| (json[DWZ.keys.statusCode] == DWZ.statusCode.error && "closeCurrentDialog" == json.callbackType) ) {
+				this.closeCurrent();
+			}
 		},
 		maxsize:function(dialog) {
 			$(dialog).data("original",{

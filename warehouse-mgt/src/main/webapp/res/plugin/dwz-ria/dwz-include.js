@@ -4,19 +4,14 @@ var content=''+
 '<link href="res/plugin/dwz-ria/themes/css/core.css" rel="stylesheet" type="text/css" media="screen"/>'+
 '<link href="res/plugin/dwz-ria/themes/css/print.css" rel="stylesheet" type="text/css" media="print"/>'+
 '<link href="res/plugin/dwz-ria/uploadify/css/uploadify.css" rel="stylesheet" type="text/css" media="screen"/>'+
-'<script src="res/plugin/dwz-ria/js/jquery-1.7.2.js" type="text/javascript"></script>'+
+'<script src="res/plugin/dwz-ria/js/jquery-2.1.4.js" type="text/javascript"></script>'+
 '<script src="res/plugin/dwz-ria/js/jquery.cookie.js" type="text/javascript"></script>'+
 '<script src="res/plugin/dwz-ria/js/jquery.validate.js" type="text/javascript"></script>'+
 '<script src="res/plugin/dwz-ria/js/jquery.bgiframe.js" type="text/javascript"></script>'+
-'<script src="res/plugin/dwz-ria/xheditor/xheditor-1.2.1.min.js" type="text/javascript"></script>'+
+'<script src="res/plugin/dwz-ria/xheditor/xheditor-1.2.2.min.js" type="text/javascript"></script>'+
 '<script src="res/plugin/dwz-ria/xheditor/xheditor_lang/zh-cn.js" type="text/javascript"></script>'+
 '<script src="res/plugin/dwz-ria/uploadify/scripts/jquery.uploadify.js" type="text/javascript"></script>'+
-'<script type="text/javascript" src="res/plugin/dwz-ria/chart/raphael.js"></script>'+
-'<script type="text/javascript" src="res/plugin/dwz-ria/chart/g.raphael.js"></script>'+
-'<script type="text/javascript" src="res/plugin/dwz-ria/chart/g.bar.js"></script>'+
-'<script type="text/javascript" src="res/plugin/dwz-ria/chart/g.line.js"></script>'+
-'<script type="text/javascript" src="res/plugin/dwz-ria/chart/g.pie.js"></script>'+
-'<script type="text/javascript" src="res/plugin/dwz-ria/chart/g.dot.js"></script>'+
+'<script type="text/javascript" src="res/plugin/dwz-ria/chart/echarts.min.js"></script>'+
 '<script src="res/plugin/dwz-ria/js/dwz.core.js" type="text/javascript"></script>'+
 '<script src="res/plugin/dwz-ria/js/dwz.util.date.js" type="text/javascript"></script>'+
 '<script src="res/plugin/dwz-ria/js/dwz.validate.method.js" type="text/javascript"></script>'+

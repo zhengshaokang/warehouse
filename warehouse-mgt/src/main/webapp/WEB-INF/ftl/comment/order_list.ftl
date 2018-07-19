@@ -2,7 +2,10 @@
 	<input type="hidden" name="pageNum" value="${pageParam.pageNo}" />
 	<input type="hidden" name="numPerPage" value="${pageParam.pageSize}" />
 	<input type="hidden" name="orderNo" value="${orderParam.orderNo!''}" />
-	<input type="hidden" name="shopId" value="${orderParam.phone!''}" />
+	<input type="hidden" name="shopId" value="${orderParam.shopId!''}" />
+	<#if userId == 1>
+	<input type="hidden" name="userId" value="${orderParam.userId!''}" />
+	</#if>
 </form>
 
 <div class="pageHeader">
@@ -63,16 +66,17 @@
 		<thead>
 			<tr>
 				<th width="220">店铺</th>
-				<th width="80">订单号</th>
+				<th width="180">订单号</th>
 				<th width="120">订单状态</th>
+				<th width="120">订单金额</th>
 				<th width="100">参与活动</th>
 				<th width="100">已返现</th>
 				<th width="180">客户名称</th>
-				<th width="220">客户电话</th>
+				<th width="120">客户电话</th>
 				<#if userId == 1>
 					<th width="200">创建人</th>
 				</#if>
-				<th width="220">下单时间</th>
+				<th width="160">下单时间</th>
 				<th width="100">备注</th>
 			</tr>
 		</thead>
@@ -88,6 +92,9 @@
 						</td>
 						<td>
 							${orderStatus["${order.orderStatus!''}"]}
+						</td>
+						<td>
+							${order.orderAmount!''}
 						</td>
 						<td>
 							${yesno["${order.isJoin!''}"]}

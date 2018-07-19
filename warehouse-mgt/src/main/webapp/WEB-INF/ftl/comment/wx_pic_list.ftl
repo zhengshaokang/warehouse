@@ -2,6 +2,9 @@
 	<input type="hidden" name="pageNum" value="${pageParam.pageNo}" />
 	<input type="hidden" name="numPerPage" value="${pageParam.pageSize}" />
 	<input type="hidden" name="orderNo" value="${wxPicParam.orderNo!''}" />
+	<#if userId == 1>
+	<input type="hidden" name="userId" value="${wxPicParam.userId!''}" />
+	</#if>
 </form>
 <script>
 function openWxPic(obj) {
@@ -15,8 +18,8 @@ function openWxPic(obj) {
 	} else if((top-100) > 350){
 		top = top - 220;
 	}
-	var html = '<div id="wxpicImage" style="left:'+left+'px; top:'+top+'px; z-index:99999;width:300px;height:300px;border:1px solid #e6e6e6;position: absolute;background:#e3ee34">'
-	html += '<img src="'+$(obj).attr("src")+'" style="height:100%;width:100%;"/>';
+	var html = '<div id="wxpicImage" style="left:'+left+'px; top:'+top+'px; z-index:99999;width:300px;height:300px;border:1px solid #e6e6e6;position: absolute;background:#000">'
+	html += '<div  style="height:100%;width:100%;background: url('+$(obj).attr("picUrl")+')  no-repeat center center;background-size:contain;"></div>';
 	html += '</div>';
 	$("body").append(html);
 }
@@ -78,7 +81,7 @@ function closeWxPic(){
 						</td>
 						<td>
 							<#list wxPic.picUrl?split(",") as pic>
-								<img  onmouseover="openWxPic(this)"  onmouseout="closeWxPic()" style="height:80px;width:80px;" src="${IMGBASEPATH}${pic}" />
+								<div  onmouseover="openWxPic(this)" picUrl="${IMGBASEPATH}${pic}"  onmouseout="closeWxPic()" style="float:left;height:80px;width:80px;background: url('${IMGBASEPATH}${pic}')  no-repeat center center;background-size:contain ;" ></div>
 						    </#list>
 						</td>
 						<td>

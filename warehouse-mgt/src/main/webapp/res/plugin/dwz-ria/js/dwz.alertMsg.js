@@ -1,5 +1,5 @@
 /**
- * @author ZhangHuihua@msn.com
+ * @author 张慧华 z@j-ui.com
  */
 $.setRegional("alertMsg", {
 	title:{error:"Error", info:"Information", warn:"Warning", correct:"Successful", confirm:"Confirmation"},
@@ -10,7 +10,7 @@ var alertMsg = {
 	_bgId: "#alertBackground",
 	_closeTimer: null,
 
-	_types: {error:"error", info:"info", warn:"warn", correct:"correct", confirm:"confirm"},
+	types: {error:"error", info:"info", warn:"warn", correct:"correct", confirm:"confirm"},
 
 	_getTitle: function(key){
 		return $.regional.alertMsg.title[key];
@@ -29,7 +29,7 @@ var alertMsg = {
 	 * @param {Object} msg
 	 * @param {Object} buttons [button1, button2]
 	 */
-	_open: function(type, msg, buttons){
+	open: function(type, msg, buttons){
 		$(this._boxId).remove();
 		var butsHtml = "";
 		if (buttons) {
@@ -39,13 +39,13 @@ var alertMsg = {
 			}
 		}
 		var boxHtml = DWZ.frag["alertBoxFrag"].replace("#type#", type).replace("#title#", this._getTitle(type)).replace("#message#", msg).replace("#butFragment#", butsHtml);
-		$(boxHtml).appendTo("body").css({top:-$(this._boxId).height()+"px"}).animate({top:"200px"}, 500);
+		$(boxHtml).appendTo("body").css({top:-$(this._boxId).height()+"px"}).animate({top:"0px"}, 500);
 				
 		if (this._closeTimer) {
 			clearTimeout(this._closeTimer);
 			this._closeTimer = null;
 		}
-		if (this._types.info == type || this._types.correct == type){
+		if (this.types.info == type || this.types.correct == type){
 			this._closeTimer = setTimeout(function(){alertMsg.close()}, 3500);
 		} else {
 			$(this._bgId).show();
@@ -73,16 +73,16 @@ var alertMsg = {
 		$(this._bgId).hide();
 	},
 	error: function(msg, options) {
-		this._alert(this._types.error, msg, options);
+		this._alert(this.types.error, msg, options);
 	},
 	info: function(msg, options) {
-		this._alert(this._types.info, msg, options);
+		this._alert(this.types.info, msg, options);
 	},
 	warn: function(msg, options) {
-		this._alert(this._types.warn, msg, options);
+		this._alert(this.types.warn, msg, options);
 	},
 	correct: function(msg, options) {
-		this._alert(this._types.correct, msg, options);
+		this._alert(this.types.correct, msg, options);
 	},
 	_alert: function(type, msg, options) {
 		var op = {okName:$.regional.alertMsg.butMsg.ok, okCall:null};
@@ -90,7 +90,7 @@ var alertMsg = {
 		var buttons = [
 			{name:op.okName, call: op.okCall, keyCode:DWZ.keyCode.ENTER}
 		];
-		this._open(type, msg, buttons);
+		this.open(type, msg, buttons);
 	},
 	/**
 	 * 
@@ -104,7 +104,7 @@ var alertMsg = {
 			{name:op.okName, call: op.okCall, keyCode:DWZ.keyCode.ENTER},
 			{name:op.cancelName, call: op.cancelCall, keyCode:DWZ.keyCode.ESC}
 		];
-		this._open(this._types.confirm, msg, buttons);
+		this.open(this.types.confirm, msg, buttons);
 	}
 };
 

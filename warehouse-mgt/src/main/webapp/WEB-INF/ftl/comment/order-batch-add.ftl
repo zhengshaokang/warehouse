@@ -19,6 +19,28 @@ function iframeCallback1(form, callback){
 	
 	_iframeResponse($iframe[0], callback || DWZ.ajaxDone);
 }
+
+function getshops(obj) {
+	var platform = $(obj).val();
+	$.ajax({
+        type:"post",
+        url:"comment/get-shops",
+        data:{platform:platform},
+        dataType:"json",
+        success:function(data){
+            if(data!=null) {
+            	var html = "";
+            	$.each(data,function(key,values){  
+			   	 	html += '<option value="'+key+'">'+values+'</option>';	
+			  	});
+            	$("#orderAddShopbath").append(html);
+            }
+        },
+        error:function(data){
+        	mypopup.alert(JSON.stringify(data));
+        }
+    });
+}
  </script>
  
  <style>
@@ -44,24 +66,39 @@ function iframeCallback1(form, callback){
 		<div class="pageFormContent" layoutH="56">
 		
 			   <div class="excel_upload_div">
+			   		
+			   		<p>
+			   			<label style="text-align:right;width:40px">平台：</label>
+						<select name="platform" style="min-width:120px;" class="required" onchange="getshops(this)">
+							<#list platforms?keys as key> 
+								<option value="${key}">${platforms[key]}</option>					
+							</#list>
+						</select>
+			   		
+			   			<label style="text-align:right;width:40px">店铺：</label>
+						<select id="orderAddShopbath" name="shopId" style="min-width:120px;" class="required">
+								<option value="-1">请选择</option>					
+						</select>
+			   		</p>
+			   		
 			   		<p>
 			   			<input type="file" id="orderUploadFile" accept="file/*" name="orderfile" style="left: 0px;" class="valid">
 		               <input type="submit" value="上传文件" />
 	               </p>
 	               <p>
-	               		<a href="${DOMAIN}res/templet/order.xlsx" style="font-size:16px;text-decoration:underline;" target="_blank" title="点击下载模板">模板下载</a>
+	               		<a href="${DOMAIN}res/templet/tianmaoorder.zip" style="font-size:16px;text-decoration:underline;" target="_blank" title="点击下载模板">淘宝天猫模板下载</a>
 	               </p>
 	               <p style="color:red">
-	               		模板说明：
+	               		导入说明：
 	               </p>
 	               <p style="color:red;margin:10px 0 0 0;">
-	               		1、订单号，对应各平台的订单号，在评价时需要和此匹配，必须填写
+	               		1、导入文件格式必须是csv,xls,xlsx
 	               </p>
 	               <p style="color:red;margin:10px 0 0 0;">
-	               		2、店铺id，需要对应店铺管理里面的id，必须要填写
+	               		2、导入文件不超过50M，如果文件过大请分批导入
 	               </p>
 	               <p style="color:red;margin:10px 0 0 0;">
-	               		3、是否参与活动、是否已经返现、订单状态等必须按照模板里面的数字填写
+	               		3、导入过程中保持网络正常
 	               </p>
                </div>
 		</div>

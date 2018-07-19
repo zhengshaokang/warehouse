@@ -55,4 +55,10 @@ public class ShopDalCompImpl implements IShopDalComp {
 		return shopDao.queryShopByUserId(userId);
 	}
 
+	@Override
+	public List<Shop> queryShopByUserIdAndPlatfrom(Integer userId,
+			Integer platform) {
+		return shopDao.queryShopByUserIdAndPlatfrom(userId, platform);
+	}
+
 }

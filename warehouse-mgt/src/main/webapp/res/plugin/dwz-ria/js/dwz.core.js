@@ -1,9 +1,11 @@
 /**
- * @author ZhangHuihua@msn.com
+ * @author 张慧华 z@j-ui.com
  * 
  */
 
 var DWZ = {
+	version: '1.6.0',
+	regPlugins: [], // [function($parent){} ...] 
 	// sbar: show sidebar
 	keyCode: {
 		ENTER: 13, ESC: 27, END: 35, HOME: 36,
@@ -13,7 +15,8 @@ var DWZ = {
 	},
 	eventType: {
 		pageClear:"pageClear",	// 用于重新ajaxLoad、关闭nabTab, 关闭dialog时，去除xheditor等需要特殊处理的资源
-		resizeGrid:"resizeGrid"	// 用于窗口或dialog大小调整
+		resizeGrid:"resizeGrid",	// 用于窗口或dialog大小调整
+		initEnvAfter: "initEnvAfter" // initEnv完成出发
 	},
 	isOverAxis: function(x, reference, size) {
 		//Determines when x coordinate is over "b" element axis
@@ -26,7 +29,11 @@ var DWZ = {
 	
 	pageInfo: {pageNum:"pageNum", numPerPage:"numPerPage", orderField:"orderField", orderDirection:"orderDirection"},
 	statusCode: {ok:200, error:300, timeout:301},
-	ui:{sbar:true},
+	keys: {statusCode:"statusCode", message:"message"},
+	ui:{
+		sbar:true,
+		hideMode:'display' //navTab组件切换的隐藏方式，支持的值有’display’，’offsets’负数偏移位置的值，默认值为’display’
+	},
 	frag:{}, //page fragment
 	_msg:{}, //alert message
 	_set:{
@@ -92,45 +99,45 @@ var DWZ = {
 			return {};
 		}
 	},
+	getHtmlBody:function(content){
+		var result = /<body[^>]*>([\s\S]*)<\/body>/.exec(content);
+		if(result && result.length === 2)
+			return result[1];
+		return content;
+	},
 	ajaxError:function(xhr, ajaxOptions, thrownError){
 		if (alertMsg) {
-			/**
 			alertMsg.error("<div>Http status: " + xhr.status + " " + xhr.statusText + "</div>" 
 				+ "<div>ajaxOptions: "+ajaxOptions + "</div>"
 				+ "<div>thrownError: "+thrownError + "</div>"
-				+ "<div>"+xhr.responseText+"</div>");
-			*/
-			if(xhr.status == 404){
-				DWZ.loadLogin();
-			} else {
-				alertMsg.error("服务器请求异常，请联系管理员");
-			}
+				+ "<div>"+DWZ.getHtmlBody(xhr.responseText)+"</div>");
 		} else {
 			alert("Http status: " + xhr.status + " " + xhr.statusText + "\najaxOptions: " + ajaxOptions + "\nthrownError:"+thrownError + "\n" +xhr.responseText);
 		}
-		//alertMsg.error("服务器请求异常，请联系管理员");
 	},
 	ajaxDone:function(json){
-		if(json.statusCode == DWZ.statusCode.error) {
-			if(json.message && alertMsg) alertMsg.error(json.message);
-		} else if (json.statusCode == DWZ.statusCode.timeout) {
-			if(alertMsg) alertMsg.error(json.message || DWZ.msg("sessionTimout"), {okCall:DWZ.loadLogin});
+		if(json[DWZ.keys.statusCode] == DWZ.statusCode.error) {
+			if(json[DWZ.keys.message] && alertMsg) alertMsg.error(json[DWZ.keys.message]);
+		} else if (json[DWZ.keys.statusCode] == DWZ.statusCode.timeout) {
+			if(alertMsg) alertMsg.error(json[DWZ.keys.message] || DWZ.msg("sessionTimout"), {okCall:DWZ.loadLogin});
 			else DWZ.loadLogin();
-		} else {
-			if(json.message && alertMsg) alertMsg.correct(json.message);
+		} else if (json[DWZ.keys.statusCode] == DWZ.statusCode.ok){
+			if(json[DWZ.keys.message] && alertMsg) alertMsg.correct(json[DWZ.keys.message]);
 		};
 	},
 
 	init:function(pageFrag, options){
 		var op = $.extend({
 				loginUrl:"login.html", loginTitle:null, callback:null, debug:false, 
-				statusCode:{}
+				statusCode:{}, keys:{}
 			}, options);
 		this._set.loginUrl = op.loginUrl;
 		this._set.loginTitle = op.loginTitle;
 		this._set.debug = op.debug;
 		$.extend(DWZ.statusCode, op.statusCode);
+		$.extend(DWZ.keys, op.keys);
 		$.extend(DWZ.pageInfo, op.pageInfo);
+		$.extend(DWZ.ui, op.ui);
 		
 		jQuery.ajax({
 			type:'GET',
@@ -163,6 +170,13 @@ var DWZ = {
 				if ($.fn.xheditor) {
 					$("textarea.editor", box).xheditor(false);
 				}
+
+				if (window.UE && UE.getEditor) {
+					$('div.edui-editor', box).each(function(){
+						var editorId = $(this).parent().attr('id');
+						UE.getEditor(editorId).destroy();
+					});
+				}
 			});
 		}
 	}
@@ -193,21 +207,25 @@ var DWZ = {
 				success: function(response){
 					var json = DWZ.jsonEval(response);
 					
-					if (json.statusCode==DWZ.statusCode.error){
-						if (json.message) alertMsg.error(json.message);
+					if (json[DWZ.keys.statusCode]==DWZ.statusCode.error){
+						if ($.pdialog) $.pdialog.checkCloseCurrent(json);
+						if (navTab) navTab.checkCloseCurrent(json);
+
+						if (json[DWZ.keys.message]) alertMsg.error(json[DWZ.keys.message]);
 					} else {
 						$this.html(response).initUI();
 						if ($.isFunction(op.callback)) op.callback(response);
 					}
-					
-					if (json.statusCode==DWZ.statusCode.timeout){
-						if ($.pdialog) $.pdialog.checkTimeout();
-						if (navTab) navTab.checkTimeout();
-	
-						alertMsg.error(json.message || DWZ.msg("sessionTimout"), {okCall:function(){
+
+
+					if (json[DWZ.keys.statusCode]==DWZ.statusCode.timeout){
+						if ($.pdialog) $.pdialog.checkCloseCurrent(json);
+						if (navTab) navTab.checkCloseCurrent(json);
+
+						alertMsg.error(json[DWZ.keys.message] || DWZ.msg("sessionTimout"), {okCall:function(){
 							DWZ.loadLogin();
 						}});
-					} 
+					}
 					
 				},
 				error: DWZ.ajaxError,
@@ -218,12 +236,16 @@ var DWZ = {
 				}
 			});
 		},
-		loadUrl: function(method,url,data,callback){
-			$(this).ajaxUrl({type:method,url:url, data:data, callback:callback});
+		loadUrl: function(url,data,callback){
+			$(this).ajaxUrl({url:url, data:data, callback:callback});
 		},
-		initUI: function(){
+
+		initUI: function() {
 			return this.each(function(){
-				if($.isFunction(initUI)) initUI(this);
+				var $this = $(this);
+				$.each(DWZ.regPlugins, function(index, fn){
+					fn($this);
+				});
 			});
 		},
 		/**
@@ -233,7 +255,7 @@ var DWZ = {
 		layoutH: function($refBox){
 			return this.each(function(){
 				var $this = $(this);
-				if (! $refBox) $refBox = $this.parents("div.layoutBox:first");
+				if (! $refBox) $refBox = $this.getLayoutBox();
 				var iRefH = $refBox.height();
 				var iLayoutH = parseInt($this.attr("layoutH"));
 				var iH = iRefH - iLayoutH > 50 ? iRefH - iLayoutH : 50;
@@ -244,6 +266,9 @@ var DWZ = {
 					$this.height(iH).css("overflow","auto");
 				}
 			});
+		},
+		getLayoutBox: function(){
+			return $(this).parents("div.layoutBox:first");
 		},
 		hoverClass: function(className, speed){
 			var _className = className || "hover";
@@ -288,14 +313,14 @@ var DWZ = {
 					if (!$this.attr("id")) $this.attr("id", $this.attr("name") + "_" +Math.round(Math.random()*10000));
 					var $label = $('<label class="alt" for="'+$this.attr("id")+'">'+$this.attr("alt")+'</label>').appendTo($this.parent());
 					
-					$label.css(altBoxCss(0.5));
+					$label.css(altBoxCss(1));
 					if ($this.val()) $label.hide();
 				}
 				
 				$this.focus(function(){
 					getAltBox().css(altBoxCss(0.3));
 				}).blur(function(){
-					if (!$(this).val()) getAltBox().show().css("opacity",0.5);
+					if (!$(this).val()) getAltBox().show().css("opacity",1);
 				}).keydown(function(){
 					getAltBox().hide();
 				});
@@ -359,10 +384,10 @@ var DWZ = {
 		replaceAll:function(os, ns){
 			return this.replace(new RegExp(os,"gm"),ns);
 		},
-		replaceTm:function($data){
-			if (!$data) return this;
+		replaceTm:function(data){
+			if (!data) return this;
 			return this.replace(RegExp("({[A-Za-z_]+[A-Za-z0-9_]*})","g"), function($1){
-				return $data[$1.replace(/[{}]+/g, "")];
+				return data[$1.replace(/[{}]+/g, "")];
 			});
 		},
 		replaceTmById:function(_box){

@@ -42,6 +42,7 @@
         <typeAlias alias="shop" type="com.hys.model.comment.Shop"/>
         <typeAlias alias="wxPic" type="com.hys.model.comment.WxPic"/>
         <typeAlias alias="wxUser" type="com.hys.model.comment.WxUser"/>
+         <typeAlias alias="activ" type="com.hys.model.comment.Activ"/>
         
 	</typeAliases>
 	<plugins>
@@ -72,7 +73,7 @@
         <mapper resource="mapping/comment/c_shop.xml" />
         <mapper resource="mapping/comment/c_wx_pic.xml" />
         <mapper resource="mapping/comment/c_wx_user.xml" />
-        
+        <mapper resource="mapping/comment/c_activ.xml" />
 	</mappers>
 	
 </configuration>

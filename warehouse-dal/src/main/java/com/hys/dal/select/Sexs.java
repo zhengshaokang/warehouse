@@ -9,7 +9,7 @@ public class Sexs {
 	
 	public static Map<String,String> getOptions(){
 		Map<String,String> map = new LinkedHashMap<String,String>();
-		map.put("-1", "");
+		map.put("-1", "请选择");
 		for (EnumSex es : EnumSex.values()) {
 			map.put(es.getStatus().toString(), es.getName());
 		}

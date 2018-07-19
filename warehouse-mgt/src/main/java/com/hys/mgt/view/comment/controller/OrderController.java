@@ -1,5 +1,7 @@
 package com.hys.mgt.view.comment.controller;
 
+import java.util.LinkedHashMap;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
@@ -13,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.hys.commons.page.PageData;
 import com.hys.commons.util.LogicUtil;
 import com.hys.dal.select.OrderStatus;
+import com.hys.dal.select.Platforms;
 import com.hys.dal.select.Shops;
 import com.hys.dal.select.Users;
 import com.hys.dal.select.YesNos;
@@ -111,17 +114,34 @@ public class OrderController {
 	    }
 	    
 	    @RequestMapping(value = "order-batch-add")
-	    public String orderBatchAdd(){
+	    public String orderBatchAdd(ModelMap modelMap){
+	    	
+	    	
+	    	 modelMap.put("platforms", Platforms.getOptions());
 	    	 return "comment/order-batch-add";
 	    }
 	    
+	    @ResponseBody
+	    @RequestMapping("get-shops")
+	    public LinkedHashMap<Integer,String> getShops(Integer platform,HttpServletRequest request) {
+	    	
+	    	HttpSession session = SessionUtils.getSession();
+	    	SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
+	    	
+	    	LinkedHashMap<Integer,String> rp =  shops.getOptions(Integer.parseInt(sysAdminVo.getId()),platform);
+	        return rp;
+	    }
 	    
 	    @ResponseBody
 	    @RequestMapping("order-upload")
-	    public ResultPrompt uploadOrder(MultipartFile orderfile) {
+	    public ResultPrompt uploadOrder(MultipartFile orderfile,HttpServletRequest request) {
+	    	
+	    	Integer shopId = Integer.parseInt(request.getParameter("shopId"));
+	    	Integer platform = Integer.parseInt(request.getParameter("platform"));
+	    	
 	    	HttpSession session = SessionUtils.getSession();
 		    SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
-	    	ResultPrompt rp = orderViewComp.uploadOrder(orderfile,Integer.parseInt(sysAdminVo.getId()));
+	    	ResultPrompt rp = orderViewComp.uploadOrder(orderfile,Integer.parseInt(sysAdminVo.getId()),shopId,platform);
 	    	
 	        return rp;
 	    }

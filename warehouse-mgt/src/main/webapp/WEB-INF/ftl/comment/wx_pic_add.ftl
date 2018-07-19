@@ -5,10 +5,10 @@
 <meta charset="UTF-8">
 <meta content="width=device-width,user-scalable=no" name="viewport">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<title>晒评价</title>
+<title>${activ.title!''}</title>
 <link href="${BASEPATH}js/util/mypopup.css" rel="stylesheet" type="text/css"/>
 <link href="${BASEPATH}css/comment/wx_upload.css" rel="stylesheet" type="text/css"/>
-<script src="${BASEPATH}plugin/dwz-ria/js/jquery-1.7.2.min.js"></script>
+<script src="${BASEPATH}plugin/dwz-ria/js/jquery-2.1.4.min.js"></script>
 <script src="${BASEPATH}js/util/mypopup.js" type="text/javascript"></script>
 <script src="${BASEPATH}js/comment/wx_upload.js" type="text/javascript"></script>
 </head>
@@ -19,14 +19,14 @@
 .index {
 	width:100%;
 	height:100%;
-	background: url("${BASEPATH}/img/comment/${templet}")  no-repeat center center;
+	background: url("${IMGBASEPATH}${activ.bgPath!''}")  no-repeat center center;
 	background-size:100% 100%;
 }
 .index2 {
 	width:100%;
 	height:100%;
 	display:none;
-	background: url("${BASEPATH}/img/comment/su.png")  no-repeat center center;
+	background: url("${IMGBASEPATH}${activ.suBgPath!''}")  no-repeat center center;
 	background-size:100% 100%;
 }
 </style>

@@ -14,6 +14,7 @@ public class OrderVo implements Serializable{
 	private Integer isPay;//  0未返现1已返现，默认0
 	private String orderNo;// 订单号
 	private Integer orderStatus;// 订单状态:10未支付,20已支付未发货,30已发货,40取消交易,50交易成功
+	private String orderAmount;// 订单实际支付金额
 	private String customerName;// 客户名称（旺旺）
 	private String customerMobile;// 客户电话
 	private String orderTime;// 下单时间
@@ -100,14 +101,20 @@ public class OrderVo implements Serializable{
 	public void setNumPerPage(int numPerPage) {
 		this.numPerPage = numPerPage;
 	}
+	public String getOrderAmount() {
+		return orderAmount;
+	}
+	public void setOrderAmount(String orderAmount) {
+		this.orderAmount = orderAmount;
+	}
 	@Override
 	public String toString() {
 		return "OrderVo [id=" + id + ", userId=" + userId + ", shopId="
 				+ shopId + ", isJoin=" + isJoin + ", isPay=" + isPay
 				+ ", orderNo=" + orderNo + ", orderStatus=" + orderStatus
-				+ ", customerName=" + customerName + ", customerMobile="
-				+ customerMobile + ", orderTime=" + orderTime + ", remark="
-				+ remark + ", pageNum=" + pageNum + ", numPerPage="
-				+ numPerPage + "]";
+				+ ", orderAmount=" + orderAmount + ", customerName="
+				+ customerName + ", customerMobile=" + customerMobile
+				+ ", orderTime=" + orderTime + ", remark=" + remark
+				+ ", pageNum=" + pageNum + ", numPerPage=" + numPerPage + "]";
 	}
 }

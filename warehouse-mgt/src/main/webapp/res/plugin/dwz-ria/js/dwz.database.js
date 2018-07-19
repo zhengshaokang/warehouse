@@ -19,6 +19,7 @@
 	$.extend({
 		bringBackSuggest: function(args){
 			var $box = _lookup['$target'].parents(".unitBox:first");
+			// $box.trigger('bringBackSuggestDone', args);
 			$box.find(":input").each(function(){
 				var $input = $(this), inputName = $input.attr("name");
 				
@@ -35,6 +36,15 @@
 		bringBack: function(args){
 			$.bringBackSuggest(args);
 			$.pdialog.closeCurrent();
+		},
+		getSelectedIds: function(selectedIds, targetType){
+			var ids = "";
+			var $box = targetType == "dialog" ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
+			$box.find("input:checked").filter("[name='"+selectedIds+"']").each(function(i){
+				var val = $(this).val();
+				ids += i==0 ? val : ","+val;
+			});
+			return ids;
 		}
 	});
 	
@@ -352,7 +362,7 @@
 					case 'attach':
 						html = '<input type="hidden" name="'+field.lookupGroup+'.'+field.lookupPk+suffix+'"/>'
 							+ '<input type="text" name="'+field.name+'" size="'+field.size+'" readonly="readonly" class="'+field.fieldClass+'"/>'
-							+ '<a class="btnAttach" href="'+field.lookupUrl+'" lookupGroup="'+field.lookupGroup+'" '+suggestFrag+' lookupPk="'+field.lookupPk+'" width="560" height="300" title="查找带回">查找带回</a>';
+							+ '<a class="btnAttach" href="'+field.lookupUrl+'" lookupGroup="'+field.lookupGroup+'" '+suffixFrag+' lookupPk="'+field.lookupPk+'" width="560" height="300" title="查找带回">查找带回</a>';
 						break;
 					case 'enum':
 						$.ajax({
@@ -369,7 +379,7 @@
 							+'<a class="inputDateButton" href="javascript:void(0)">选择</a>';
 						break;
 					default:
-						html = '<input type="text" name="'+field.name+'" value="'+field.defaultVal+'" size="'+field.size+'" class="'+field.fieldClass+'" '+attrFrag+'/>';
+						html = '<input type="'+field.type+'" name="'+field.name+'" value="'+field.defaultVal+'" size="'+field.size+'" class="'+field.fieldClass+'" '+attrFrag+'/>';
 						break;
 				}
 				return '<td>'+html+'</td>';
@@ -384,16 +394,7 @@
 		},
 		
 		selectedTodo: function(){
-			
-			function _getIds(selectedIds, targetType){
-				var ids = "";
-				var $box = targetType == "dialog" ? $.pdialog.getCurrent() : navTab.getCurrentPanel();
-				$box.find("input:checked").filter("[name='"+selectedIds+"']").each(function(i){
-					var val = $(this).val();
-					ids += i==0 ? val : ","+val;
-				});
-				return ids;
-			}
+
 			return this.each(function(){
 				var $this = $(this);
 				var selectedIds = $this.attr("rel") || "ids";
@@ -401,7 +402,7 @@
 
 				$this.click(function(){
 					var targetType = $this.attr("targetType");
-					var ids = _getIds(selectedIds, targetType);
+					var ids = $.getSelectedIds(selectedIds, targetType);
 					if (!ids) {
 						alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
 						return false;
@@ -417,7 +418,7 @@
 								if (postType == 'map'){
 									return $.map(ids.split(','), function(val, i) {
 										return {name: selectedIds, value: val};
-									})
+									});
 								} else {
 									var _data = {};
 									_data[selectedIds] = ids;
@@ -437,6 +438,54 @@
 					return false;
 				});
 				
+			});
+		},
+
+		selectedBlank: function(){
+
+			return this.each(function(){
+				var $this = $(this);
+				var selectedIds = $this.attr("rel") || "ids";
+				var postType = $this.attr("postType") || "map";
+
+				$this.click(function(){
+					var targetType = $this.attr("targetType");
+					var ids = DWZ.getSelectedIds(selectedIds, targetType);
+					if (!ids) {
+						alertMsg.error($this.attr("warn") || DWZ.msg("alertSelectMsg"));
+						return false;
+					}
+
+					var data = {};
+					if (postType == 'map'){
+						data = $.map(ids.split(','), function(val, i) {
+							return {name: selectedIds, value: val};
+						});
+					} else {
+						data[0] = {name: selectedIds, value: ids};
+					}
+
+					var html = '';
+					$.each(data, function(index){
+						html += '<input type="hidden" name="'+this.name+'" value="'+this.value+'">'
+					});
+					html = '<form method="post" target="_blank" action="'+$this.attr('href')+'">'+html+'</form>'
+					var $form = $(html).appendTo('body');
+
+					var title = $this.attr("title");
+					if (title) {
+						alertMsg.confirm(title, {okCall: function() {
+							$form.submit();
+							$form.remove();
+						}});
+					} else {
+						$form.submit();
+						$form.remove();
+					}
+
+					return false;
+				});
+
 			});
 		}
 	});

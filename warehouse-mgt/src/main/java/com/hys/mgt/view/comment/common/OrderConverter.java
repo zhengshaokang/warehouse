@@ -22,7 +22,7 @@ public class OrderConverter {
     	  order.setRemark(orderVo.getRemark());
     	  order.setShopId(orderVo.getShopId());
     	  order.setUserId(orderVo.getUserId());
-    	  
+    	  order.setOrderAmount(orderVo.getOrderAmount());
           return order;
     }
 
@@ -43,6 +43,7 @@ public class OrderConverter {
         orderVo.setRemark(order.getRemark());
         orderVo.setShopId(order.getShopId());
         orderVo.setUserId(order.getUserId());
+        orderVo.setOrderAmount(order.getOrderAmount());
         return orderVo;
     }
 

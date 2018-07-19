@@ -30,7 +30,7 @@ public class Suppliers {
 	public  Map<String,String> getSuppliers(Integer creator){
 		List<Supplier> suppliers = supplierDalComp.querySuppliersByCreator(creator);
 		Map<String,String> map = new LinkedHashMap<String,String>();
-		map.put("-1", "");
+		map.put("-1", "请选择");
 		if(null !=suppliers) { 
 			for (Supplier supplier : suppliers) {
 				map.put(supplier.getId().toString(), supplier.getName());

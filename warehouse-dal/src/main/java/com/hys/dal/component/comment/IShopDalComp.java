@@ -13,6 +13,7 @@ public interface IShopDalComp {
     public boolean updateShop(Shop shop);
     public boolean deleteShop(Integer id,Integer userId);
     public List<Shop> queryShopByUserId(Integer userId);
+    public List<Shop> queryShopByUserIdAndPlatfrom(Integer userId,Integer platfrom);
     public Shop queryShopById(Integer id,Integer userId);
     public PageData<Shop> pageQueryShops(PageParam<Shop> page);
     public Shop validateShopName(String name,Integer platform,Integer userId);

@@ -1,8 +1,11 @@
 <form id="pagerForm" method="post" action="${DOMAIN}comment/shop-list">
 	<input type="hidden" name="pageNum" value="${pageParam.pageNo}" />
 	<input type="hidden" name="numPerPage" value="${pageParam.pageSize}" />
-	<input type="hidden" name="shopNo" value="${shopParam.shopNo!''}" />
-	<input type="hidden" name="shopId" value="${shopParam.phone!''}" />
+	<input type="hidden" name="name" value="${shopParam.name!''}" />
+	<input type="hidden" name="platform" value="${shopParam.platform!''}" />
+	<#if userId == 1>
+	<input type="hidden" name="userId" value="${shopParam.userId!''}" />
+	</#if>
 </form>
 
 <div class="pageHeader">

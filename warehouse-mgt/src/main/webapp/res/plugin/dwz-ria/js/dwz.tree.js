@@ -34,19 +34,35 @@
 								var ckbox = $(this);
 								ckbox.click(function(){
 									var checked = $(ckbox).hasClass("checked");
+									var tnode = ckbox.parent().parent();
+									var boxes = $("input", tnode);
 									var items = [];
-									if(checked){
-										var tnode = $(ckbox).parent().parent();
-										var boxes = $("input", tnode);
-										if(boxes.size() > 1) {
-											$(boxes).each(function(){
-												items[items.length] = {name:$(this).attr("name"), value:$(this).val(), text:$(this).attr("text")};
-											});
-										} else {
-											items = {name:boxes.attr("name"), value:boxes.val(), text:boxes.attr("text")};
-										}		
-									}								
-									checkFn({checked:checked, items:items});														
+
+									if(boxes.size() > 1) {
+										$(boxes).each(function(){
+											items[items.length] = {name:$(this).attr("name"), value:$(this).val(), text:$(this).attr("text")};
+										});
+									} else {
+										items = {name:boxes.attr("name"), value:boxes.val(), text:boxes.attr("text")};
+									}
+
+									var parents = [];
+									tnode.parents('li').each(function () {
+										var $pNode = $(this), $pCkbox = $pNode.find('>div>div.ckbox');
+
+										$pCkbox.find('input').each(function(){
+											var pValue = {
+												name:$(this).attr("name"),
+												value:$(this).val(),
+												text:$(this).attr("text"),
+												checked:$pCkbox.hasClass('checked'),
+												indeterminate:$pCkbox.hasClass('indeterminate')
+											};
+											parents.push(pValue);
+										});
+									});
+
+									checkFn({checked:checked, items:items, parents:parents});
 								});
 							});
 						}
@@ -123,8 +139,8 @@
 					addSpace(op.level, node);
 					if(op.showSub) tree.subTree(op, op.level + 1);
 				} else {
-					node.children().wrap("<div></div>");			
-					$(">div", node).prepend("<div class='node'></div>"+(op.ckbox?"<div class='ckbox "+checked+"'></div>":"")+(op.icon?"<div class='file'></div>":""));
+					node.children().wrap("<div></div>");
+					$(">div", node).prepend('<div class="node"></div>'+(op.ckbox?'<div class="ckbox '+checked+'"></div>':'')+(op.icon?'<div class="'+(node.attr('data-icon') || 'file')+'"></div>':''));
 					addSpace(op.level, node);
 					if(op.isLast)$(node).addClass("last");
 				}
@@ -134,7 +150,7 @@
 				}).mouseout(function(){
 					$(this).removeClass("hover");
 				});
-				if($.browser.msie)
+				if(/msie/.test(navigator.userAgent.toLowerCase()))
 					$(">div",node).click(function(){
 						$("a", this).trigger("click");
 						return false;
@@ -201,7 +217,7 @@
 			
 			var $checkbox = $(":checkbox", parent);
 			if (aClass == "checked") $checkbox.attr("checked","checked");
-			else $checkbox.removeAttr("checked");
+			else if (aClass == "unchecked") $checkbox.removeAttr("checked");
 			
 			parent._checkParent();
 		}

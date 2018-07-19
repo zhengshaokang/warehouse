@@ -262,6 +262,23 @@ public class FileImgProcess
         return null;
     }
     
+    public static String thumbingAndSavingImgs(String originalImgSavingPath,InputStream originalImgInputStream){
+        try{
+        	 
+        	// 保存源图
+            FileSavingUtils.writeFileToDisc(new File(originalImgSavingPath), originalImgInputStream);
+
+            // 保存缩略图
+            String targetDir = FileSavingUtils.getDirPath(originalImgSavingPath);
+            String fileName = FileSavingUtils.getFileName(originalImgSavingPath);
+            return targetDir+fileName;
+        } catch (Exception e) {
+            log.error("Image thumbing failed.", e);
+        }
+
+        return null;
+    }
+    
 
     public static void main(String[] args) throws Exception
     {

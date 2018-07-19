@@ -21,7 +21,7 @@ public class ProductClassifications {
 		List<ProductClassification> lsit = productClassificationDalComp.queryProductClassificationOne();
 		
 		Map<String,String> map = new LinkedHashMap<String,String>();
-		map.put("-1", "");
+		map.put("-1", "请选择");
 		if(null !=lsit) {
 			for (ProductClassification productClassification : lsit) {
 				map.put(productClassification.getId().toString(), productClassification.getName());
@@ -36,7 +36,7 @@ public class ProductClassifications {
 		List<ProductClassification> lsit = productClassificationDalComp.queryProductClassificationOneByCreator(creator);
 		
 		Map<String,String> map = new LinkedHashMap<String,String>();
-		map.put("-1", "");
+		map.put("-1", "请选择");
 		if(null !=lsit) {
 			for (ProductClassification productClassification : lsit) {
 				map.put(productClassification.getId().toString(), productClassification.getName());
@@ -51,7 +51,7 @@ public class ProductClassifications {
 		List<ProductClassification> lsit = productClassificationDalComp.queryProductClassifications();
 		
 		Map<String,String> map = new LinkedHashMap<String,String>();
-		map.put("-1", "");
+		map.put("-1", "请选择");
 		if(null !=lsit) {
 			for (ProductClassification productClassification : lsit) {
 				map.put(productClassification.getId().toString(), productClassification.getName());
@@ -66,7 +66,7 @@ public class ProductClassifications {
 		List<ProductClassification> lsit = productClassificationDalComp.queryProductClassificationsByCreator(creator);
 		
 		Map<String,String> map = new LinkedHashMap<String,String>();
-		map.put("-1", "");
+		map.put("-1", "请选择");
 		if(null !=lsit) {
 			for (ProductClassification productClassification : lsit) {
 				map.put(productClassification.getId().toString(), productClassification.getName());
@@ -82,7 +82,7 @@ public class ProductClassifications {
 		List<ProductClassification> lsit = productClassificationDalComp.queryProductClassificationByParentId(parentId);
 		
 		Map<String,String> map = new LinkedHashMap<String,String>();
-		map.put("-1", "");
+		map.put("-1", "请选择");
 		if(null !=map) {
 			for (ProductClassification productClassification : lsit) {
 				map.put(productClassification.getId().toString(), productClassification.getName());
@@ -98,7 +98,7 @@ public class ProductClassifications {
 		List<ProductClassification> lsit = productClassificationDalComp.queryProductClassificationByParentIdAndCreator(parentId, creator);
 		
 		Map<String,String> map = new LinkedHashMap<String,String>();
-		map.put("-1", "");
+		map.put("-1", "请选择");
 		if(null !=map) {
 			for (ProductClassification productClassification : lsit) {
 				map.put(productClassification.getId().toString(), productClassification.getName());

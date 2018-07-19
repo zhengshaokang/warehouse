@@ -78,10 +78,10 @@ public class FileUploadController
             	newDirPath = filePath.getFilePathByGoods(locasBaseDirPath,"goodspic",goodsId, "details");
             }
             if("3".equals(picType)){
-            	newDirPath = filePath.getFilePath(locasBaseDirPath,"ather");
+            	newDirPath = filePath.getFilePath(locasBaseDirPath,"comment");
             }
             if("4".equals(picType)){
-            	newDirPath = filePath.getFilePath(locasBaseDirPath,"advert");
+            	newDirPath = filePath.getFilePath(locasBaseDirPath,"activ");
             } 
             File uploadDir = new File(newDirPath);
             if (!uploadDir.isDirectory()) {// 检查目录 
@@ -116,17 +116,19 @@ public class FileUploadController
             
             int srcWidth = image .getWidth();      // 源图宽度
             int srcHeight = image .getHeight();    // 源图高度
-            
-            if(srcWidth > 600) {
-            	double reg  = (double)srcWidth/600;
-            	Double height = srcHeight/reg;
-            	srcHeight = height.intValue();
-            	srcWidth = 600;
+           
+	            if(srcWidth > 600) {
+	            	double reg  = (double)srcWidth/600;
+	            	Double height = srcHeight/reg;
+	            	srcHeight = height.intValue();
+	            	srcWidth = 600;
+	            }
+	        String uploadFilePath  ="";
+            if("4".equals(picType)){
+            	uploadFilePath = FileImgProcess.thumbingAndSavingImgs(newFilePath,is);
+            } else {
+            	uploadFilePath = FileImgProcess.thumbingAndSavingImgs(newFilePath,srcWidth, srcHeight,is);
             }
-            
-            
-            String uploadFilePath = FileImgProcess.thumbingAndSavingImgs(newFilePath,srcWidth, srcHeight,is);
-            
             String localFileRelativePath = getRelativePath(locasBaseDirPath,uploadFilePath);
             
             ReturnUpload ru = new ReturnUpload();
