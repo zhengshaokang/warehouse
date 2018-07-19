@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>  
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hys.dal.db.comment.IActivDao">
+	<resultMap type="activ" id="activResult">
+		<result property="id" column="id" />
+		<result property="userId" column="user_id" />
+		<result property="name" column="name" />
+		<result property="title" column="title" />
+		<result property="bgPath" column="bg_path" />
+		<result property="suBgPath" column="su_bg_path" />
+		<result property="workflowPath" column="workflow_path" />
+		<result property="description" column="description" />
+		<result property="startTime" column="start_time" />
+		<result property="endTime" column="end_time" />
+		<result property="wxLink" column="wx_link" />
+		<result property="createTime" column="create_time" />
+		<result property="code" column="code" />
+	</resultMap>
+	
+   
+	<insert id="addActiv" parameterType="activ" useGeneratedKeys="true" keyProperty="id">
+		insert into
+		c_activ(id,user_id,name,title,bg_path,su_bg_path,workflow_path,description,start_time,end_time,wx_link,create_time,code)
+		values(#{id},#{userId},#{name},#{title},#{bgPath},#{suBgPath},#{workflowPath},#{description},#{startTime},#{endTime},#{wxLink},#{createTime},#{code})
+	</insert>
+	
+	<update id="updateActiv" parameterType="activ">
+		update c_activ
+		<set>
+	        <if test="name != null and name != ''">name=#{name},</if>
+			<if test="title != null and title !=''">title=#{title},</if>
+			<if test="bgPath != null and bgPath !=''">bg_path=#{bgPath},</if>
+			<if test="suBgPath != null and suBgPath !=''">su_bg_path=#{suBgPath},</if>
+			<if test="workflowPath != null and workflowPath !=''">workflow_path=#{workflowPath},</if>
+			<if test="description != null and description !=''">description=#{description},</if>
+			<if test="startTime != null and startTime !=''">start_time=#{startTime},</if>
+			<if test="endTime != null and endTime !=''">end_time=#{endTime},</if>
+			<if test="wxLink != null and wxLink !=''">wx_link=#{wxLink},</if>
+			<if test="code != null and code !=''">code=#{code},</if>
+			<if test="createTime != null and createTime !='' ">create_time=#{createTime}</if>
+		</set>
+		where id=#{id}
+	</update>
+	
+	<select id="queryActivById" resultMap="activResult">
+		    select * from c_activ where id = #{id}
+		     <if test="userId != null and userId > 1">
+				and user_id = #{userId}
+			</if>
+	</select>
+	
+	<select id="queryActivByCode" resultMap="activResult">
+	    select * from c_activ where code = #{code} and user_id = #{userId}
+	</select>
+	
+	
+	<select id="pageQueryActivs" resultMap="activResult" parameterType="page">
+		select * from c_activ where 1=1
+			<if test="p.name != null and p.name != ''">
+				and name like concat('%',#{p.name},'%')
+			</if>
+			<if test="p.title != null and p.title != ''">
+				and url like concat('%',#{p.title},'%')
+			</if>
+			<if test="p.userId != null and p.userId > 1">
+				and user_id = #{p.userId}
+			</if>
+	</select>
+	
+
+	
+</mapper>
