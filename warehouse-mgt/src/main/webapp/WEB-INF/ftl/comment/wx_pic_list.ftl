@@ -2,6 +2,7 @@
 	<input type="hidden" name="pageNum" value="${pageParam.pageNo}" />
 	<input type="hidden" name="numPerPage" value="${pageParam.pageSize}" />
 	<input type="hidden" name="orderNo" value="${wxPicParam.orderNo!''}" />
+	<input type="hidden" name="payStatus" value="${wxPicParam.payStatus!''}" />
 	<#if userId == 1>
 	<input type="hidden" name="userId" value="${wxPicParam.userId!''}" />
 	</#if>
@@ -26,6 +27,21 @@ function openWxPic(obj) {
 function closeWxPic(){
 	$("#wxpicImage").remove();
 }
+function validateOrderList(orderNo){
+    $.ajax({
+        type:"post",
+        url:"comment/validateOrder",
+        data:{orderNo:orderNo},
+        dataType:"json",
+        success:function(data){
+             var html='<img src="${BASEPATH}/img/comment/exc.gif" style="height:12px;width:12px;" />';
+            if(data.statusCode == 200){
+            	var html='<img src="${BASEPATH}/img/comment/exg_yes.gif" style="height:12px;width:12px;"/>';
+            } 
+            $("#orderNo_"+orderNo).find("div").append(html);
+        }
+    });
+}
 </script>
 <div class="pageHeader">
 	<form onsubmit="return navTabSearch(this);" action="${DOMAIN}comment/wxpic-list" method="post">
@@ -35,6 +51,19 @@ function closeWxPic(){
 				<td>
 				       订单号：<input type="text" name="orderNo" value="${wxPicParam.orderNo!''}"/>
 				</td>
+				<td>
+					    审核状态：
+			          <select name="payStatus" style="min-width:120px;" >
+			          	<option value="-1">请选择</option>
+						<#list payStatus?keys as key> 
+							<#if wxPicParam.payStatus ?? && wxPicParam.payStatus == key?eval>
+								<option selected="selected" value="${key}">${payStatus[key]}	</option>	
+							<#else>
+								<option value="${key}">${payStatus[key]}</option>	
+							</#if>		
+						</#list>
+					  </select>
+				</td>	
 				<#if userId == 1>
 					<td>
 					          创建人：
@@ -60,24 +89,32 @@ function closeWxPic(){
 	</form>
 </div>
 <div class="pageContent">
+	<script>
+	    var idArrays = [];
+	</script>
 	<table class="table" width="100%" layoutH="137">
 		<thead>
 			<tr>
-				<th width="60">订单号</th>
+				<th width="100">订单号</th>
+				<th width="80">订单审核状态</th>
 				<th width="300">图片</th>
-				<th width="200">上传时间</th>
-				<th width="160">上传IP</th>
+				<th width="100">上传时间</th>
+				<th width="100">上传IP</th>
 				<#if userId == 1>
-					<th width="200">创建人</th>
+					<th width="80">创建人</th>
 				</#if>
+				<th width="80">操作</th>
 			</tr>
 		</thead>
 		<tbody>
 			<#if pageParam ?? && pageParam.getPageData() ??>
 				<#list pageParam.getPageData() as wxPic>
 					<tr target="id" rel="${wxPic.id}">
-						<td>
+						<td id="orderNo_${wxPic.orderNo}">
 							${wxPic.orderNo!''}
+						</td>
+						<td>
+							${payStatus["${wxPic.payStatus!''}"]}
 						</td>
 						<td>
 							<#list wxPic.picUrl?split(",") as pic>
@@ -95,6 +132,13 @@ function closeWxPic(){
 								${users["${wxPic.userId!''}"]}
 							</td>
 						</#if>
+						<td>
+							<a class="delete" style="padding:5px;" href="${DOMAIN}comment/payordercomment?wxPicId=${wxPic.id}" target="ajaxTodo" callback="navTabAjaxDone" title="确定要返现吗?"><span>返现</span></a><br>
+							<a class="delete"  style="padding:5px;" href="${DOMAIN}comment/payorderpass?wxPicId=${wxPic.id}" callback="navTabAjaxDone" title="确定不通过吗?" target="ajaxTodo">不通过</a>
+						</td>
+						<script>
+						    idArrays.push('${wxPic.orderNo}');
+						</script>
 					</tr>
 				</#list>
 			</#if>
@@ -118,4 +162,9 @@ function closeWxPic(){
 		</div>
 		<div class="pagination" targetType="navTab" totalCount="${pageParam.dataTotal?c}" numPerPage="${pageParam.pageSize}" pageNumShown="10" currentPage="${pageParam.pageNo}"></div>
 	</div>
+	<script>
+	    $.each(idArrays, function (i, v) {
+	        validateOrderList(v);
+	    })
+	</script>
 </div>

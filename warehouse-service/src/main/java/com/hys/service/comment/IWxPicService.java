@@ -11,6 +11,7 @@ public interface IWxPicService {
     public boolean addWxPic(WxPic wxPic);
     public boolean updateWxPic(WxPic wxPic);
     public WxPic queryWxPicByOrderNo(String orderNo,Integer userId);
+    public WxPic queryWxPicById(Integer id,Integer userId);
     public PageData<WxPic> pageQueryWxPics(PageParam<WxPic> page);
     
   

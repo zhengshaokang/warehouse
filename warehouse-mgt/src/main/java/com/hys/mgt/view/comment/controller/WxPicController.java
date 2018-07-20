@@ -6,13 +6,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hys.commons.page.PageData;
 import com.hys.commons.util.LogicUtil;
+import com.hys.dal.select.OrderPayStatus;
 import com.hys.dal.select.Users;
+import com.hys.dal.select.conenum.EnumOrderPayStatus;
 import com.hys.mgt.view.comment.component.IWxPicViewComp;
 import com.hys.mgt.view.comment.vo.WxPicVo;
 import com.hys.mgt.view.common.utils.SessionUtils;
+import com.hys.mgt.view.common.vo.ResultPrompt;
 import com.hys.mgt.view.user.vo.SysUserVo;
 
 @Controller
@@ -36,8 +40,39 @@ public class WxPicController {
 	        PageData<WxPicVo> pageParam = wxPicViewComp.pageQueryWxPics(wxPicVo);
 	        modelMap.put("pageParam", pageParam);
 	        modelMap.put("wxPicParam", wxPicVo);// 查询时传入的参数
-	        
+	        modelMap.put("payStatus", OrderPayStatus.getOptions());
 	        modelMap.put("users", users.getOptions());
 	        return "comment/wx_pic_list";
 	    }
+	    
+	    @ResponseBody
+	    @RequestMapping(value = "validateOrder")
+	    public ResultPrompt validateOrder(String orderNo, ModelMap modelMap, HttpServletRequest request){
+	    	
+	    	HttpSession session = SessionUtils.getSession();
+	    	SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
+	    	
+	    	return wxPicViewComp.validateOrder(orderNo, Integer.parseInt(sysAdminVo.getId()));
+	    } 
+	    
+	    @ResponseBody
+	    @RequestMapping(value = "payordercomment")
+	    public ResultPrompt payordercomment(Integer wxPicId, ModelMap modelMap, HttpServletRequest request){
+	    	
+	    	HttpSession session = SessionUtils.getSession();
+	    	SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
+	    	
+	    	return wxPicViewComp.updateOrderPayStatus(wxPicId, EnumOrderPayStatus.YESPAY.getValue(), Integer.parseInt(sysAdminVo.getId()));
+	    } 
+	    
+	    @ResponseBody
+	    @RequestMapping(value = "payorderpass")
+	    public ResultPrompt payorderpass(Integer wxPicId, ModelMap modelMap, HttpServletRequest request){
+	    	
+	    	HttpSession session = SessionUtils.getSession();
+	    	SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
+	    	
+	    	return wxPicViewComp.updateOrderPayStatus(wxPicId, EnumOrderPayStatus.NOPASS.getValue(), Integer.parseInt(sysAdminVo.getId()));
+	    } 
+	    
 }

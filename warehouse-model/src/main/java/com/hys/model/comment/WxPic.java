@@ -12,6 +12,7 @@ public class WxPic implements Serializable{
 	private String uploadTime;//上传时间
 	private String uploadIp;//上传IP
 	private String picUrl;//图片地址
+	private Integer payStatus;//审核状态
 	public Integer getId() {
 		return id;
 	}
@@ -48,13 +49,17 @@ public class WxPic implements Serializable{
 	public void setPicUrl(String picUrl) {
 		this.picUrl = picUrl;
 	}
+	public Integer getPayStatus() {
+		return payStatus;
+	}
+	public void setPayStatus(Integer payStatus) {
+		this.payStatus = payStatus;
+	}
 	@Override
 	public String toString() {
 		return "WxPic [id=" + id + ", userId=" + userId + ", orderNo="
 				+ orderNo + ", uploadTime=" + uploadTime + ", uploadIp="
-				+ uploadIp + ", picUrl=" + picUrl + "]";
+				+ uploadIp + ", picUrl=" + picUrl + ", payStatus=" + payStatus
+				+ "]";
 	}
-	
-	
- 
 }

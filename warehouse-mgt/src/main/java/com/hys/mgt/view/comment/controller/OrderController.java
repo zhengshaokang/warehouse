@@ -14,13 +14,16 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.hys.commons.page.PageData;
 import com.hys.commons.util.LogicUtil;
+import com.hys.dal.select.OrderPayStatus;
 import com.hys.dal.select.OrderStatus;
 import com.hys.dal.select.Platforms;
 import com.hys.dal.select.Shops;
 import com.hys.dal.select.Users;
 import com.hys.dal.select.YesNos;
+import com.hys.dal.select.conenum.EnumOrderPayStatus;
 import com.hys.mgt.view.comment.component.IOrderViewComp;
 import com.hys.mgt.view.comment.vo.OrderVo;
+import com.hys.mgt.view.comment.vo.WxPicVo;
 import com.hys.mgt.view.common.utils.SessionUtils;
 import com.hys.mgt.view.common.vo.ResultPrompt;
 import com.hys.mgt.view.user.vo.SysUserVo;
@@ -50,6 +53,7 @@ public class OrderController {
 	        modelMap.put("pageParam", pageParam);
 	        modelMap.put("orderParam", vo);// 查询时传入的参数
 	        modelMap.put("shops", shops.getOptions(Integer.parseInt(sysAdminVo.getId())));
+	        modelMap.put("payStatus", OrderPayStatus.getOptions());
 	        modelMap.put("yesno", YesNos.getOptions());
 	        modelMap.put("orderStatus", OrderStatus.getOptions());
 	        modelMap.put("users", users.getOptions());
@@ -64,6 +68,7 @@ public class OrderController {
 	    	modelMap.put("shops", shops.getOptions(Integer.parseInt(sysAdminVo.getId())));
     	    modelMap.put("yesno", YesNos.getOptions());
 	        modelMap.put("orderStatus", OrderStatus.getOptions());
+	        modelMap.put("payStatus", OrderPayStatus.getOptions());
 	        return "comment/order_add";
 	    }
 	    
@@ -75,6 +80,7 @@ public class OrderController {
     		HttpSession session = SessionUtils.getSession();
 		    SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
 		    orderVo.setUserId(Integer.parseInt(sysAdminVo.getId()));
+		    orderVo.setIsPay(EnumOrderPayStatus.NOCHECK.getValue());
 		    ResultPrompt resultPrompt = orderViewComp.addOrder(orderVo);
 		    
 	        return resultPrompt;
@@ -90,6 +96,7 @@ public class OrderController {
 	        modelMap.put("shops", shops.getOptions(Integer.parseInt(sysAdminVo.getId())));
     	    modelMap.put("yesno", YesNos.getOptions());
 	        modelMap.put("orderStatus", OrderStatus.getOptions());
+	        modelMap.put("payStatus", OrderPayStatus.getOptions());
 	        return "comment/order_update";
 	    }
 	    
@@ -145,4 +152,5 @@ public class OrderController {
 	    	
 	        return rp;
 	    }
+	    
 }

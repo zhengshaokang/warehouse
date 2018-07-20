@@ -28,6 +28,19 @@
 							</#list>
 						  </select>
 				</td>
+				<td>
+				          审核状态：
+				          <select name="isPay" style="min-width:120px;" >
+				          	<option value="-1">请选择</option>	
+							<#list payStatus?keys as key> 
+								<#if orderParam.isPay ?? && orderParam.isPay == key?eval>
+									<option selected="selected" value="${key}">${payStatus[key]}	</option>	
+								<#else>
+									<option value="${key}">${payStatus[key]}</option>	
+								</#if>		
+							</#list>
+						  </select>
+				</td>
 				<#if userId == 1>
 					<td>
 					          创建人：
@@ -70,7 +83,7 @@
 				<th width="120">订单状态</th>
 				<th width="120">订单金额</th>
 				<th width="100">参与活动</th>
-				<th width="100">已返现</th>
+				<th width="100">审核状态</th>
 				<th width="180">客户名称</th>
 				<th width="120">客户电话</th>
 				<#if userId == 1>
@@ -100,7 +113,7 @@
 							${yesno["${order.isJoin!''}"]}
 						</td>
 						<td>
-							${yesno["${order.isPay!''}"]}
+							${payStatus["${order.isPay!''}"]}
 						</td>
 						<td>${order.customerName!''}</td>
 						<td>

@@ -49,14 +49,16 @@
 					</#list>
 				</select>
 			</div>
+			<#--
 			<div class="unit">
-				<label style="text-align:right">已返现：</label>
+				<label style="text-align:right">审核状态：</label>
 				<select name="isPay" style="min-width:120px;" class="required">
-					<#list yesno?keys as key> 
-						<option value="${key}">${yesno[key]}</option>					
+					<#list payStatus?keys as key> 
+						<option value="${key}">${payStatus[key]}</option>					
 					</#list>
 				</select>
 			</div>
+			-->
 			<div class="unit">
 				<label style="text-align:right">订单状态：</label>
 				<select name="orderStatus" style="min-width:120px;" class="required">

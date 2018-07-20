@@ -40,4 +40,9 @@ public class WxPicDalCompImpl implements IWxPicDalComp {
 		return new PageData<WxPic>(page.getPageNo(), page.getPageSize(), page.getDataTotal(), pics);
 	}
 
+	@Override
+	public WxPic queryWxPicById(Integer id, Integer userId) {
+		return picDao.queryWxPicById(id, userId);
+	}
+
 }

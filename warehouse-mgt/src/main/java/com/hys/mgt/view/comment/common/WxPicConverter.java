@@ -17,6 +17,7 @@ public class WxPicConverter {
     	  wxPic.setPicUrl(wxPicVo.getPicUrl());
     	  wxPic.setUploadTime(wxPicVo.getUploadTime());
     	  wxPic.setUploadIp(wxPicVo.getUploadIp());
+    	  wxPic.setPayStatus(wxPicVo.getPayStatus());
           return wxPic;
     }
 
@@ -32,6 +33,7 @@ public class WxPicConverter {
         wxPicVo.setPicUrl(wxPic.getPicUrl());
         wxPicVo.setUploadTime(wxPic.getUploadTime());
         wxPicVo.setUploadIp(wxPic.getUploadIp());
+        wxPicVo.setPayStatus(wxPic.getPayStatus());
         return wxPicVo;
     }
 

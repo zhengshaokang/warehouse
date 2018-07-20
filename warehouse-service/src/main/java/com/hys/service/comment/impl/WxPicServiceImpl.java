@@ -51,4 +51,12 @@ public class WxPicServiceImpl implements IWxPicService {
 		return wxPicDalComp.pageQueryWxPics(page);
 	}
 
+	@Override
+	public WxPic queryWxPicById(Integer id, Integer userId) {
+		if(LogicUtil.isNull(id) || LogicUtil.isNull(userId)){
+			return null;
+		}
+		return wxPicDalComp.queryWxPicById(id, userId);
+	}
+
 }

@@ -26,6 +26,7 @@ import com.hys.commons.logutil.LogProxy;
 import com.hys.commons.page.PageData;
 import com.hys.commons.page.PageParam;
 import com.hys.commons.util.LogicUtil;
+import com.hys.dal.select.conenum.EnumOrderPayStatus;
 import com.hys.dal.select.conenum.EnumOrderStatus;
 import com.hys.dal.select.conenum.EnumPlatform;
 import com.hys.dal.select.conenum.EnumYesNo;
@@ -260,7 +261,7 @@ public class OrderViewCompImpl implements IOrderViewComp {
             
             order.setShopId(shopId);
             order.setIsJoin(EnumYesNo.YES.getStatus());
-   		 	order.setIsPay(EnumYesNo.NO.getStatus());
+   		 	order.setIsPay(EnumOrderPayStatus.NOCHECK.getValue());
            
             if(LogicUtil.isNotNull(csvFileList.get(row)[12])){
             	String orderStatus = csvFileList.get(row)[12];
@@ -389,14 +390,14 @@ public class OrderViewCompImpl implements IOrderViewComp {
 		            
 		            order.setShopId(shopId);
 		            order.setIsJoin(EnumYesNo.YES.getStatus());
-           		 	order.setIsPay(EnumYesNo.NO.getStatus());
+		            order.setIsPay(EnumOrderPayStatus.NOCHECK.getValue());
 		           
 		            if(LogicUtil.isNotNull(row.getCell(12))){
 		            	String orderStatus = getCellValue(row.getCell(12));
 		            	if(orderStatus.indexOf("未支付") != 0) {
 		            		order.setOrderStatus(EnumOrderStatus.NOPAY.getValue());
 		            	}
-		            	if(orderStatus.indexOf("未发货") != 0) {
+		            	if(orderStatus.indexOf("等待卖家发货") != 0) {
 		            		order.setOrderStatus(EnumOrderStatus.YESPAY.getValue());
 		            	}
 		            	if(orderStatus.indexOf("已发货") != 0) {

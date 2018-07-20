@@ -16,6 +16,7 @@ public interface IWxPicDao {
     public int addWxPic(WxPic wxPic);
     public int updateWxPic(WxPic wxPic);
     public WxPic queryWxPicByOrderNo(@Param("orderNo")String orderNo,@Param("userId")Integer userId);
+    public WxPic queryWxPicById(@Param("id")Integer id,@Param("userId")Integer userId);
     /**
      * 分页查询
      * 

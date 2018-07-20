@@ -14,7 +14,7 @@ public class WxPicVo implements Serializable{
 	private String uploadTime;//上传时间
 	private String uploadIp;//上传IP
 	private String picUrl;//图片地址
-	
+	private Integer payStatus;//审核状态
 	private int pageNum = 1;
     private int numPerPage = WebConstants.PAGESIZE;
 	
@@ -66,13 +66,18 @@ public class WxPicVo implements Serializable{
 	public void setNumPerPage(int numPerPage) {
 		this.numPerPage = numPerPage;
 	}
+	public Integer getPayStatus() {
+		return payStatus;
+	}
+	public void setPayStatus(Integer payStatus) {
+		this.payStatus = payStatus;
+	}
 	@Override
 	public String toString() {
 		return "WxPicVo [id=" + id + ", userId=" + userId + ", orderNo="
 				+ orderNo + ", uploadTime=" + uploadTime + ", uploadIp="
-				+ uploadIp + ", picUrl=" + picUrl + ", pageNum=" + pageNum
-				+ ", numPerPage=" + numPerPage + "]";
+				+ uploadIp + ", picUrl=" + picUrl + ", payStatus=" + payStatus
+				+ ", pageNum=" + pageNum + ", numPerPage=" + numPerPage + "]";
 	}
-	
  
 }

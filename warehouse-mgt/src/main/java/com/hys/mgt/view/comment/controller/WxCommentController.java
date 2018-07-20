@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.hys.commons.crypto.Base64Ext;
 import com.hys.commons.util.DateUtil;
-import com.hys.commons.util.LogicUtil;
 import com.hys.mgt.view.comment.component.IActivViewComp;
 import com.hys.mgt.view.comment.component.IWxPicViewComp;
 import com.hys.mgt.view.comment.vo.ActivVo;
@@ -18,7 +17,6 @@ import com.hys.mgt.view.comment.vo.WxPicVo;
 import com.hys.mgt.view.common.utils.IPUtils;
 import com.hys.mgt.view.common.vo.ResultPrompt;
 import com.hys.mgt.view.user.component.ISysUserViewComp;
-import com.hys.mgt.view.user.vo.SysUserVo;
 
 @Controller
 @RequestMapping(value="/")

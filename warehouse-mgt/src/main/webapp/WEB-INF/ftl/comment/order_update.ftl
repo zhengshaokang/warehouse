@@ -57,18 +57,21 @@
 					</#list>
 				</select>
 			</div>
+			<#--
 			<div class="unit">
-				<label style="text-align:right">已返现：</label>
+				<label style="text-align:right">审核状态：</label>
 				<select name="isPay" style="min-width:120px;" class="required">
-					<#list yesno?keys as key> 
+					<#list payStatus?keys as key> 
 						<#if order.isPay?? && key?eval == order.isPay> 
-							<option value="${key}" selected="selected">${yesno[key]}</option>		
+							<option value="${key}" selected="selected">${payStatus[key]}</option>		
 						<#else>
-							<option value="${key}">${yesno[key]}</option>	
+							<option value="${key}">${payStatus[key]}</option>	
 						</#if>			
 					</#list>
 				</select>
 			</div>
+			-->
+			<input name="isPay" type="hidden" value="${order.isPay!''}" />
 			<div class="unit">
 				<label style="text-align:right">订单状态：</label>
 				<select name="orderStatus" style="min-width:120px;" class="required">
