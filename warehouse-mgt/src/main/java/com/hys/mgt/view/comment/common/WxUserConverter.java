@@ -21,6 +21,7 @@ public class WxUserConverter {
     	  wxUser.setNickname(wxUserVo.getNickname());
     	  wxUser.setProvince(wxUserVo.getProvince());
     	  wxUser.setSex(wxUserVo.getSex());
+    	  wxUser.setOpenId(wxUserVo.getOpenId());
           return wxUser;
     }
 
@@ -40,6 +41,7 @@ public class WxUserConverter {
         wxUserVo.setNickname(wxUser.getNickname());
         wxUserVo.setProvince(wxUser.getProvince());
         wxUserVo.setSex(wxUser.getSex());
+        wxUserVo.setOpenId(wxUser.getOpenId());
         return wxUserVo;
     }
 

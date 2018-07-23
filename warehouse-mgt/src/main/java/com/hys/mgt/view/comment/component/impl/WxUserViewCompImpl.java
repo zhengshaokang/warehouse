@@ -55,4 +55,19 @@ public class WxUserViewCompImpl implements IWxUserViewComp {
         return pageVo;
 	}
 
+	@Override
+	public boolean addWxUser(WxUserVo user) {
+		WxUser userold = wxUserService.queryWxUserByOpendId(user.getOpenId(), user.getUserId());
+		if(LogicUtil.isNotNull(userold)) {
+			return false;
+		}
+		return wxUserService.addWxUser(WxUserConverter.convert2Do(user));
+	}
+
+	@Override
+	public WxUserVo queryWxUserByOpendId(String openId, Integer userId) {
+		
+		return WxUserConverter.convert2Vo(wxUserService.queryWxUserByOpendId(openId, userId));
+	}
+
 }

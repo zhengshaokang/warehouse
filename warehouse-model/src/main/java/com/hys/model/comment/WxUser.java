@@ -15,6 +15,7 @@ public class WxUser implements Serializable{
 	private String language;//微信用户的语言，简体中文为zh_CN
 	private String headimgurl;//微信用户头像地址
 	private String logintime;//微信用户关注时间
+	private String openId;//微信对应公众号的id
 	public Integer getId() {
 		return id;
 	}
@@ -75,14 +76,18 @@ public class WxUser implements Serializable{
 	public void setLogintime(String logintime) {
 		this.logintime = logintime;
 	}
+	public String getOpenId() {
+		return openId;
+	}
+	public void setOpenId(String openId) {
+		this.openId = openId;
+	}
 	@Override
 	public String toString() {
 		return "WxUser [id=" + id + ", userId=" + userId + ", nickname="
 				+ nickname + ", sex=" + sex + ", city=" + city + ", province="
 				+ province + ", country=" + country + ", language=" + language
 				+ ", headimgurl=" + headimgurl + ", logintime=" + logintime
-				+ "]";
+				+ ", openId=" + openId + "]";
 	}
-	
-	
 }

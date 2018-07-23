@@ -6,6 +6,27 @@
 	<input type="hidden" name="userId" value="${wxUserParam.userId!''}" />
 	</#if>
 </form>
+<script>
+function openWxPic(obj) {
+
+	var left = $(obj).offset().left+$(obj).width();
+	var top = $(obj).offset().top;
+	if((top-100) > 150 && (top-100) < 200 ) {
+		top = top-80;
+	} else if((top-100) > 260 && (top-100) < 350) {
+		top = top - 160;
+	} else if((top-100) > 350){
+		top = top - 220;
+	}
+	var html = '<div id="wxpicImage" style="left:'+left+'px; top:'+top+'px; z-index:99999;width:300px;height:300px;border:1px solid #e6e6e6;position: absolute;background:#000">'
+	html += '<div  style="height:100%;width:100%;background: url('+$(obj).attr("picUrl")+')  no-repeat center center;background-size:contain;"></div>';
+	html += '</div>';
+	$("body").append(html);
+}
+function closeWxPic(){
+	$("#wxpicImage").remove();
+}
+</script>
 <div class="pageHeader">
 	<form onsubmit="return navTabSearch(this);" action="${DOMAIN}comment/wxuser-list" method="post">
 	<div class="searchBar">
@@ -78,7 +99,7 @@
 							${wxUser.language!''}
 						</td>
 						<td>
-							${wxUser.headimgurl!''}
+							<div  onmouseover="openWxPic(this)" picUrl="${wxUser.headimgurl}"  onmouseout="closeWxPic()" style="float:left;height:80px;width:80px;background: url('${wxUser.headimgurl}')  no-repeat center center;background-size:contain ;" ></div>
 						</td>
 						<td>
 							${wxUser.logintime!''}

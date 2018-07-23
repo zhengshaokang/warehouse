@@ -9,6 +9,7 @@ public interface IWxUserDalComp {
 	
     public int addWxUser(WxUser wxUser);
     public boolean updateWxUser(WxUser wxUser);
+    public WxUser queryWxUserByOpendId(String openId,Integer userId);
     public PageData<WxUser> pageQueryWxUsers(PageParam<WxUser> page);
     
   

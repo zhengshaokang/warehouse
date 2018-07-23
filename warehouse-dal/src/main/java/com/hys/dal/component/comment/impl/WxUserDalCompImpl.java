@@ -33,4 +33,9 @@ public class WxUserDalCompImpl implements IWxUserDalComp {
 		return new PageData<WxUser>(page.getPageNo(), page.getPageSize(), page.getDataTotal(), users);
 	}
 
+	@Override
+	public WxUser queryWxUserByOpendId(String openId, Integer userId) {
+		return wxUserDao.queryWxUserByOpendId(openId, userId);
+	}
+
 }

@@ -44,4 +44,12 @@ public class WxUserServiceImpl implements IWxUserService {
 		return wxUserDalComp.pageQueryWxUsers(page);
 	}
 
+	@Override
+	public WxUser queryWxUserByOpendId(String openId, Integer userId) {
+		if (LogicUtil.isNullOrEmpty(openId) || LogicUtil.isNull(userId)){
+			return null;
+		}
+		return wxUserDalComp.queryWxUserByOpendId(openId, userId);
+	}
+
 }

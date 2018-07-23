@@ -9,13 +9,15 @@
 		<result property="uploadIp" column="upload_ip" />
 		<result property="picUrl" column="pic_url" />
 		<result property="payStatus" column="pay_status" />
+		<result property="openId" column="openid" />
+		<result property="nickname" column="nickname" />
 	</resultMap>
 	
    
 	<insert id="addWxPic" parameterType="wxPic" useGeneratedKeys="true" keyProperty="id">
 		insert into
-		c_pic(id,user_id,order_no,upload_time,upload_ip,pic_url,pay_status)
-		values(#{id},#{userId},#{orderNo},#{uploadTime},#{uploadIp},#{picUrl},#{payStatus})
+		c_pic(id,user_id,order_no,upload_time,upload_ip,pic_url,pay_status,openid,nickname)
+		values(#{id},#{userId},#{orderNo},#{uploadTime},#{uploadIp},#{picUrl},#{payStatus},#{openId},#{nickname})
 	</insert>
 	
 	<update id="updateWxPic" parameterType="wxPic">
@@ -25,6 +27,8 @@
 			<if test="uploadTime != null and uploadTime!=''">upload_time=#{uploadTime},</if>
 			<if test="uploadIp != null and uploadIp != ''">upload_ip=#{uploadIp},</if>
 			<if test="payStatus != null and payStatus != ''">pay_status=#{payStatus},</if>
+			<if test="openId != null and openId != ''">openid=#{openId},</if>
+			<if test="nickname != null and nickname != ''">nickname=#{nickname},</if>
 			<if test="picUrl != null and picUrl != ''">pic_url=#{picUrl}</if>
 			
 		</set>

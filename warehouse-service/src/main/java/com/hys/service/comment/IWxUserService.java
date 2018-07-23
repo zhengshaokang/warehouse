@@ -10,6 +10,5 @@ public interface IWxUserService {
     public boolean addWxUser(WxUser wxUser);
     public boolean updateWxUser(WxUser wxUser);
     public PageData<WxUser> pageQueryWxUsers(PageParam<WxUser> page);
-    
-  
+    public WxUser queryWxUserByOpendId(String openId,Integer userId);
 }

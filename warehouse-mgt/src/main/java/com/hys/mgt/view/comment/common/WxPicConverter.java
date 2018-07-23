@@ -18,6 +18,8 @@ public class WxPicConverter {
     	  wxPic.setUploadTime(wxPicVo.getUploadTime());
     	  wxPic.setUploadIp(wxPicVo.getUploadIp());
     	  wxPic.setPayStatus(wxPicVo.getPayStatus());
+    	  wxPic.setNickname(wxPicVo.getNickname());
+    	  wxPic.setOpenId(wxPicVo.getOpenId());
           return wxPic;
     }
 
@@ -34,6 +36,8 @@ public class WxPicConverter {
         wxPicVo.setUploadTime(wxPic.getUploadTime());
         wxPicVo.setUploadIp(wxPic.getUploadIp());
         wxPicVo.setPayStatus(wxPic.getPayStatus());
+        wxPicVo.setNickname(wxPic.getNickname());
+        wxPicVo.setOpenId(wxPic.getOpenId());
         return wxPicVo;
     }
 

@@ -24,7 +24,7 @@ public class ActivServiceImpl implements IActivService {
 		if(LogicUtil.isNull(activ)) {
 			return false;
 		}
-		String code = "ACTIV"+DateUtil.getCurrentDateTime("yyyyMMddHHmmss");
+		String code = activ.getUserId()+"ACTIV"+DateUtil.getCurrentDateTime("yyyyMMddHHmmss");
 		String base64Code = Base64Ext.encode((activ.getUserId() + "|"+code).getBytes());
 	    String wxlink = "wxpicadd?activ=" + base64Code;
 		activ.setWxLink(wxlink);

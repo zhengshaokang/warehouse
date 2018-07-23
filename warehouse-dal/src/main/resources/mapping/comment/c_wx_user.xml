@@ -12,13 +12,14 @@
 		<result property="language" column="language" />
 		<result property="headimgurl" column="headimgurl"/>
 		<result property="logintime" column="logintime"/>
+		<result property="openId" column="openid"/>
 	</resultMap>
 	
     <!-- 添加系统用户-->
 	<insert id="addWxUser" parameterType="wxUser" useGeneratedKeys="true" keyProperty="id">
 		insert into
-		c_wx_user(id,user_id,nickname,sex,city,province,country,language,headimgurl,logintime)
-		values(#{id},#{userId},#{nickname},#{sex},#{city},#{province},#{country},#{language},#{headimgurl},#{logintime})
+		c_wx_user(id,user_id,nickname,sex,city,province,country,language,headimgurl,logintime,openid)
+		values(#{id},#{userId},#{nickname},#{sex},#{city},#{province},#{country},#{language},#{headimgurl},#{logintime},#{openId})
 	</insert>
     <!-- 修改系统用户 -->
 	<update id="updateWxUser" parameterType="wxUser">
@@ -32,9 +33,14 @@
 			<if test="language != null and language!=''">language=#{language},</if>
 			<if test="headimgurl != null and headimgurl != ''">headimgurl=#{headimgurl},</if>
 			<if test="logintime != null">logintime=#{logintime},</if>
+			<if test="logintime != null">openid=#{openId}</if>
 		</set>
 		where id=#{id}
 	</update>
+	
+	<select id="queryWxUserByOpendId" resultMap="wxUserResult">
+		    select * from c_wx_user where openid = #{openId} and user_id = #{userId}
+	</select>
 	
 	<select id="pageQueryWxUsers" resultMap="wxUserResult" parameterType="page">
 		select * from c_wx_user where 1=1
