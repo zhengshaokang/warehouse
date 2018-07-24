@@ -12,8 +12,10 @@ import com.hys.commons.page.PageData;
 import com.hys.commons.page.PageParam;
 import com.hys.commons.util.LogicUtil;
 import com.hys.dal.select.conenum.EnumOrderPayStatus;
+import com.hys.mgt.view.comment.common.OrderConverter;
 import com.hys.mgt.view.comment.common.WxPicConverter;
 import com.hys.mgt.view.comment.component.IWxPicViewComp;
+import com.hys.mgt.view.comment.vo.OrderVo;
 import com.hys.mgt.view.comment.vo.WxPicVo;
 import com.hys.mgt.view.common.vo.ResultPrompt;
 import com.hys.model.comment.Order;
@@ -122,21 +124,19 @@ public class WxPicViewCompImpl implements IWxPicViewComp {
         return pageVo;
 	}
 	@Override
-	public ResultPrompt validateOrder(String orderNo, Integer userId) {
-		ResultPrompt rp = new ResultPrompt();
-		
+	public OrderVo validateOrder(String orderNo, Integer userId) {
+		OrderVo vo = new OrderVo();
+		vo.setId(-1);
 		try {
 			//验证订单是否存在，不能重复
 			Order  pc = orderService.queryOrderByNo(orderNo, userId);
 			if(null != pc) {
-				 rp.setStatusCode("200");
-				 return rp;
-			}
+				 return OrderConverter.convert2Vo(pc);
+			} 
 		} catch (Exception e) {
 			e.printStackTrace();
-		    rp.setStatusCode("300");
 		}
-		return rp;
+		return vo;
 	}
 
 

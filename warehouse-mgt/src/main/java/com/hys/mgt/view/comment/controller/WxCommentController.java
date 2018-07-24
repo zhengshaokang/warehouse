@@ -21,6 +21,7 @@ import com.hys.commons.json.JsonConverter;
 import com.hys.commons.otherapi.wxapi.bean.Oauth2AccessToken;
 import com.hys.commons.util.DateUtil;
 import com.hys.commons.util.LogicUtil;
+import com.hys.dal.select.conenum.EnumOrderPayStatus;
 import com.hys.mgt.view.comment.component.IActivViewComp;
 import com.hys.mgt.view.comment.component.IWxPicViewComp;
 import com.hys.mgt.view.comment.component.IWxUserViewComp;
@@ -44,20 +45,15 @@ public class WxCommentController {
 	    @RequestMapping(value = "wxpicadd")
 	    public String list(String activ,String code, ModelMap modelMap, HttpServletRequest request){
 	    	try {
-	    		System.out.println("activ======>"+activ);
-	    		System.out.println("code======>"+code);
 	    		String decodeStr = new String(Base64Ext.decode(activ),"UTF-8");
 				String[] decodeArr = decodeStr.split("\\|");
 	    		
 	    		HttpSession session = request.getSession();
 	    		String openId = (String) session.getAttribute("openId");
 	    		String token = (String) session.getAttribute("token");
-	    		System.out.println("useId======>"+decodeArr[0]);
-	    		System.out.println("openId======>"+openId +";==>"+token);
 	    		
                 WxUserVo wxuser = getWxUserinfo(openId,token);
                 
-                System.out.println("wxuser====?"+wxuser.toString());
                 if(LogicUtil.isNotNull(wxuser)) {
                 	 wxuser.setUserId(Integer.parseInt(decodeArr[0]));
                 	 wxuser.setOpenId(openId);
@@ -96,7 +92,7 @@ public class WxCommentController {
 	        String openId = (String) session.getAttribute("openId");
 	        String token = (String) session.getAttribute("token");
     		if (StringUtils.isBlank(openId)) {
-    			Oauth2AccessToken accessToken = getOauth2AccessToken(code);
+    			Oauth2AccessToken accessToken = getOauth2AccessToken(code,session);
 	    		if (null != accessToken && StringUtils.isNotBlank(accessToken.getAccessToken())) {
 	                openId = accessToken.getOpenId();
 	                token = accessToken.getAccessToken();
@@ -108,11 +104,13 @@ public class WxCommentController {
 	    }
 	    
 	    
-	    public static Oauth2AccessToken getOauth2AccessToken(String code){
+	    public static Oauth2AccessToken getOauth2AccessToken(String code,HttpSession session) throws Exception{
 	        if (StringUtils.isNotBlank(code)){
 	            String url = "https://api.weixin.qq.com/sns/oauth2/access_token";
-	            String appId = "wx36c0752699ec541c";
-	            String secret = "28dba62ab2c83f7fedb3b5d9edaba30b";
+	            String appId = (String) session.getAttribute("c_appid");//"wx36c0752699ec541c";
+	            String secret64 = (String) session.getAttribute("c_secret");
+	            System.out.println("appId"+appId +",secret64" + secret64);
+	            String secret = new String(Base64Ext.decode(secret64),"UTF-8");//"28dba62ab2c83f7fedb3b5d9edaba30b";
 	            String grant_type = "authorization_code";
 
 	            Map<String, String> map = new HashMap<String, String>();
@@ -154,6 +152,7 @@ public class WxCommentController {
     		if(LogicUtil.isNotNull(wxuser)) {
     			wxPicVo.setNickname(wxuser.getNickname());
     		}
+    		wxPicVo.setPayStatus(EnumOrderPayStatus.NOCHECK.getValue());
     		wxPicVo.setUploadIp(IPUtils.getIpAddr(request));
 	    	wxPicVo.setUploadTime(DateUtil.getCurrentDateTime("yyyy-MM-dd HH:mm:ss"));
 	    	ResultPrompt ResultPrompt = wxPicViewComp.addOrUpdateWxPic(wxPicVo);

@@ -109,7 +109,7 @@ function closePic(){
 							${activ.description!''}
 						</td>
 						<td>
-							${DOMAIN}${activ.wxLink!''}
+							${wxDoMain}${activ.wxLink!''}
 						</td>
 					</tr>
 				</#list>

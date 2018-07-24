@@ -31,6 +31,9 @@ public class SysUser implements Serializable
     private String loginTime ;//用户登录时间
     private String loginIp ;//用户登录ip
     
+    private String appId; 
+    private String secret; 
+    
 
 	public String getId() {
 		return id;
@@ -211,6 +214,22 @@ public class SysUser implements Serializable
 		this.loginIp = loginIp;
 	}
 
+	public String getAppId() {
+		return appId;
+	}
+
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+
+	public String getSecret() {
+		return secret;
+	}
+
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
+
 	@Override
 	public String toString() {
 		return "SysUser [id=" + id + ", loginname=" + loginname + ", password="
@@ -223,8 +242,7 @@ public class SysUser implements Serializable
 				+ updateUserId + ", isWarhouse=" + isWarhouse + ", isComment="
 				+ isComment + ", vipLevel=" + vipLevel + ", vipDate=" + vipDate
 				+ ", commentUrl=" + commentUrl + ", loginTime=" + loginTime
-				+ ", loginIp=" + loginIp + "]";
+				+ ", loginIp=" + loginIp + ", appId=" + appId + ", secret="
+				+ secret + "]";
 	}
-
-
 } 

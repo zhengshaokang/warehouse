@@ -1,5 +1,6 @@
 package com.hys.mgt.view.user.component.impl;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.ModelMap;
 
+import com.hys.commons.crypto.Base64Ext;
 import com.hys.commons.crypto.MD5Coding;
 import com.hys.commons.logutil.LogProxy;
 import com.hys.commons.page.PageData;
@@ -261,20 +263,25 @@ public class SysUserViewCompImpl implements ISysUserViewComp {
 	    }
 
 	    @Override
-	    public void userUpdateOrAdd(String userId, ModelMap modelMap)
-	    {
-	        SysUser user = userService.querySysUserById(userId);
-	        List<SysRole> userSysRoles = roleService.queryRolesByUserId(userId);
+	    public void userUpdateOrAdd(String userId, ModelMap modelMap){
+	        try {
+				SysUser user = userService.querySysUserById(userId);
+				List<SysRole> userSysRoles = roleService.queryRolesByUserId(userId);
 
-	        PageParam<SysRole> page = new PageParam<SysRole>();
-	        page.setP(new SysRole());
-	        page.setPageNo(1);
-	        page.setPageSize(Integer.MAX_VALUE);
-	        PageData<SysRole> pd = roleService.querySysRoles(page);
-
-	        modelMap.put("userUpdatevo", user);
-	        modelMap.put("userUpdateUserSysRoles", userSysRoles);
-	        modelMap.put("userUpdateSysRoles", pd.getPageData());
+				PageParam<SysRole> page = new PageParam<SysRole>();
+				page.setP(new SysRole());
+				page.setPageNo(1);
+				page.setPageSize(Integer.MAX_VALUE);
+				PageData<SysRole> pd = roleService.querySysRoles(page);
+				if(LogicUtil.isNotNullAndEmpty(user.getSecret())){
+					user.setSecret(new String(Base64Ext.decode(user.getSecret()),"UTF-8"));
+				}
+				modelMap.put("userUpdatevo", user);
+				modelMap.put("userUpdateUserSysRoles", userSysRoles);
+				modelMap.put("userUpdateSysRoles", pd.getPageData());
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
 
 	    }
 

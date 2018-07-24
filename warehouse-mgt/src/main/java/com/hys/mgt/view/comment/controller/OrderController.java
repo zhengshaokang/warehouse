@@ -23,7 +23,6 @@ import com.hys.dal.select.YesNos;
 import com.hys.dal.select.conenum.EnumOrderPayStatus;
 import com.hys.mgt.view.comment.component.IOrderViewComp;
 import com.hys.mgt.view.comment.vo.OrderVo;
-import com.hys.mgt.view.comment.vo.WxPicVo;
 import com.hys.mgt.view.common.utils.SessionUtils;
 import com.hys.mgt.view.common.vo.ResultPrompt;
 import com.hys.mgt.view.user.vo.SysUserVo;

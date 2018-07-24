@@ -8,10 +8,10 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hys.commons.conf.ProfileManager;
 import com.hys.commons.page.PageData;
 import com.hys.commons.util.DateUtil;
 import com.hys.commons.util.LogicUtil;
-import com.hys.dal.select.Status;
 import com.hys.dal.select.Users;
 import com.hys.mgt.view.comment.component.IActivViewComp;
 import com.hys.mgt.view.comment.vo.ActivVo;
@@ -40,7 +40,8 @@ public class ActivController {
 	        PageData<ActivVo> pageParam = activViewComp.pageQueryActivs(activVo);
 	        modelMap.put("pageParam", pageParam);
 	        modelMap.put("activParam", activVo);// 查询时传入的参数
-	        
+	        String doMain = ProfileManager.getStringByKey("hys_webapp.wx_domain_url", "");
+	        modelMap.put("wxDoMain", doMain);
 	        modelMap.put("users", users.getOptions());
 	        return "comment/activ_list";
 	    }

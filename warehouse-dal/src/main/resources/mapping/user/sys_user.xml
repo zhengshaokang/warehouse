@@ -24,13 +24,15 @@
 		<result property="commentUrl" column="comment_url" />
 		<result property="loginTime" column="login_time" />
 		<result property="loginIp" column="login_ip" />
+		<result property="appId" column="app_id" />
+		<result property="secret" column="secret" />
 	</resultMap>
 	
     <!-- 添加系统用户-->
 	<insert id="addSysUser" parameterType="sysuser" useGeneratedKeys="true" keyProperty="id">
 		insert into
-		sys_user(id,login_name,password,real_name,sex,age,birthday,mobile,office_phone,user_status,create_datetime,create_user_id,update_datetime, update_user_id,is_warhouse,is_comment,vip_level,vip_date,comment_url,login_time,login_ip)
-		values(#{id},#{loginname},#{password},#{realname},#{sex},#{age},#{birthday},#{mobile},#{officephone},#{userStatus},#{createUserId},#{createDatetime},#{updateUserId},#{updateDatetime},#{isWarhouse},#{isComment},#{vipLevel},#{vipDate},#{commentUrl},#{loginTime},#{loginIp})
+		sys_user(id,login_name,password,real_name,sex,age,birthday,mobile,office_phone,user_status,create_datetime,create_user_id,update_datetime, update_user_id,is_warhouse,is_comment,vip_level,vip_date,comment_url,login_time,login_ip,app_id,secret)
+		values(#{id},#{loginname},#{password},#{realname},#{sex},#{age},#{birthday},#{mobile},#{officephone},#{userStatus},#{createUserId},#{createDatetime},#{updateUserId},#{updateDatetime},#{isWarhouse},#{isComment},#{vipLevel},#{vipDate},#{commentUrl},#{loginTime},#{loginIp},#{appId},#{secret})
 	</insert>
     <!-- 修改系统用户 -->
 	<update id="updateSysUser" parameterType="sysuser">
@@ -52,6 +54,8 @@
 			<if test="vipDate != null">vip_date=#{vipDate},</if>
 			<if test="commentUrl != null">comment_url=#{commentUrl},</if>
 			<if test="loginTime != null">login_time=#{loginTime},</if>
+			<if test="appId != null and appId != ''">app_id=#{appId},</if>
+			<if test="secret != null and secret != ''">secret=#{secret},</if>
 			<if test="loginIp != null">login_ip=#{loginIp}</if>
 		</set>
 		where id=#{id}
@@ -94,6 +98,10 @@
 			<if test="password != null and password != ''">
 				and password = #{password}
 			</if>
+	</select>
+	
+	<select id="querySysUserById" resultMap="sysuserResult" parameterType="sysuser">
+	    select * from sys_user where  user_status=1 and  id = #{id}
 	</select>
 	
 	<!-- 系统用户的登录 -->

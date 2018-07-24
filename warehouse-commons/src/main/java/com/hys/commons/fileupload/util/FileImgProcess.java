@@ -248,7 +248,19 @@ public class FileImgProcess
             String newFileName = FileSavingUtils.getPreName(fileName)+"TH."+FileSavingUtils.getExtName(fileName);
             String targetImgPath = targetDir + newFileName;
             
+            
             ImageThumbUtils.thumbImage(originalImgSavingPath, srcWidth, srcHeight, targetImgPath);
+            
+            if(srcWidth > 60) {
+            	double reg  = (double)srcWidth/60;
+            	Double height = srcHeight/reg;
+            	srcHeight = height.intValue();
+            	srcWidth = 60;
+            }
+            
+            String newFileName60 = FileSavingUtils.getPreName(fileName)+"TH60."+FileSavingUtils.getExtName(fileName);
+            String targetImgPath60 = targetDir + newFileName60;
+            ImageThumbUtils.thumbImage(originalImgSavingPath, srcWidth, srcHeight, targetImgPath60);
             
             FileSavingUtils.deleteFile(targetDir+fileName);
             

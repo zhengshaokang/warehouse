@@ -81,7 +81,7 @@ function validateCallback1(form, callback) {
 
 </script>
  <div class="pageContent">
-	<form method="post" action="${DOMAIN}user/userUpdateSubmit" class="pageForm required-validate" onsubmit="return validateCallback1(this, dialogAjaxDone);">
+	<form method="post" action="${DOMAIN}user/userUpdateSubmit" class="pageForm required-validate" onsubmit="return validateCallback1(this, navTabAjaxDone);">
 		<div class="pageFormContent" layoutH="56">
 			<input type="hidden" id="roles" name="roles" value=""/>
 			<input type="hidden" name="id" value="${userUpdatevo.id!''}"/>
@@ -123,7 +123,14 @@ function validateCallback1(form, callback) {
 				<label style="text-align:right">测评模板路径：</label>
 				<input name="commentUrl" class="" type="text" size="30" value="${userUpdatevo.commentUrl!''}" alt="请输入测评模板路径"/>
 			</div>
-			
+			<div class="unit">
+				<label style="text-align:right">appId：</label>
+				<input name="appId" class="" type="text" size="30" value="${userUpdatevo.appId!''}" alt="请输appId"/>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">secret：</label>
+				<input name="secret" class="" type="text" size="30" value="${userUpdatevo.secret!''}" alt="请输入secret"/>
+			</div>
 			<div class="unit">
 				<div><label style="text-align:right">角色：</label></div>
 				<div id='role' class="test">

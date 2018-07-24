@@ -5,15 +5,18 @@
 <meta charset="UTF-8">
 <meta content="width=device-width,user-scalable=no" name="viewport">
 <meta name="apple-mobile-web-app-capable" content="yes">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 <title>${activ.title!''}</title>
 <link href="${BASEPATH}js/util/mypopup.css" rel="stylesheet" type="text/css"/>
 <link href="${BASEPATH}css/comment/wx_upload.css" rel="stylesheet" type="text/css"/>
 <script src="${BASEPATH}plugin/dwz-ria/js/jquery-2.1.4.min.js"></script>
 <script src="${BASEPATH}js/util/mypopup.js" type="text/javascript"></script>
-<script src="${BASEPATH}js/comment/wx_upload.js" type="text/javascript"></script>
+<script src="${BASEPATH}js/comment/wx-upload.js?v=${VERSION!''}" type="text/javascript"></script>
 </head>
 <script>
-	var picUrl='${IMGBASEPATH}';
+	var picUrl='${WXIMGPATH}';
 </script>
 <style>
 .index {

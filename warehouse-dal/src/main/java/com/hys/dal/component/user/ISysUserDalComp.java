@@ -31,6 +31,8 @@ public interface ISysUserDalComp {
      * @return
      */
     public SysUser querySysUser(SysUser sysUser);
+    
+    public SysUser querySysUserById(Integer id);
 
     public SysUser querySysUserLogin(SysUser sysuser);
     public List<SysUser> querySysUsers();

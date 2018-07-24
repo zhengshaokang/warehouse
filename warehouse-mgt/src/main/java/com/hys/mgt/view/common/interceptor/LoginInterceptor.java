@@ -8,17 +8,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hys.commons.conf.ProfileManager;
 import com.hys.commons.crypto.Base64Ext;
+import com.hys.commons.util.LogicUtil;
+import com.hys.mgt.view.user.component.ISysUserViewComp;
 import com.hys.mgt.view.user.vo.SysUserVo;
-import com.hys.model.comment.WxUser;
 
 
-public class LoginInterceptor implements HandlerInterceptor
-{
+public class LoginInterceptor implements HandlerInterceptor {
+	
+	@Autowired
+	private ISysUserViewComp userViewComp;
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception
@@ -42,9 +46,22 @@ public class LoginInterceptor implements HandlerInterceptor
         if(checkWxInteceptor(str).booleanValue()){ //微信请求
         	 String wxUser =  (String)session.getAttribute("openId");
         	 if (null == wxUser){// 不存在用户身份
-                 String appId = "wx36c0752699ec541c";//ProfileManager.getStringByKey("maowu_webapp_wx.wx_appId", "");
-                 String doMain = "http://wx.vva.com.cn";// ProfileManager.getStringByKey("hys_webapp.wx_domain_url", "");
+                 String appId = "" ;//"wx36c0752699ec541c";//ProfileManager.getStringByKey("maowu_webapp_wx.wx_appId", "");
+                 String doMain = ProfileManager.getStringByKey("hys_webapp.wx_domain_url", "");
                  String param = request.getQueryString();
+                 
+                 //根据链接获取userId
+                 String[] params = param.split("=");
+ 	             String activStr = new String(Base64Ext.decode(params[1]),"UTF-8");
+ 	             String[] activArr= activStr.split("\\|");
+ 	             //根据userId查询微信公众号appId的配置
+ 	            SysUserVo user =  userViewComp.queryUserById(activArr[0]);
+ 	            if(LogicUtil.isNotNull(user) && LogicUtil.isNotNullAndEmpty(user.getAppId())) {
+ 	            	appId = user.getAppId();
+ 	            	session.setAttribute("c_secret", user.getSecret());
+ 	            	session.setAttribute("c_appid", user.getAppId());
+ 	            }
+ 	             
                  String originalUrl = request.getRequestURL().toString();
                  if (null != param) {
                      originalUrl = request.getRequestURL().toString() + "?param=" + Base64Ext.encode(param.getBytes());

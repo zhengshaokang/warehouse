@@ -238,21 +238,27 @@ public class OrderViewCompImpl implements IOrderViewComp {
             if(LogicUtil.isNotNull(csvFileList.get(row)[0])){
 				Order  pc = orderService.queryOrderByNo(csvFileList.get(row)[0], userId);
             	if(LogicUtil.isNotNull(pc)) {
-            		rp.setStatusCode("300");
-				    rp.setMessage("订单号"+csvFileList.get(row)[0]+"订单号已经存在，请核实后再上传");
-				    return rp;
+//            		rp.setStatusCode("300");
+//				    rp.setMessage("订单号"+csvFileList.get(row)[0]+"订单号已经存在，请核实后再上传");
+//				    return rp;
+            		continue;
             	}
-            	
+            	boolean flag = false;
             	for (String orderNo : orderNos) {
 					if(orderNo.equals(csvFileList.get(row)[0].trim())){
-						rp.setStatusCode("300");
-					    rp.setMessage("订单号"+orderNo+"重复，请核实后再上传");
-					    return rp;
+//						rp.setStatusCode("300");
+//					    rp.setMessage("订单号"+orderNo+"重复，请核实后再上传");
+//					    return rp;
+						flag = true;
 					}
 				}
-            	
-            	order.setOrderNo(csvFileList.get(row)[0].trim()); 
-            	orderNos.add(csvFileList.get(row)[0].trim());
+            	if(flag) {
+            		continue;
+            	}
+            	String orderNo = csvFileList.get(row)[0].trim();
+            	orderNo = orderNo.replaceAll("\\=", "").replaceAll("\"", "");
+            	order.setOrderNo(orderNo); 
+            	orderNos.add(orderNo);
             } else {
             	rp.setStatusCode("300");
 			    rp.setMessage("订单号不能为空");
@@ -367,21 +373,27 @@ public class OrderViewCompImpl implements IOrderViewComp {
 		            if(LogicUtil.isNotNull(row.getCell(0))){
 						Order  pc = orderService.queryOrderByNo(getCellValue(row.getCell(0)), userId);
 		            	if(LogicUtil.isNotNull(pc)) {
-		            		rp.setStatusCode("300");
-						    rp.setMessage("订单号"+getCellValue(row.getCell(0))+"订单号已经存在，请核实后再上传");
-						    return rp;
+//		            		rp.setStatusCode("300");
+//						    rp.setMessage("订单号"+getCellValue(row.getCell(0))+"订单号已经存在，请核实后再上传");
+//						    return rp;
+		            		continue;
 		            	}
-		            	
+		            	boolean flag = false;
 		            	for (String orderNo : orderNos) {
 							if(orderNo.equals(getCellValue(row.getCell(0)).trim())){
-								rp.setStatusCode("300");
-							    rp.setMessage("订单号"+orderNo+"重复，请核实后再上传");
-							    return rp;
+//								rp.setStatusCode("300");
+//							    rp.setMessage("订单号"+orderNo+"重复，请核实后再上传");
+//							    return rp;
+								flag = true;
 							}
 						}
-		            	
-		            	order.setOrderNo(getCellValue(row.getCell(0)).trim()); 
-		            	orderNos.add(getCellValue(row.getCell(0)).trim());
+		            	if(flag) {
+		            		continue;
+		            	}
+		            	String orderNo = getCellValue(row.getCell(0)).trim();
+		            	orderNo = orderNo.replaceAll("\\=", "").replaceAll("\"", "");
+		            	order.setOrderNo(orderNo);
+		            	orderNos.add(orderNo);
 		            } else {
 		            	rp.setStatusCode("300");
 					    rp.setMessage("订单号不能为空");

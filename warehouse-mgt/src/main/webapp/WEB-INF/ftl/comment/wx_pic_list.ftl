@@ -14,12 +14,12 @@ function openWxPic(obj) {
 	var top = $(obj).offset().top;
 	if((top-100) > 150 && (top-100) < 200 ) {
 		top = top-80;
-	} else if((top-100) > 260 && (top-100) < 350) {
+	} else if((top-100) > 260 && (top-100) < 400) {
 		top = top - 160;
-	} else if((top-100) > 350){
+	} else if((top-100) > 400){
 		top = top - 220;
 	}
-	var html = '<div id="wxpicImage" style="left:'+left+'px; top:'+top+'px; z-index:99999;width:300px;height:300px;border:1px solid #e6e6e6;position: absolute;background:#000">'
+	var html = '<div id="wxpicImage" style="left:'+left+'px; top:'+top+'px; z-index:99999;width:400px;height:400px;border:1px solid #e6e6e6;position: absolute;background:#000">'
 	html += '<div  style="height:100%;width:100%;background: url('+$(obj).attr("picUrl")+')  no-repeat center center;background-size:contain;"></div>';
 	html += '</div>';
 	$("body").append(html);
@@ -27,6 +27,7 @@ function openWxPic(obj) {
 function closeWxPic(){
 	$("#wxpicImage").remove();
 }
+
 function validateOrderList(orderNo){
     $.ajax({
         type:"post",
@@ -34,10 +35,32 @@ function validateOrderList(orderNo){
         data:{orderNo:orderNo},
         dataType:"json",
         success:function(data){
-             var html='<img src="${BASEPATH}/img/comment/exc.gif" style="height:12px;width:12px;" />';
-            if(data.statusCode == 200){
-            	var html='<img src="${BASEPATH}/img/comment/exg_yes.gif" style="height:12px;width:12px;"/>';
-            } 
+            var html='<img src="${BASEPATH}/img/comment/exc.gif" style="height:7px;width:7px;" />';
+            if(data.id != -1){
+            	 html='<img src="${BASEPATH}/img/comment/exg_yes.gif" style="height:7px;width:7px;"/>';
+            	 $("#amount_"+orderNo).text(data.orderAmount);
+            	 
+            	 var isJoin = "";
+            	 <#if yesno ??>
+					<#list yesno?keys as key>	
+						if(${key} == data.isJoin) {
+							isJoin = '${yesno[key]}';
+						}
+					</#list>
+				 </#if>
+            	  var shop = "";
+            	 <#if shops ??>
+					<#list shops?keys as key>	
+						if(${key} == data.shopId) {
+							shop = '${shops[key]}';
+						}
+					</#list>
+				 </#if>
+            	 $("#isJoin_"+orderNo).text(isJoin);
+            	 $("#shop_"+orderNo).text(shop);
+            } else {
+            	html='<img src="${BASEPATH}/img/comment/exc.gif" style="height:7px;width:7px;" />';
+            }
             $("#orderNo_"+orderNo).find("div").append(html);
         }
     });
@@ -88,21 +111,61 @@ function validateOrderList(orderNo){
 	</div>
 	</form>
 </div>
+<style type="text/css">
+.figure-list{
+  margin: 0;
+  padding: 0;
+}
+.figure-list:after{
+  content: "";
+  display: block;
+  clear: both;
+  height: 0;
+  overflow: hidden;
+  visibility: hidden;
+}
+.figure-list li{
+  list-style: none;
+  float: left;
+  width: 50px;
+  margin: 0 2% 2% 0;
+}
+.figure-list figure{
+  position: relative;
+  width: 100%;
+  height: 0;
+  overflow: hidden;
+  margin: 0;
+  padding-bottom: 100%; /* 关键就在这里 */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.figure-list figure a{
+  display: block;
+  position: absolute;
+  width: 100%;
+  top: 0;
+  bottom: 0;
+}
+</style>
+
+
 <div class="pageContent">
 	<script>
 	    var idArrays = [];
 	</script>
 	<table class="table" width="100%" layoutH="137">
 		<thead>
-			<tr>
-				<th width="100">订单号</th>
-				<th width="80">订单审核状态</th>
-				<th width="300">图片</th>
+			<tr align=center>
+				<th width="100">参与人微信</th>
+				<th width="100">所属店铺</th>
+				<th width="100">购物订单号</th>
+				<th width="60">订单金额</th>
+				<th width="300">截图</th>
 				<th width="100">上传时间</th>
-				<th width="100">上传IP</th>
-				<#if userId == 1>
-					<th width="80">创建人</th>
-				</#if>
+				<th width="60">是否参与</th>
+				<th width="60">审核状态</th>
 				<th width="80">操作</th>
 			</tr>
 		</thead>
@@ -110,28 +173,38 @@ function validateOrderList(orderNo){
 			<#if pageParam ?? && pageParam.getPageData() ??>
 				<#list pageParam.getPageData() as wxPic>
 					<tr target="id" rel="${wxPic.id}">
+						<td>${wxPic.nickname!''}</td>
+							
+						<td id="shop_${wxPic.orderNo}">
+							
+						</td>
+						
 						<td id="orderNo_${wxPic.orderNo}">
 							${wxPic.orderNo!''}
 						</td>
+						
+						<td id="amount_${wxPic.orderNo}"></td>
 						<td>
-							${payStatus["${wxPic.payStatus!''}"]}
+							<ul class="figure-list">
+<#list wxPic.picUrl?split(",") as pic>
+							
+								  <li>
+    <figure onmouseover="openWxPic(this)" picUrl="${IMGBASEPATH}${pic}"  onmouseout="closeWxPic()"  style="background-image:url(${IMGBASEPATH}${pic})">
+      <a href="#"></a>
+    </figure>
+  </li>
+						    </#list></ul>
 						</td>
-						<td>
-							<#list wxPic.picUrl?split(",") as pic>
-								<div  onmouseover="openWxPic(this)" picUrl="${IMGBASEPATH}${pic}"  onmouseout="closeWxPic()" style="float:left;height:80px;width:80px;background: url('${IMGBASEPATH}${pic}')  no-repeat center center;background-size:contain ;" ></div>
-						    </#list>
-						</td>
-						<td>
+						<td align=center>
 							${wxPic.uploadTime!''}
 						</td>
-						<td>
-							${wxPic.uploadIp!''}
+						<td align=center id="isJoin_${wxPic.orderNo}">
+						
 						</td>
-						<#if userId == 1>
-							<td>
-								${users["${wxPic.userId!''}"]}
-							</td>
-						</#if>
+						<td align=center>
+							${payStatus["${wxPic.payStatus!''}"]}
+						</td>
+	
 						<td>
 							<a class="delete" style="padding:5px;" href="${DOMAIN}comment/payordercomment?wxPicId=${wxPic.id}" target="ajaxTodo" callback="navTabAjaxDone" title="确定要返现吗?"><span>返现</span></a><br>
 							<a class="delete"  style="padding:5px;" href="${DOMAIN}comment/payorderpass?wxPicId=${wxPic.id}" callback="navTabAjaxDone" title="确定不通过吗?" target="ajaxTodo">不通过</a>

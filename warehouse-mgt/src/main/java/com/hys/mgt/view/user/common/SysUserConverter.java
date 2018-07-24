@@ -31,7 +31,8 @@ public class SysUserConverter
         user.setCommentUrl(userVo.getCommentUrl());
         user.setLoginIp(userVo.getLoginIp());
         user.setLoginTime(userVo.getLoginTime());
-        
+        user.setAppId(userVo.getAppId());
+        user.setSecret(userVo.getSecret());
         return user;
     }
 
@@ -63,7 +64,8 @@ public class SysUserConverter
         userVo.setCommentUrl(sysuser.getCommentUrl());
         userVo.setLoginIp(sysuser.getLoginIp());
         userVo.setLoginTime(sysuser.getLoginTime());
-        
+        userVo.setAppId(sysuser.getAppId());
+        userVo.setSecret(sysuser.getSecret());
         
         return userVo;
     }

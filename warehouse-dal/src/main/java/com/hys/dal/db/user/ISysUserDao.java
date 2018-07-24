@@ -36,6 +36,8 @@ public interface ISysUserDao {
      * @return
      */
     public SysUser querySysUser(SysUser sysUser);
+    
+    public SysUser querySysUserById(@Param("id")Integer id);
     /**
      * 分页查询用户列表
      * 

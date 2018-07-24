@@ -29,9 +29,9 @@
 <div class="pageContent">
 	<div class="panelBar">
 		<ul class="toolBar">
-			<li><a class="add" href="${DOMAIN}user/userAdd" mask="true" target="dialog"><span>添加</span></a></li>
+			<li><a class="add" href="${DOMAIN}user/userAdd" mask="true" target="navTab"><span>添加</span></a></li>
 			<li><a class="delete" href="${DOMAIN}user/userDelete?userId={id}" target="ajaxTodo" callback="navTabAjaxDone" title="确定要删除吗?"><span>删除</span></a></li>
-			<li><a class="edit" href="${DOMAIN}user/userUpdate?userId={id}" target="dialog" mask="true" warn="请选择用户"><span>修改</span></a></li>
+			<li><a class="edit" href="${DOMAIN}user/userUpdate?userId={id}" target="navTab" mask="true" warn="请选择用户"><span>修改</span></a></li>
 			<li><a class="delete" href="${DOMAIN}user/userresetpassword?userId={id}" target="ajaxTodo" callback="navTabAjaxDone" title="确定要重置密码吗?"><span>重置密码</span></a></li>
 			<li class="line">line</li>
 		</ul>

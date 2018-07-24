@@ -96,7 +96,7 @@
 		<tbody>
 			<#if pageParam ?? && pageParam.getPageData() ??>
 				<#list pageParam.getPageData() as order>
-					<tr target="id" rel="${order.id}">
+					<tr target="id" rel="${order.id?c}">
 						<td>
 							${shops["${order.shopId!''}"]}
 						</td>
@@ -115,7 +115,10 @@
 						<td>
 							${payStatus["${order.isPay!''}"]}
 						</td>
-						<td>${order.customerName!''}</td>
+						<td>
+							<#assign shopNmae = shops["${order.shopId!''}"]>
+							<a href="https://amos.alicdn.com/getcid.aw?spm=a1z09.1.0.0.60663606CUVwCU&amp;v=3&amp;groupid=0&amp;s=1&amp;charset=utf-8&amp;uid=${order.customerName}&amp;site=cntaobao&amp;fromid=cntaobao${shopNmae}" target="_blank" >${order.customerName!''}</a>	
+						</td>
 						<td>
 							${order.customerMobile!''}
 						</td>

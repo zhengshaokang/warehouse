@@ -44,6 +44,9 @@ public class SysUserVo implements Serializable
     private String loginIp ;//用户登录ip
     private Integer systemType;// 1 仓库系统  0 评价系统
     
+    private String appId; 
+    private String secret; 
+    
 	public String getId() {
 		return id;
 	}
@@ -206,6 +209,18 @@ public class SysUserVo implements Serializable
 	public void setSystemType(Integer systemType) {
 		this.systemType = systemType;
 	}
+	public String getAppId() {
+		return appId;
+	}
+	public void setAppId(String appId) {
+		this.appId = appId;
+	}
+	public String getSecret() {
+		return secret;
+	}
+	public void setSecret(String secret) {
+		this.secret = secret;
+	}
 	@Override
 	public String toString() {
 		return "SysUserVo [id=" + id + ", loginname=" + loginname
@@ -220,6 +235,7 @@ public class SysUserVo implements Serializable
 				+ role + ", isWarhouse=" + isWarhouse + ", isComment="
 				+ isComment + ", vipLevel=" + vipLevel + ", vipDate=" + vipDate
 				+ ", commentUrl=" + commentUrl + ", loginTime=" + loginTime
-				+ ", loginIp=" + loginIp + ", systemType=" + systemType + "]";
+				+ ", loginIp=" + loginIp + ", systemType=" + systemType
+				+ ", appId=" + appId + ", secret=" + secret + "]";
 	}
 }

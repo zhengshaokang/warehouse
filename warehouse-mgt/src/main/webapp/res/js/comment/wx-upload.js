@@ -99,13 +99,10 @@ var uploadPic = function(formData,this_){
            // swal.close();
             var msg = $.parseJSON(data);
             if(msg.returnCode == 1){
-            	
-            	//var imgPath = msg.returnPath.split(".");
-            	
-            	//var newPath = imgPath[0].substring(0,imgPath[0].length-2) +"40x40."+imgPath[1];
-            	
+            	var imgPath = msg.returnPath.split(".");
+            	var newPath = imgPath[0].substring(0,imgPath[0].length) +"60."+imgPath[1];
 				var html = '<div class="upload-itme"><div onclick="uploadImageRemove(this)" class="image-close">x</div>'
-					html +='<div class="upload-img" picUrl="'+msg.returnPath+'" style="background: url('+picUrl+msg.returnPath+')  no-repeat center center;background-size:contain;"></div></div>';
+					html +='<div class="upload-img" picUrl="'+msg.returnPath+'" style="background: url('+picUrl+newPath+')  no-repeat center center;background-size:contain;"></div></div>';
 				$(".upload_c").prepend(html);
 				
 				 var imglen = $(".upload-img").length;

@@ -1,8 +1,10 @@
 package com.hys.dal.component.user.impl;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.hys.commons.jdbc.JdbcUtil;
 import com.hys.commons.page.PageData;
 import com.hys.commons.page.PageParam;
@@ -66,6 +68,11 @@ public class SysUserDalCompImpl implements ISysUserDalComp {
 	@Override
 	public List<SysUser> querySysUsers() {
 		return userDao.querySysUsers();
+	}
+
+	@Override
+	public SysUser querySysUserById(Integer id) {
+		return userDao.querySysUserById(id);
 	};
 
 }

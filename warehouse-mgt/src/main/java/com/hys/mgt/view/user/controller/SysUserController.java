@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.hys.commons.crypto.Base64Ext;
 import com.hys.commons.crypto.MD5Coding;
 import com.hys.commons.page.PageData;
+import com.hys.commons.util.LogicUtil;
 import com.hys.mgt.view.common.constants.WebConstants;
 import com.hys.mgt.view.common.utils.SessionUtils;
 import com.hys.mgt.view.common.vo.ResultPrompt;
@@ -53,6 +55,9 @@ public class SysUserController {
 	    {
 	        String roles = reqest.getParameter("roles");
 	        vo.setPassword("12345678");
+	        if(LogicUtil.isNotNullAndEmpty(vo.getSecret())){
+	        	 vo.setSecret(Base64Ext.encode(vo.getSecret().getBytes()));
+	        }
 	        ResultPrompt resultPrompt = userViewComp.addUser(vo, roles);
 	        return resultPrompt;
 	    }
@@ -70,6 +75,9 @@ public class SysUserController {
 	    {
 	        String[] addRoleIds = request.getParameterValues("addRoleId");
 	        String[] delRoleIds = request.getParameterValues("delRoleId");
+	        if(LogicUtil.isNotNullAndEmpty(vo.getSecret())){
+	        	 vo.setSecret(Base64Ext.encode(vo.getSecret().getBytes()));
+	        }
 	        ResultPrompt resultPrompt = userViewComp.updateUser(vo, addRoleIds, delRoleIds);
 
 	        return resultPrompt;
