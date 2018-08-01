@@ -84,7 +84,9 @@ function closeWxPic(){
 							${wxUser.nickname!''}
 						</td>
 						<td>
+							<#if wxUser.sex !=0>
 							${sexs["${wxUser.sex!''}"]}
+							</#if>
 						</td>
 						<td>
 							${wxUser.country!''}

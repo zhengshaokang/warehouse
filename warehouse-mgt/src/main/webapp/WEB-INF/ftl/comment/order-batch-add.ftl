@@ -1,6 +1,16 @@
  
  <script>
 function iframeCallback1(form, callback){
+	var platform = $("#platform").val();
+	var shop = $("#orderAddShopbath").val();
+	if(typeof platform == "undefined" || platform == "-1") {
+		alertMsg.error("请选择平台！");
+		return false;
+	}
+	if(typeof shop == "undefined" || shop == "-1") {
+		alertMsg.error("请选择店铺！");
+		return false;
+	}
 	var orderUploadFile = $("#orderUploadFile").val();
 	if(typeof orderUploadFile == "undefined" || orderUploadFile == "") {
 		alertMsg.error("请选择上传文件！");
@@ -18,6 +28,43 @@ function iframeCallback1(form, callback){
 	form.target = "callbackframe";
 	
 	_iframeResponse($iframe[0], callback || DWZ.ajaxDone);
+}
+
+function navTabAjaxDone1(json){
+	//DWZ.ajaxDone(json);
+	
+	
+	if(json[DWZ.keys.message] && alertMsg) $("#upload-msg").append(json[DWZ.keys.message]);
+	
+	if (json[DWZ.keys.statusCode] == DWZ.statusCode.ok){
+		if (json.navTabId){ //把指定navTab页面标记为需要“重新载入”。注意navTabId不能是当前navTab页面的
+			navTab.reloadFlag(json.navTabId);
+		} else { //重新载入当前navTab页面
+			var $pagerForm = $("#pagerForm", navTab.getCurrentPanel());
+			var args = $pagerForm.size()>0 ? $pagerForm.serializeArray() : {}
+			navTabPageBreak(args, json.rel);
+		}
+
+		if ("closeCurrent" == json.callbackType) {
+			setTimeout(function(){navTab.closeCurrentTab(json.navTabId);}, 100);
+		} else if ("forward" == json.callbackType) {
+			navTab.reload(json.forwardUrl);
+		} else if ("forwardConfirm" == json.callbackType) {
+			alertMsg.confirm(json.confirmMsg || DWZ.msg("forwardConfirmMsg"), {
+				okCall: function(){
+					navTab.reload(json.forwardUrl);
+				},
+				cancelCall: function(){
+					navTab.closeCurrentTab(json.navTabId);
+				}
+			});
+		} else {
+			navTab.getCurrentPanel().find(":input[initValue]").each(function(){
+				var initVal = $(this).attr("initValue");
+				$(this).val(initVal);
+			});
+		}
+	}
 }
 
 function getshops(obj) {
@@ -46,7 +93,7 @@ function getshops(obj) {
  <style>
  .excel_upload_div{
  	width:600px;
- 	height:400px;
+ 	height:280px;
  	margin:20px 0 0 30px;
  }
  .excel_upload_div a:hover{
@@ -60,16 +107,25 @@ function getshops(obj) {
 	padding:0;
 	width:600px;
 }
+.upload-msg{
+	width:600px;
+ 	height:280px;
+ 	margin:20px 0 0 30px;
+ 	font-size:14px;
+}
+.upload-msg p span{
+	padding:0 5px;
+}
  </style>
  <div class="pageContent">
-	<form  class="pageForm required-validate"  enctype="multipart/form-data"  method="post" novalidate="novalidate"  action="${DOMAIN}comment/order-upload" onsubmit="return iframeCallback1(this, navTabAjaxDone);">
+	<form  class="pageForm required-validate"  enctype="multipart/form-data"  method="post" novalidate="novalidate"  action="${DOMAIN}comment/order-upload" onsubmit="return iframeCallback1(this, navTabAjaxDone1);">
 		<div class="pageFormContent" layoutH="56">
 		
 			   <div class="excel_upload_div">
 			   		
 			   		<p>
 			   			<label style="text-align:right;width:40px">平台：</label>
-						<select name="platform" style="min-width:120px;" class="required" onchange="getshops(this)">
+						<select id="platform" name="platform" style="min-width:120px;" class="required" onchange="getshops(this)">
 							<#list platforms?keys as key> 
 								<option value="${key}">${platforms[key]}</option>					
 							</#list>
@@ -100,6 +156,9 @@ function getshops(obj) {
 	               <p style="color:red;margin:10px 0 0 0;">
 	               		3、导入过程中保持网络正常
 	               </p>
+               </div>
+               <div id="upload-msg" class="upload-msg">
+               
                </div>
 		</div>
 	</form>

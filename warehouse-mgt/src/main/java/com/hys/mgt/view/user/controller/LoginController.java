@@ -42,8 +42,7 @@ public class LoginController
         SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
         Integer systmeType = (Integer) session.getAttribute("systmeType");
         if (LogicUtil.isNotNull(sysAdminVo)){
-        	if(systmeType == 0) { //评价系统
-        		
+        	if(systmeType !=null && systmeType == 2) { //评价系统
         		return "redirect:/index_c";
         	} else { //如果是仓库系统
         		if("M".equals(agent.getAgent())) {
@@ -97,8 +96,8 @@ public class LoginController
             model.addAttribute("loginerror", error);
             return "login";
         }
-        if(systmeType == 2) {
-        	session.setAttribute("systmeType", 0);
+        if(systmeType != null && systmeType == 2) {
+        	session.setAttribute("systmeType", 2);
         	return "redirect:/index_c";
         } else {
         	session.setAttribute("systmeType", 1);

@@ -17,6 +17,7 @@ public class Order implements Serializable{
 	private String customerMobile;// 客户电话
 	private String orderTime;// 下单时间
 	private String remark;// 备注
+	private String alipay; //支付宝账号
 	
 	public Integer getId() {
 		return id;
@@ -90,6 +91,12 @@ public class Order implements Serializable{
 	public void setOrderAmount(String orderAmount) {
 		this.orderAmount = orderAmount;
 	}
+	public String getAlipay() {
+		return alipay;
+	}
+	public void setAlipay(String alipay) {
+		this.alipay = alipay;
+	}
 	@Override
 	public String toString() {
 		return "Order [id=" + id + ", userId=" + userId + ", shopId=" + shopId
@@ -97,7 +104,7 @@ public class Order implements Serializable{
 				+ orderNo + ", orderStatus=" + orderStatus + ", orderAmount="
 				+ orderAmount + ", customerName=" + customerName
 				+ ", customerMobile=" + customerMobile + ", orderTime="
-				+ orderTime + ", remark=" + remark + "]";
+				+ orderTime + ", remark=" + remark + ", alipay=" + alipay + "]";
 	}
 	
 }

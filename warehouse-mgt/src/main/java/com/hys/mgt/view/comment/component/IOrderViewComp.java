@@ -16,5 +16,5 @@ public interface IOrderViewComp {
     public ResultPrompt deleteOrder(Integer id,Integer userId);
     public PageData<OrderVo> pageQueryOrders(OrderVo vo);
     public ResultPrompt uploadOrder(MultipartFile file,Integer userId,Integer shopId,Integer platform);
-  
+    public ResultPrompt orderUpdateIsjonin(OrderVo orderVo);
 }

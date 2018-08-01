@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.lang.StringUtils;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.hys.commons.crypto.Base64Ext;
 import com.hys.commons.http.HttpInvokeUtil;
 import com.hys.commons.json.JsonConverter;
+import com.hys.commons.otherapi.wxapi.WeiXinApiUtil;
 import com.hys.commons.otherapi.wxapi.bean.Oauth2AccessToken;
 import com.hys.commons.util.DateUtil;
 import com.hys.commons.util.LogicUtil;
@@ -30,6 +32,7 @@ import com.hys.mgt.view.comment.vo.WxPicVo;
 import com.hys.mgt.view.comment.vo.WxUserVo;
 import com.hys.mgt.view.common.utils.IPUtils;
 import com.hys.mgt.view.common.vo.ResultPrompt;
+import com.hys.mgt.view.user.component.ISysUserViewComp;
 
 @Controller
 @RequestMapping(value="/")
@@ -41,6 +44,9 @@ public class WxCommentController {
 		private IActivViewComp activViewComp;
 		@Autowired
 		private IWxUserViewComp wxUserViewComp ;
+		
+		@Autowired
+		private ISysUserViewComp userViewComp;
 
 	    @RequestMapping(value = "wxpicadd")
 	    public String list(String activ,String code, ModelMap modelMap, HttpServletRequest request){
@@ -70,6 +76,25 @@ public class WxCommentController {
 			}
 	    	
 	        return "comment/wx_pic_add";
+	    }
+	    
+	    @RequestMapping("openpicadd") 
+	    public void openpicadd(HttpSession session,HttpServletResponse response) {
+	    	
+	    	try {
+	    		String appId = (String) session.getAttribute("c_appid");
+            	String secret64 = (String) session.getAttribute("c_secret");
+            	String secret = new String(Base64Ext.decode(secret64),"UTF-8");
+				String accessToken = WeiXinApiUtil.getAccessToken(appId,secret);
+				System.out.println("accessToken==" +accessToken);
+				String openid = (String) session.getAttribute("openId");
+				String materials = WeiXinApiUtil.getMaterials(accessToken);
+				
+				//WeiXinApiUtil.responseCustomNews(accessToken, openid, articles);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+	    	
 	    }
 	    
 	    @RequestMapping(value = "initialWxOpenId", method = { RequestMethod.POST, RequestMethod.GET })

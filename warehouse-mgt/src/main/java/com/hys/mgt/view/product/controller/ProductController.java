@@ -233,6 +233,7 @@ public class ProductController {
 	    	 modelMap.put("currdate", DateUtil.getCurrentDateAsString("yyyy-MM-dd"));
 	    	 modelMap.put("qty", count);
 	    	 modelMap.put("warehouses", warehouses.getWarehouses(Integer.parseInt(sysAdminVo.getId())));
+	    	 modelMap.put("agent", agent.getAgent());
 	    	 return "product/product_in";
 	    }
 	    
@@ -285,6 +286,7 @@ public class ProductController {
 	    	 modelMap.put("warehouses", warehouses.getWarehouses(Integer.parseInt(sysAdminVo.getId())));
 	    	 modelMap.put("qtys", map);
 	    	 modelMap.put("recordTypes", InoutRecordTypes.getOutOptions());
+	    	 modelMap.put("agent", agent.getAgent());
 	    	 return "product/product_out";
 	    }
 	    
@@ -295,6 +297,42 @@ public class ProductController {
 	    	SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
     		ResultPrompt resultPrompt = productComp.productOutSubmit(productOutVo,Integer.parseInt(sysAdminVo.getId()));
     		return resultPrompt;
+	    }
+	    
+	    
+	    @RequestMapping("productPreview")
+	    public String productPreview(String productId,ModelMap modelMap,HttpServletRequest request) {
+	    	HttpSession session = SessionUtils.getSession();
+	    	SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
+	    	 if(LogicUtil.isNotNullAndEmpty(productId)) {
+	    		 ProductVo pv= productComp.queryProductById(Integer.parseInt(productId));
+	    		 modelMap.put("product", pv);
+	    		 if(pv !=null && pv.getClassificationId1() > -1) {
+	    			 modelMap.put("productClassificationsSub", productClassifications.getClassificationsSub(pv.getClassificationId1()));
+	    		 }
+	    		 if(pv !=null && pv.getSpecificationId1() > -1) {
+	    			 modelMap.put("productSpecificationssSub", productSpecificationss.getSpecificationssSub(pv.getSpecificationId1()));
+	    		 }
+	    	 }
+	    	 modelMap.put("unitsOptions", productUnits.getOptions(Integer.parseInt(sysAdminVo.getId())));
+	         modelMap.put("suppliers", suppliers.getSuppliers(Integer.parseInt(sysAdminVo.getId())));
+	         modelMap.put("brands", brands.getOptions(Integer.parseInt(sysAdminVo.getId())));
+	         modelMap.put("productSpecificationss", productSpecificationss.getSpecificationssOne(Integer.parseInt(sysAdminVo.getId())));
+	         modelMap.put("productClassifications", productClassifications.getClassificationsOne(Integer.parseInt(sysAdminVo.getId())));
+	         List<ProductInPriceVo>  list = productComp.queryPriceByProductId(Integer.parseInt(productId));
+	    	 modelMap.put("productPrices", list);
+	    	 
+	    	 List<InventoryVo>  list1 = productComp.queryInventoryByProductId(Integer.parseInt(productId));
+	    	 Integer count = 0;
+	    	 if(LogicUtil.isNotNullAndEmpty(list1)) {
+	    		 for (InventoryVo inventoryVo : list1) {
+					count = count + inventoryVo.getQty();
+				}
+	    	 }
+	    	 modelMap.put("qty", count);
+	    	 modelMap.put("inventorys", list1);
+	    	 modelMap.put("warehouses", warehouses.getWarehouses(Integer.parseInt(sysAdminVo.getId())));
+	    	 return "m/product_preview";
 	    }
 	    
 	    //获取sessionid

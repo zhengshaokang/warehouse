@@ -119,6 +119,32 @@ public class OrderController {
 	        return resultPrompt;
 	    }
 	    
+	    @RequestMapping(value = "order-update-isjoin")
+	    @ResponseBody
+	    public ResultPrompt orderUpdateIsjonin(Integer orderId,Integer isJoin, HttpServletRequest request){
+	        
+    		HttpSession session = SessionUtils.getSession();
+		    SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
+		    
+		    if(isJoin ==null) {
+		    	ResultPrompt rp = new ResultPrompt();
+		    	rp.setStatusCode("300");
+				rp.setMessage("操作失败！");
+				rp.setNavTabId("comment/order-list"); // 要刷新的tab页id
+		    	return rp;
+		    }
+		    OrderVo order = orderViewComp.queryOrderById(orderId, Integer.parseInt(sysAdminVo.getId()));
+		    if(isJoin == 1) {
+		    	order.setIsJoin(0);
+		    } else {
+		    	order.setIsJoin(1);
+		    }
+		    
+		    ResultPrompt resultPrompt = orderViewComp.orderUpdateIsjonin(order);
+		    
+	        return resultPrompt;
+	    }
+	    
 	    @RequestMapping(value = "order-batch-add")
 	    public String orderBatchAdd(ModelMap modelMap){
 	    	

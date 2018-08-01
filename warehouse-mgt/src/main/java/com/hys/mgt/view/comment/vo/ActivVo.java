@@ -15,6 +15,7 @@ public class ActivVo implements Serializable{
 	private String bgPath;// 背景图路径
 	private String suBgPath;// 成功背景图路径
 	private String workflowPath;//流程说明图路径
+	private String qcardPath;//二维码路径
 	private String description;// 活动介绍
 	private String startTime;//活动开始时间
 	private String endTime;//活动结束时间
@@ -114,14 +115,21 @@ public class ActivVo implements Serializable{
 	public void setSuBgPath(String suBgPath) {
 		this.suBgPath = suBgPath;
 	}
+	public String getQcardPath() {
+		return qcardPath;
+	}
+	public void setQcardPath(String qcardPath) {
+		this.qcardPath = qcardPath;
+	}
 	@Override
 	public String toString() {
 		return "ActivVo [id=" + id + ", name=" + name + ", title=" + title
 				+ ", bgPath=" + bgPath + ", suBgPath=" + suBgPath
-				+ ", workflowPath=" + workflowPath + ", description="
-				+ description + ", startTime=" + startTime + ", endTime="
-				+ endTime + ", wxLink=" + wxLink + ", createTime=" + createTime
-				+ ", userId=" + userId + ", code=" + code + ", pageNum="
-				+ pageNum + ", numPerPage=" + numPerPage + "]";
+				+ ", workflowPath=" + workflowPath + ", qcardPath=" + qcardPath
+				+ ", description=" + description + ", startTime=" + startTime
+				+ ", endTime=" + endTime + ", wxLink=" + wxLink
+				+ ", createTime=" + createTime + ", userId=" + userId
+				+ ", code=" + code + ", pageNum=" + pageNum + ", numPerPage="
+				+ numPerPage + "]";
 	}
 }

@@ -13,14 +13,15 @@
 		<result property="customerName" column="customer_name" />
 		<result property="customerMobile" column="customer_mobile"/>
 		<result property="orderTime" column="order_time"/>
+		<result property="alipay" column="alipay"/>
 		<result property="remark" column="remark" />
 	</resultMap>
 	
    
 	<insert id="addOrder" parameterType="order" useGeneratedKeys="true" keyProperty="id">
 		insert into
-		c_order(id,user_id,shop_id,is_join,is_pay,order_no,order_status,order_amount,customer_name,customer_mobile,order_time,remark)
-		values(#{id},#{userId},#{shopId},#{isJoin},#{isPay},#{orderNo},#{orderStatus},#{orderAmount},#{customerName},#{customerMobile},#{orderTime},#{remark})
+		c_order(id,user_id,shop_id,is_join,is_pay,order_no,order_status,order_amount,customer_name,customer_mobile,order_time,remark,alipay)
+		values(#{id},#{userId},#{shopId},#{isJoin},#{isPay},#{orderNo},#{orderStatus},#{orderAmount},#{customerName},#{customerMobile},#{orderTime},#{remark},#{alipay})
 	</insert>
 	
 	<update id="updateOrder" parameterType="order">
@@ -35,6 +36,7 @@
 			<if test="customerName != null and customerName!=''">customer_name=#{customerName},</if>
 			<if test="customerMobile != null and customerMobile != ''">customer_mobile=#{customerMobile},</if>
 			<if test="orderTime != null and orderTime !='' ">order_time=#{orderTime},</if>
+			<if test="alipay != null and alipay !='' ">alipay=#{alipay},</if>
 			<if test="remark != null and remark != ''">remark=#{remark}</if>
 			
 		</set>

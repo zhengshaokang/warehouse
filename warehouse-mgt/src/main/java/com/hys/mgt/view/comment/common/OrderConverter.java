@@ -23,6 +23,7 @@ public class OrderConverter {
     	  order.setShopId(orderVo.getShopId());
     	  order.setUserId(orderVo.getUserId());
     	  order.setOrderAmount(orderVo.getOrderAmount());
+    	  order.setAlipay(orderVo.getAlipay());
           return order;
     }
 
@@ -44,6 +45,7 @@ public class OrderConverter {
         orderVo.setShopId(order.getShopId());
         orderVo.setUserId(order.getUserId());
         orderVo.setOrderAmount(order.getOrderAmount());
+        orderVo.setAlipay(order.getAlipay());
         return orderVo;
     }
 

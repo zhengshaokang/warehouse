@@ -19,6 +19,7 @@ public class OrderVo implements Serializable{
 	private String customerMobile;// 客户电话
 	private String orderTime;// 下单时间
 	private String remark;// 备注
+	private String alipay;//支付宝账号
 	
     private int pageNum = 1;
 	private int numPerPage = WebConstants.PAGESIZE;
@@ -107,6 +108,12 @@ public class OrderVo implements Serializable{
 	public void setOrderAmount(String orderAmount) {
 		this.orderAmount = orderAmount;
 	}
+	public String getAlipay() {
+		return alipay;
+	}
+	public void setAlipay(String alipay) {
+		this.alipay = alipay;
+	}
 	@Override
 	public String toString() {
 		return "OrderVo [id=" + id + ", userId=" + userId + ", shopId="
@@ -115,6 +122,7 @@ public class OrderVo implements Serializable{
 				+ ", orderAmount=" + orderAmount + ", customerName="
 				+ customerName + ", customerMobile=" + customerMobile
 				+ ", orderTime=" + orderTime + ", remark=" + remark
-				+ ", pageNum=" + pageNum + ", numPerPage=" + numPerPage + "]";
+				+ ", alipay=" + alipay + ", pageNum=" + pageNum
+				+ ", numPerPage=" + numPerPage + "]";
 	}
 }

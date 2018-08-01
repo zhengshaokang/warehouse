@@ -1,6 +1,7 @@
 package com.hys.commons.otherapi.wxapi;
 
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -14,9 +15,11 @@ import org.apache.http.HttpEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.codehaus.jackson.JsonNode;
+import org.codehaus.jackson.type.TypeReference;
 import org.slf4j.Logger;
 
 import com.hys.commons.conf.ProfileManager;
+import com.hys.commons.crypto.Base64Ext;
 import com.hys.commons.crypto.SHA1Coding;
 import com.hys.commons.http.HttpInvokeUtil;
 import com.hys.commons.json.JsonConverter;
@@ -41,6 +44,7 @@ import com.hys.commons.otherapi.wxapi.bean.resp.WxComplaints;
 import com.hys.commons.otherapi.wxapi.bean.resp.WxPayOrder;
 import com.hys.commons.string.StringUtil;
 import com.hys.commons.util.DateUtil;
+import com.hys.commons.util.LogicUtil;
 import com.hys.commons.util.Triple;
 import com.hys.commons.xml.XStreamUtil;
 
@@ -107,6 +111,28 @@ public class WeiXinApiUtil
             return null;
         }
     }
+    
+    
+    /**
+	 * 获得ACCESS_TOKEN
+	 * @param appid
+	 * @param secret
+	 * @return ACCESS_TOKEN
+	 */
+	public static String getAccessToken(String appid, String secret) {
+		String url = "https://api.weixin.qq.com/cgi-bin/token";
+		Map<String,String> param = new HashMap<String,String>();
+		param.put("grant_type", "client_credential");
+		param.put("appid", appid);
+		param.put("secret", secret);
+		try {
+			String json = HttpInvokeUtil.httpGet(url, param);
+			Map<String,String> map  = JsonConverter.parse(json, HashMap.class);
+			return map.get("access_token");
+		}catch (Exception e) {
+		}
+		return "";
+	}
 
     /**
      * 通过ticket换取二维码<br/>
@@ -180,19 +206,79 @@ public class WeiXinApiUtil
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("touser", touser);
         map.put("msgtype", "news");
-
+//
         Map<String, Object> mapArticle = new HashMap<String, Object>();
         mapArticle.put("articles", articles);
         map.put("news", mapArticle);
-
-        String url = ProfileManager.getStringByKey("maowu_webapp_wx.wxcgi_custom_send_url",
-                "https://api.weixin.qq.com/cgi-bin/message/custom/send");
+//
+//        String url = ProfileManager.getStringByKey("maowu_webapp_wx.wxcgi_custom_send_url",
+//                "https://api.weixin.qq.com/cgi-bin/message/custom/send");
+//        String jsonStr = JsonConverter.format(map);
+//
+//        Map<String, String> paramMap = new HashMap<String, String>();
+//        paramMap.put("access_token", accessToken);
+//        paramMap.put("body", jsonStr);
+//        return HttpInvokeUtil.httpPost(url, paramMap);
+    	
+    	
+    	String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send";
         String jsonStr = JsonConverter.format(map);
+        
+        System.out.println(jsonStr);
+        
+        HttpPost httpPost = new HttpPost(url + "?access_token=" + accessToken);
+        httpPost.setEntity(new StringEntity(jsonStr, "UTF-8"));
+        
+        String json = HttpInvokeUtil.httpPost(httpPost);
+        return json;
+    }
+    
+    /**
+     * 获取素材列表
+     * 
+     */
+    
+    public static String getMaterials(String accessToken) {
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("type", "news");
+        map.put("offset", 0);
+        map.put("count", 20);
 
-        Map<String, String> paramMap = new HashMap<String, String>();
-        paramMap.put("access_token", accessToken);
-        paramMap.put("body", jsonStr);
-        return HttpInvokeUtil.httpPost(url, paramMap);
+        String url = "https://api.weixin.qq.com/cgi-bin/material/batchget_material";
+        String jsonStr = JsonConverter.format(map);
+        
+        HttpPost httpPost = new HttpPost(url + "?access_token=" + accessToken);
+        httpPost.setEntity(new StringEntity(jsonStr, "UTF-8"));
+        
+        String json = HttpInvokeUtil.httpPost(httpPost);
+        
+        JsonNode jsonNode = JsonConverter.getNode(json, "item");
+        
+        if(null != jsonNode) {
+        	List<Map<String,Object>> list = JsonConverter.jsonNode2GenericObject(jsonNode, new TypeReference<List<Map<String,Object>>>(){});
+        	if(null !=list ) {
+        		for (Map<String, Object> map2 : list) {
+        			String media_id = (String) map2.get("media_id");
+        			Map<String,Object> content = (HashMap<String, Object>) map2.get("content");
+        			List<Map<String,Object>> newsItem = (ArrayList<Map<String,Object>>) content.get("news_item");
+        			if(LogicUtil.isNotNullAndEmpty(newsItem)) {
+        				for (Map<String, Object> map3 : newsItem) {
+        					String title = (String) map3.get("title"); //图文消息的标题
+        					String thumb_media_id = (String) map3.get("thumb_media_id"); //图文消息的封面图片素材id（必须是永久mediaID）
+        					String show_cover_pic = (String) map3.get("show_cover_pic"); //是否显示封面，0为false，即不显示，1为true，即显示
+        					String author = (String) map3.get("author"); //	作者
+        					String digest = (String) map3.get("digest"); //图文消息的摘要，仅有单图文消息才有摘要，多图文此处为空
+        					String html = (String) map3.get("content"); //图文消息的具体内容，支持HTML标签，必须少于2万字符，小于1M，且此处会去除JS
+        					String newsurl = (String) map3.get("url"); //图文页的URL，或者，当获取的列表是图片素材列表时，该字段是图片的URL
+        					String content_source_url = (String) map3.get("content_source_url"); //图文消息的原文地址，即点击“阅读原文”后的URL
+						}
+        			}
+        			
+				}
+        	}
+        }
+        
+        return HttpInvokeUtil.httpPost(httpPost);
     }
 
     /**
@@ -348,20 +434,57 @@ public class WeiXinApiUtil
      */
     public static String responseCustomText(String touser, String content, String accessToken)
     {
-        String url = ProfileManager.getStringByKey("maowu_webapp_wx.wxcgi_custom_send_url",
-                "https://api.weixin.qq.com/cgi-bin/message/custom/send");
+//        String url = ProfileManager.getStringByKey("maowu_webapp_wx.wxcgi_custom_send_url",
+//                "https://api.weixin.qq.com/cgi-bin/message/custom/send");
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("touser", touser);
         map.put("msgtype", "text");
         Map<String, String> m = new HashMap<String, String>();
         m.put("content", content);
         map.put("text", m);
-        String jsonStr = JsonConverter.format(map);
-
+        //String jsonStr = JsonConverter.format(map);
+       // System.out.println(jsonStr);
         Map<String, String> paramMap = new HashMap<String, String>();
         paramMap.put("access_token", accessToken);
-        paramMap.put("body", jsonStr);
-        return HttpInvokeUtil.httpPost(url, paramMap);
+        //paramMap.put("body", jsonStr);
+       // return HttpInvokeUtil.httpPost(url, paramMap);
+        
+        
+        String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send";
+        String jsonStr = JsonConverter.format(map);
+        
+        HttpPost httpPost = new HttpPost(url + "?access_token=" + accessToken);
+        httpPost.setEntity(new StringEntity(jsonStr, "UTF-8"));
+        
+        String json = HttpInvokeUtil.httpPost(httpPost);
+        System.out.println(json);
+        return json;
+    }
+    
+    public static String responseCustomImag(String touser, String content, String accessToken){
+        Map<String, Object> map = new HashMap<String, Object>();
+        map.put("touser", touser);
+        map.put("msgtype", "image");
+        Map<String, String> m = new HashMap<String, String>();
+        m.put("media_id", content);
+        map.put("image", m);
+        //String jsonStr = JsonConverter.format(map);
+       // System.out.println(jsonStr);
+        Map<String, String> paramMap = new HashMap<String, String>();
+        paramMap.put("access_token", accessToken);
+        //paramMap.put("body", jsonStr);
+       // return HttpInvokeUtil.httpPost(url, paramMap);
+        
+        
+        String url = "https://api.weixin.qq.com/cgi-bin/message/custom/send";
+        String jsonStr = JsonConverter.format(map);
+        
+        HttpPost httpPost = new HttpPost(url + "?access_token=" + accessToken);
+        httpPost.setEntity(new StringEntity(jsonStr, "UTF-8"));
+        
+        String json = HttpInvokeUtil.httpPost(httpPost);
+        System.out.println(json);
+        return json;
     }
 
     /**
@@ -967,41 +1090,41 @@ public class WeiXinApiUtil
         // }
 
         // 消息回复转换xml
-        TextMessage t = new TextMessage();
-        t.setToUserName("toUser");
-        t.setFromUserName("fromUser");
-        t.setCreateTime(1234565);
-        t.setContent("content");
-        t.setMsgType("text");
-        // System.out.println(XStreamUtil.toXML(t, true));
-
-        Article a1 = new Article();
-        a1.setDescription("description");
-        a1.setPicUrl("picUrl");
-        a1.setTitle("title");
-        a1.setUrl("url");
-
-        Article a2 = new Article();
-        a2.setDescription("description2");
-        a2.setPicUrl("picUrl2");
-        a2.setTitle("title2");
-        a2.setUrl("url2");
-
-        List<Article> list = new ArrayList<Article>();
-        list.add(a1);
-        list.add(a2);
-        // Map<String, Object> m = new HashMap<String, Object>();
-        // m.put("Articles", list);
-        NewsMessage n = new NewsMessage();
-        n.setArticleCount(2);
-
-        Articles articles = new Articles();
-        articles.setArticles(list);
-        n.setArticles(articles);
-        n.setCreateTime(123234);
-        n.setFromUserName("fromUserName");
-        n.setMsgType("news");
-        n.setToUserName("toUserName");
+//        TextMessage t = new TextMessage();
+//        t.setToUserName("toUser");
+//        t.setFromUserName("fromUser");
+//        t.setCreateTime(1234565);
+//        t.setContent("content");
+//        t.setMsgType("text");
+//        // System.out.println(XStreamUtil.toXML(t, true));
+//
+//        Article a1 = new Article();
+//        a1.setDescription("description");
+//        a1.setPicUrl("picUrl");
+//        a1.setTitle("title");
+//        a1.setUrl("url");
+//
+//        Article a2 = new Article();
+//        a2.setDescription("description2");
+//        a2.setPicUrl("picUrl2");
+//        a2.setTitle("title2");
+//        a2.setUrl("url2");
+//
+//        List<Article> list = new ArrayList<Article>();
+//        list.add(a1);
+//        list.add(a2);
+//        // Map<String, Object> m = new HashMap<String, Object>();
+//        // m.put("Articles", list);
+//        NewsMessage n = new NewsMessage();
+//        n.setArticleCount(2);
+//
+//        Articles articles = new Articles();
+//        articles.setArticles(list);
+//        n.setArticles(articles);
+//        n.setCreateTime(123234);
+//        n.setFromUserName("fromUserName");
+//        n.setMsgType("news");
+//        n.setToUserName("toUserName");
 
         // XStreamUtil.setXstream(XStreamUtil.createXstream(true));
         // XStream xstream = new XStream();
@@ -1011,9 +1134,20 @@ public class WeiXinApiUtil
         // XStream xstream1 = XStreamUtil.createXstream(true);
         // xstream1.alias("xml", n.getClass());
         // xstream1.alias("item", new Article().getClass());
-        System.out.println(XStreamUtil.toXML(n, true));
+       // System.out.println(XStreamUtil.toXML(n, true));
         // XStreamUtil.getXstream().alias("xml", n.getClass());
         // XStreamUtil.getXstream().alias("item", a1.getClass());
+    	 String secret64 = "MjhkYmE2MmFiMmM4M2Y3ZmVkYjNiNWQ5ZWRhYmEzMGI.";
+    	 
+        try {
+        	String sss = new String(Base64Ext.decode(secret64),"UTF-8");
+        	System.out.println(sss);
+			String s = getAccessToken("wx36c0752699ec541c",sss);
+			String json = getMaterials(s);
+			System.out.println(json);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 
     }
 }

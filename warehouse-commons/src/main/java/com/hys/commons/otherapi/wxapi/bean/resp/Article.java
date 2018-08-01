@@ -21,9 +21,9 @@ public class Article
     private String description;
 
     // 图片链接，支持JPG、PNG格式，较好的效果为大图640*320，小图80*80，限制图片链接的域名需要与开发者填写的基本资料中的Url一致
-    @XStreamAlias("PicUrl")
+    @XStreamAlias("Picurl")
     @XStreamCDATA
-    private String picUrl;
+    private String picurl;
 
     // 点击图文消息跳转链接
     @XStreamAlias("Url")
@@ -64,24 +64,15 @@ public class Article
         this.description = description;
     }
 
-    /**
-     * @return picUrl
-     */
-    public String getPicUrl()
-    {
-        return picUrl;
-    }
+    public String getPicurl() {
+		return picurl;
+	}
 
-    /**
-     * @param picUrl
-     *        the picUrl to set
-     */
-    public void setPicUrl(String picUrl)
-    {
-        this.picUrl = picUrl;
-    }
+	public void setPicurl(String picurl) {
+		this.picurl = picurl;
+	}
 
-    /**
+	/**
      * @return url
      */
     public String getUrl()
@@ -107,7 +98,7 @@ public class Article
     public String toString()
     {
         return String.format("Article [title=%s, description=%s, picUrl=%s, url=%s, getClass()=%s, hashCode()=%s]",
-                title, description, picUrl, url, getClass(), hashCode());
+                title, description, picurl, url, getClass(), hashCode());
     }
 
 }

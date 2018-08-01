@@ -9,6 +9,7 @@
 		<result property="bgPath" column="bg_path" />
 		<result property="suBgPath" column="su_bg_path" />
 		<result property="workflowPath" column="workflow_path" />
+		<result property="qcardPath" column="qcard_path" />
 		<result property="description" column="description" />
 		<result property="startTime" column="start_time" />
 		<result property="endTime" column="end_time" />
@@ -20,8 +21,8 @@
    
 	<insert id="addActiv" parameterType="activ" useGeneratedKeys="true" keyProperty="id">
 		insert into
-		c_activ(id,user_id,name,title,bg_path,su_bg_path,workflow_path,description,start_time,end_time,wx_link,create_time,code)
-		values(#{id},#{userId},#{name},#{title},#{bgPath},#{suBgPath},#{workflowPath},#{description},#{startTime},#{endTime},#{wxLink},#{createTime},#{code})
+		c_activ(id,user_id,name,title,bg_path,su_bg_path,workflow_path,qcard_path,description,start_time,end_time,wx_link,create_time,code)
+		values(#{id},#{userId},#{name},#{title},#{bgPath},#{suBgPath},#{workflowPath},#{qcardPath},#{description},#{startTime},#{endTime},#{wxLink},#{createTime},#{code})
 	</insert>
 	
 	<update id="updateActiv" parameterType="activ">
@@ -32,6 +33,7 @@
 			<if test="bgPath != null and bgPath !=''">bg_path=#{bgPath},</if>
 			<if test="suBgPath != null and suBgPath !=''">su_bg_path=#{suBgPath},</if>
 			<if test="workflowPath != null and workflowPath !=''">workflow_path=#{workflowPath},</if>
+			<if test="qcardPath != null and qcardPath !=''">qcard_path=#{qcardPath},</if>
 			<if test="description != null and description !=''">description=#{description},</if>
 			<if test="startTime != null and startTime !=''">start_time=#{startTime},</if>
 			<if test="endTime != null and endTime !=''">end_time=#{endTime},</if>

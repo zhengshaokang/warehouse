@@ -33,5 +33,25 @@ public class WebConstants
     public final static int PAGESIZE = 20;// 默认显示行数
     
     public final static String RESET_PASSWORD = "12345678";
+    
+ // 消息类型
+    public final static String MSGTYPE_TEXT = "text";
+    public final static String MSGTYPE_IMAGE = "image";
+    public final static String MSGTYPE_VOICE = "voice";
+    public final static String MSGTYPE_VIDEO = "video";
+    public final static String MSGTYPE_LOCATION = "location";
+    public final static String MSGTYPE_LINK = "link";
+    public final static String MSGTYPE_EVEN = "event";
+    public final static String MSGTYPE_NEWS = "news";
+    /**
+     * 开发模式下，多客服接入
+     */
+    public final static String MSGTYPE_CUSTOMER = "transfer_customer_service";
+
+    // 事件类型
+    public final static String EVEN_SUBSCRIBE = "subscribe";// 订阅
+    public final static String EVEN_UNSUBSCRIBE = "unsubscribe";// 取消订阅
+    public final static String EVEN_LOCATION = "LOCATION";
+    public final static String EVEN_CLICK = "CLICK";
 
 }

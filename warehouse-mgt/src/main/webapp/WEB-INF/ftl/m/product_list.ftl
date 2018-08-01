@@ -7,7 +7,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <title>商品列表</title>
 <link type="text/css" rel="stylesheet" href="${BASEPATH}css/m/product.css" />
-<script src="${BASEPATH}plugin/dwz-ria/js/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="${BASEPATH}plugin/dwz-ria/js/jquery-2.1.4.js" type="text/javascript"></script>
 </head>
 <script>
 $(function(){

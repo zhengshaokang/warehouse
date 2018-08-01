@@ -25,6 +25,11 @@
 		$("#activupdateworkflowuploaderror").addClass("error").text("流程图没有上传，请上传！");
 		return false;
 	}
+	var qpic = $("#activupdateqcardupload").attr("picUrl");
+	if(qpic == "") {
+		$("#activupdateqcarduploaderror").addClass("error").text("二维码没有上传，请上传！");
+		return false;
+	}
 	var des = $("#activ-update-editor").val();
 	var html = '<div  style="height:26px"><span id="activ-update-des-error" class="error">活动介绍为空，请填写</span></div>';
 	if(des == "") {
@@ -42,6 +47,7 @@
 	$("#updateBgPath").val(bgpic);
 	$("#updateSuBgPath").val(subgpic);
 	$("#updateworkflowPath").val(wfpic);
+	$("#updateqcardPath").val(qpic);
 	var _submitFn = function(){
 		$.ajax({
 			type: form.method || 'POST',
@@ -67,6 +73,7 @@
 		<input type="hidden" name="wxLink" value="${activ.wxLink!''}"/>
 		<input type="hidden" name="userId" value="${activ.userId!''}"/>
 		<input type="hidden" name="workflowPath" id="updateworkflowPath" value="${activ.workflowPath!''}"/>
+		<input type="hidden" name="qcardPath" id="updateqcardPath" value="${activ.qcardPath!''}"/>
 		<div class="pageFormContent" layoutH="56">
 			<div class="unit">
 				<label style="text-align:right">活动名称：</label>
@@ -102,6 +109,16 @@
 					<input id="activupdateworkflowupload" type="file" accept="image/*" picUrl="${activ.workflowPath!''}" style="left: 0px;clip: auto;width:1%" class="valid" >
 				</div>
 				<span id="activupdateworkflowuploaderror" class=""></span>
+				<div style="padding:10px 0 0 10px;margin: 0 0 0 120px;">
+					流程图支持png、jpg、jpeg格式，文件最大1M
+				</div>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">客服二维码：</label>
+				<div class="upload-wrap activqcardupload" <#if activ.qcardPath??>style="background:url('${IMGBASEPATH}${activ.qcardPath}') no-repeat center center;background-size:contain"</#if>>
+					<input id="activupdateqcardupload" type="file" accept="image/*" picUrl="${activ.qcardPath!''}" style="left: 0px;clip: auto;width:1%" class="valid" >
+				</div>
+				<span id="activqcarduploaderror" class=""></span>
 				<div style="padding:10px 0 0 10px;margin: 0 0 0 120px;">
 					流程图支持png、jpg、jpeg格式，文件最大1M
 				</div>

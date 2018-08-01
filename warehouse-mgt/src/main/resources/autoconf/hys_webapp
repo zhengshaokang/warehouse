@@ -3,7 +3,7 @@ pic_max_size=2048
 #商品图片缩略尺寸
 goods_thumb_size=80x80;300x300;450x450;600x600;800x800;
 #文件上传：本地文件目录
-local_base_dir=res/file/
+local_base_dir=res/imagin/
 #文件上传：远程文件目录
 remote_base_dir=D:/images/
 #远程文件访问域名
@@ -12,4 +12,4 @@ remote_host_domain=http://localhost/
 #新闻图片
 news_thumb_size=120x80;240x180;275x220;140x180;
 
-wx_domain_url=http://wx.vva.com.cn/
+wx_domain_url=http://zwbvdg.natappfree.cc/

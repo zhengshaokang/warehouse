@@ -8,7 +8,7 @@
 <title>商品入库</title>
 <link type="text/css" rel="stylesheet" href="${BASEPATH}css/m/product.css" />
 <script src="${BASEPATH}plugin/laydate/laydate.js" type="text/javascript"></script>
-<script src="${BASEPATH}plugin/dwz-ria/js/jquery-1.7.2.js" type="text/javascript"></script>
+<script src="${BASEPATH}plugin/dwz-ria/js/jquery-2.1.4.js" type="text/javascript"></script>
 </head>
 <style>
 .p_preview{

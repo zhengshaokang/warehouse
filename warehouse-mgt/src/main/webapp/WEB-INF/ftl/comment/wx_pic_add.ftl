@@ -13,7 +13,7 @@
 <link href="${BASEPATH}css/comment/wx_upload.css" rel="stylesheet" type="text/css"/>
 <script src="${BASEPATH}plugin/dwz-ria/js/jquery-2.1.4.min.js"></script>
 <script src="${BASEPATH}js/util/mypopup.js" type="text/javascript"></script>
-<script src="${BASEPATH}js/comment/wx-upload.js?v=${VERSION!''}" type="text/javascript"></script>
+<script src="${BASEPATH}js/comment/wxcomment.js?v=${VERSION!''}" type="text/javascript"></script>
 </head>
 <script>
 	var picUrl='${WXIMGPATH}';
@@ -22,6 +22,7 @@
 .index {
 	width:100%;
 	height:100%;
+	display:black;
 	background: url("${IMGBASEPATH}${activ.bgPath!''}")  no-repeat center center;
 	background-size:100% 100%;
 }
@@ -53,7 +54,11 @@
 		<input type="hidden" id="userId" value="${userId}" />
 	</div>
 	<div class="index2">
-		<div style="height:88%;"></div>
+		<div style="height:41%;"></div>
+		<div style="width:100%;height:25%; text-align: center;">
+			<img style="height:100%" src="${IMGBASEPATH}${activ.qcardPath!''}"/>
+		</div>
+		<div style="height:20%;"></div>
 		<div class="order-submit">
 			 <button  type="button" id="reback">返回</button>
 		</div>

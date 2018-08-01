@@ -202,7 +202,15 @@ function validateOrderList(orderNo){
 						
 						</td>
 						<td align=center>
-							${payStatus["${wxPic.payStatus!''}"]}
+							<#if wxPic.payStatus == 20>
+								<span style="color:#00FF00">${payStatus["${wxPic.payStatus!''}"]}</span>
+							<#elseif wxPic.payStatus == 30>
+								<span style="color:#999999">${payStatus["${wxPic.payStatus!''}"]}</span>
+							<#elseif wxPic.payStatus == 10>
+								<span style="color:#FF3300">${payStatus["${wxPic.payStatus!''}"]}</span>
+							</#if>
+							
+							
 						</td>
 	
 						<td>

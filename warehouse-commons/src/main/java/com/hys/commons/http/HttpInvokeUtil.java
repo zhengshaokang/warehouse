@@ -85,7 +85,7 @@ public class HttpInvokeUtil
                 nvps.add(new BasicNameValuePair(entry.getKey(), entry.getValue()));
             }
         }
-
+        HttpEntity  en = new UrlEncodedFormEntity(nvps, Consts.UTF_8);
         return new UrlEncodedFormEntity(nvps, Consts.UTF_8);
     }
 

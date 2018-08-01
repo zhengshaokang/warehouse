@@ -25,6 +25,11 @@
 		$("#activaddworkflowuploaderror").addClass("error").text("流程图没有上传，请上传！");
 		return false;
 	}
+	var qpic = $("#activaddqcardupload").attr("picUrl");
+	if(qpic == "") {
+		$("#activaddqcarduploaderror").addClass("error").text("二维码没有上传，请上传！");
+		return false;
+	}
 	var des = $("#activ-add-editor").val();
 	var html = '<div  style="height:26px"><span id="activ-add-des-error" class="error">活动介绍为空，请填写</span></div>';
 	if(des == "") {
@@ -42,6 +47,7 @@
 	$("#addBgPath").val(bgpic);
 	$("#addSuBgPath").val(subgpic);
 	$("#addworkflowPath").val(wfpic);
+	$("#addqcardPath").val(qpic);
 	var _submitFn = function(){
 		$.ajax({
 			type: form.method || 'POST',
@@ -62,6 +68,7 @@
 		<input type="hidden" name="bgPath" id="addBgPath"/>
 		<input type="hidden" name="suBgPath" id="addSuBgPath"/>
 		<input type="hidden" name="workflowPath" id="addworkflowPath"/>
+		<input type="hidden" name="qcardPath" id="addqcardPath"/>
 		<div class="pageFormContent" layoutH="56">
 			<div class="unit">
 				<label style="text-align:right">活动名称：</label>
@@ -99,6 +106,16 @@
 					<input id="activaddworkflowupload" type="file" accept="image/*" picUrl="" style="left: 0px;clip: auto;width:1%" class="valid" >
 				</div>
 				<span id="activaddworkflowuploaderror" class=""></span>
+				<div style="padding:10px 0 0 10px;margin: 0 0 0 120px;">
+					流程图支持png、jpg、jpeg格式，文件最大1M
+				</div>
+			</div>
+			<div class="unit">
+				<label style="text-align:right">客服二维码：</label>
+				<div class="upload-wrap activqcardupload">
+					<input id="activaddqcardupload" type="file" accept="image/*" picUrl="" style="left: 0px;clip: auto;width:1%" class="valid" >
+				</div>
+				<span id="activaddqcarduploaderror" class=""></span>
 				<div style="padding:10px 0 0 10px;margin: 0 0 0 120px;">
 					流程图支持png、jpg、jpeg格式，文件最大1M
 				</div>

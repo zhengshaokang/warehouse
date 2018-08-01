@@ -24,6 +24,7 @@ public class ActivConverter {
     	  activ.setWxLink(activVo.getWxLink());
     	  activ.setCode(activVo.getCode());
     	  activ.setSuBgPath(activVo.getSuBgPath());
+    	  activ.setQcardPath(activVo.getQcardPath());
           return activ;
     }
 
@@ -46,6 +47,7 @@ public class ActivConverter {
         activVo.setWxLink(activ.getWxLink());
         activVo.setCode(activ.getCode());
         activVo.setSuBgPath(activ.getSuBgPath());
+        activVo.setQcardPath(activ.getQcardPath());
         return activVo;
     }
 

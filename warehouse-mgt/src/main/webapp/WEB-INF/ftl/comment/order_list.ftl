@@ -81,15 +81,15 @@
 				<th width="220">店铺</th>
 				<th width="180">订单号</th>
 				<th width="120">订单状态</th>
-				<th width="120">订单金额</th>
+				<th width="180">支付信息</th>
 				<th width="100">参与活动</th>
 				<th width="100">审核状态</th>
 				<th width="180">客户名称</th>
-				<th width="120">客户电话</th>
+				<th width="100">客户电话</th>
 				<#if userId == 1>
-					<th width="200">创建人</th>
+					<th width="100">创建人</th>
 				</#if>
-				<th width="160">下单时间</th>
+				<th width="140">下单时间</th>
 				<th width="100">备注</th>
 			</tr>
 		</thead>
@@ -107,10 +107,11 @@
 							${orderStatus["${order.orderStatus!''}"]}
 						</td>
 						<td>
-							${order.orderAmount!''}
+							支付金额:${order.orderAmount!''}<br>
+							支付账号:${order.alipay!''}
 						</td>
 						<td>
-							${yesno["${order.isJoin!''}"]}
+							<a href="${DOMAIN}comment/order-update-isjoin?orderId=${order.id?c}&isJoin=${order.isJoin}" target="ajaxTodo" callback="navTabAjaxDone" title="确定要修改吗?"><span>${yesno["${order.isJoin!''}"]}</span></a>
 						</td>
 						<td>
 							${payStatus["${order.isPay!''}"]}

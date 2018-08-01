@@ -11,15 +11,15 @@ $(function(){
         this_.after('<input type="file" class="hide" id="upimg4" accept="image/*">');
        
         this_.next("input").click().off("change").on('change',function(){
-            var size = (this_.next("input")[0].files[0].size / 1024).toFixed(2);
-            if(size <= 1024){
+            var size = (this_.next("input")[0].files[0].size / 10240).toFixed(2);
+            if(size <= 10240){
                 var img = this_.next("input")[0].files[0];
                 var formData = new FormData();
                 formData.append("picture",img);
                 formData.append("picType","3");
                 uploadPic(formData,this_);
             } else {
-            	mypopup.alert("您的图片超过1M");
+            	mypopup.alert("您的图片超过10M");
             }
         });
     });
@@ -32,6 +32,10 @@ $(function(){
     	var orderNo = $("#orderNo").val();
     	if(orderNo == "") {
     		mypopup.alert("请输入订单号");
+    		return false;
+    	}
+    	if(orderNo.length !=18) {
+    		mypopup.alert("亲,请输入正确的订单号(不是物流单号)");
     		return false;
     	}
     	var pics ="";

@@ -113,6 +113,29 @@ public class OrderViewCompImpl implements IOrderViewComp {
 		return rp;
 	}
 
+	
+	@Override
+	public ResultPrompt orderUpdateIsjonin(OrderVo orderVo) {
+		ResultPrompt rp = new ResultPrompt();
+		try {
+			boolean b = orderService.updateOrder(OrderConverter.convert2Do(orderVo));
+			if(b) {	
+				 rp.setStatusCode("200");
+				 rp.setMessage("操作成功！");
+				 rp.setNavTabId("comment/order-list"); // 要刷新的tab页id
+			 } else {
+				 rp.setStatusCode("300");
+				 rp.setMessage("操作失败！");
+				 rp.setNavTabId("comment/order-list"); // 要刷新的tab页id
+			 }
+		} catch (Exception e) {
+			e.printStackTrace();
+		    rp.setStatusCode("300");
+	    	rp.setMessage("操作失败！");
+	    	 rp.setNavTabId("comment/order-list"); // 要刷新的tab页id
+		}
+		return rp;
+	}
 
 	@Override
 	public PageData<OrderVo> pageQueryOrders(OrderVo vo) {
@@ -213,9 +236,6 @@ public class OrderViewCompImpl implements IOrderViewComp {
 	//天猫csv导入
 	private ResultPrompt exportCsvByTianMao(MultipartFile file,Integer userId,Integer shopId,ResultPrompt rp) throws Exception{
 		
-		List<Order> list = new ArrayList<Order>();
-		List<String> orderNos = new ArrayList<String>();
-		
 		// 用来保存ROW数据
         ArrayList<String[]> csvFileList = new ArrayList<String[]>();
         CsvReader reader = new CsvReader(file.getInputStream(), ',', Charset.forName("GBK"));
@@ -223,121 +243,125 @@ public class OrderViewCompImpl implements IOrderViewComp {
         reader.readHeaders();
         // 逐行读入除表头的数据
         while (reader.readRecord()) {
-            System.out.println(reader.getRawRecord()); 
             csvFileList.add(reader.getValues()); 
         }
         reader.close();
-        
         // 遍历读取的CSV文件
+        Integer count = csvFileList.size();
+        Integer acount = 0; //新增数量
+        Integer ucount = 0; //修改数量
+        Integer ascount = 0; //新增成功数量
+        Integer afcount = 0; //新增失败数量
+        Integer uscount = 0; //修改成功数量
+        Integer ufcount = 0; //修改失败数量
+        Integer ncount = 0; //订单号为空
+        Integer ecount = 0; //订单号不为18位表示不正确
         for (int row = 0; row < csvFileList.size(); row++) {
             // 取得第row行第0列的数据
             
             Order order = new Order();
             //循环当前行
             
-            if(LogicUtil.isNotNull(csvFileList.get(row)[0])){
-				Order  pc = orderService.queryOrderByNo(csvFileList.get(row)[0], userId);
-            	if(LogicUtil.isNotNull(pc)) {
-//            		rp.setStatusCode("300");
-//				    rp.setMessage("订单号"+csvFileList.get(row)[0]+"订单号已经存在，请核实后再上传");
-//				    return rp;
-            		continue;
-            	}
-            	boolean flag = false;
-            	for (String orderNo : orderNos) {
-					if(orderNo.equals(csvFileList.get(row)[0].trim())){
-//						rp.setStatusCode("300");
-//					    rp.setMessage("订单号"+orderNo+"重复，请核实后再上传");
-//					    return rp;
-						flag = true;
-					}
-				}
-            	if(flag) {
-            		continue;
-            	}
-            	String orderNo = csvFileList.get(row)[0].trim();
-            	orderNo = orderNo.replaceAll("\\=", "").replaceAll("\"", "");
-            	order.setOrderNo(orderNo); 
-            	orderNos.add(orderNo);
-            } else {
-            	rp.setStatusCode("300");
-			    rp.setMessage("订单号不能为空");
-			    return rp;
-            }
-            
             order.setShopId(shopId);
             order.setIsJoin(EnumYesNo.YES.getStatus());
    		 	order.setIsPay(EnumOrderPayStatus.NOCHECK.getValue());
-           
-            if(LogicUtil.isNotNull(csvFileList.get(row)[12])){
+   		 	Integer tatus = -1;
+            if(LogicUtil.isNotNullAndEmpty(csvFileList.get(row)[12])){
             	String orderStatus = csvFileList.get(row)[12];
             	if(orderStatus.indexOf("未支付") != -1 || orderStatus.indexOf("等待买家付款") != -1) {
-            		order.setOrderStatus(EnumOrderStatus.NOPAY.getValue());
+            		tatus = EnumOrderStatus.NOPAY.getValue();
             	}
             	if(orderStatus.indexOf("等待卖家发货") != -1) {
-            		order.setOrderStatus(EnumOrderStatus.YESPAY.getValue());
+            		tatus = EnumOrderStatus.YESPAY.getValue();
             	}
             	if(orderStatus.indexOf("已发货") != -1) {
-            		order.setOrderStatus(EnumOrderStatus.YESSEND.getValue());
+            		tatus = EnumOrderStatus.YESSEND.getValue();
             	}
             	if(orderStatus.indexOf("取消交易") != -1 || orderStatus.indexOf("交易关闭") != -1) {
-            		order.setOrderStatus(EnumOrderStatus.CLOSETRAD.getValue());
+            		tatus = EnumOrderStatus.CLOSETRAD.getValue();
             	}
             	if(orderStatus.indexOf("交易成功") != -1) {
-            		order.setOrderStatus(EnumOrderStatus.YESTRAD.getValue());
+            		tatus = EnumOrderStatus.YESTRAD.getValue();
             	}
             }
-            if(LogicUtil.isNotNull(csvFileList.get(row)[1])){
+            
+            if(LogicUtil.isNotNullAndEmpty(csvFileList.get(row)[1])){
             	order.setCustomerName(csvFileList.get(row)[1]);
             }
-            if(LogicUtil.isNotNull(csvFileList.get(row)[18])){
+            if(LogicUtil.isNotNullAndEmpty(csvFileList.get(row)[18])){
             	String customerMobile = csvFileList.get(row)[18];
             	if(customerMobile.indexOf("'") >-1 ) { 
             		customerMobile = customerMobile.replaceAll("'", "");
             	}
             	 order.setCustomerMobile(customerMobile);
             }
-            if(LogicUtil.isNotNull(csvFileList.get(row)[19])){
+            if(LogicUtil.isNotNullAndEmpty(csvFileList.get(row)[19])){
             	String orderTime = csvFileList.get(row)[19];
             	if(orderTime.indexOf("/") >-1 ) { 
             		orderTime = orderTime.replaceAll("\\/", "-");
             	}
             	order.setOrderTime(orderTime);
             }
-            if(LogicUtil.isNotNull(csvFileList.get(row)[25])){
+            if(LogicUtil.isNotNullAndEmpty(csvFileList.get(row)[25])){
             	String remark = csvFileList.get(row)[25];
             	if(remark.indexOf("'null") >-1 ) {
             		remark = remark.replace("'null", "");
             	}
             	order.setRemark(remark);
             }
-            if(LogicUtil.isNotNull(csvFileList.get(row)[10])){
+            if(LogicUtil.isNotNullAndEmpty(csvFileList.get(row)[10])){
             	order.setOrderAmount(csvFileList.get(row)[10]);
             }
             order.setUserId(userId);
-            list.add(order);
+            
+            if(LogicUtil.isNotNullAndEmpty(csvFileList.get(row)[2])){
+            	order.setAlipay(csvFileList.get(row)[2]);
+            }
+            if(LogicUtil.isNotNullAndEmpty(csvFileList.get(row)[0])){
+            	String orderNo = csvFileList.get(row)[0].trim();
+            	orderNo = orderNo.replaceAll("\\=", "").replaceAll("\"", "");
+            	
+            	if(orderNo.length() != 18){
+            		ecount +=1;
+            		continue;
+            	}
+            	
+            	order.setOrderNo(orderNo); 
+				Order  pc = orderService.queryOrderByNo(orderNo, userId);
+            	if(LogicUtil.isNotNull(pc)) {
+            		ucount+=1;
+        			pc.setOrderStatus(tatus);
+        			boolean b = orderService.updateOrder(pc);
+        			if(b) {
+        				uscount +=1;
+        			} else {
+        				ufcount +=1;
+        			}
+            	} else {
+            		acount +=1;
+            		order.setOrderStatus(tatus);
+                    boolean b =  orderService.addOrder(order);
+        			if(b==false) {
+        				afcount +=1;
+        			} else {
+        				ascount +=1;
+        			}
+            	}
+            } else {
+            	ncount +=1;
+            	continue;
+            }
         }
         
-        String errMsg = "";
-		if(LogicUtil.isNotNullAndEmpty(list)) {
-			for (Order order2 : list) {
-				boolean b = orderService.addOrder(order2);
-				if(b==false) {
-					errMsg +="订单号"+order2.getOrderNo()+"保存失败!<br>";
-				}
-				
-			}
-		}
-		if("".equals(errMsg)) {
-			rp.setStatusCode("200");
-		    rp.setMessage("所有订单保存成功！");
-		    rp.setNavTabId("comment/order-list"); // 要刷新的tab页id
-		} else{
-			rp.setStatusCode("200");
-		    rp.setMessage(errMsg);
-		    rp.setNavTabId("comment/order-list"); // 要刷新的tab页id
-		}
+        String msg = "<p>一共导入<span style='color:#0000FF'>"+count+"</span>条数据</p>";
+        msg+= "<p>其中新增<span style='color:#0000FF'>"+acount+"</span>条,成功<span style='color:#00EE00'>"+ascount+"</span>条,失败<span style='color:#FF3300'>"+afcount+"</span>条</p>";
+        msg+= "<p>其中修改<span style='color:#0000FF'>"+ucount+"</span>条,成功<span style='color:#00EE00'>"+uscount+"</span>条,失败<span style='color:#FF3300'>"+ufcount+"</span>条</p>";
+        msg+= "<p>其中有<span style='color:#FF3300'>"+ncount+"</span>条数据订单号为空</p>";
+        msg+= "<p>其中有<span style='color:#FF3300'>"+ecount+"</span>条数据订单号不正确</p>";
         
+		rp.setStatusCode("200");
+	    rp.setMessage(msg);
+	    rp.setNavTabId("comment/order-list"); // 要刷新的tab页id
 		return rp;
 	}
 	
