@@ -75,6 +75,7 @@
 			<if test="p.isPay != null and p.isPay >= 0">
 				and is_pay = #{p.isPay}
 			</if>
+			order by id desc
 	</select>
 	
 

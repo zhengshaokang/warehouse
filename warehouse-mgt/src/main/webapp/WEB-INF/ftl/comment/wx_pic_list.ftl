@@ -38,8 +38,9 @@ function validateOrderList(orderNo){
             var html='<img src="${BASEPATH}/img/comment/exc.gif" style="height:7px;width:7px;" />';
             if(data.id != -1){
             	 html='<img src="${BASEPATH}/img/comment/exg_yes.gif" style="height:7px;width:7px;"/>';
-            	 $("#amount_"+orderNo).text(data.orderAmount);
-            	 
+            	 $("#amount_"+orderNo).append(data.orderAmount);
+            	 $("#pay_"+orderNo).append(data.alipay);
+            	
             	 var isJoin = "";
             	 <#if yesno ??>
 					<#list yesno?keys as key>	
@@ -58,10 +59,12 @@ function validateOrderList(orderNo){
 				 </#if>
             	 $("#isJoin_"+orderNo).text(isJoin);
             	 $("#shop_"+orderNo).text(shop);
+            	  var chtml = '<a href="https://amos.alicdn.com/getcid.aw?spm=a1z09.1.0.0.60663606CUVwCU&amp;v=3&amp;groupid=0&amp;s=1&amp;charset=utf-8&amp;uid='+data.customerName+'&amp;site=cntaobao&amp;fromid=cntaobao'+shop+'" target="_blank" >'+data.customerName+'</a>';
+            	 $("#c_"+orderNo).append(chtml);
             } else {
             	html='<img src="${BASEPATH}/img/comment/exc.gif" style="height:7px;width:7px;" />';
             }
-            $("#orderNo_"+orderNo).find("div").append(html);
+            $("#orderNo_"+orderNo).append(html);
         }
     });
 }
@@ -148,6 +151,10 @@ function validateOrderList(orderNo){
   top: 0;
   bottom: 0;
 }
+.order-p{
+	padding: 5px;
+	margin:0;
+}
 </style>
 
 
@@ -160,9 +167,8 @@ function validateOrderList(orderNo){
 			<tr align=center>
 				<th width="100">参与人微信</th>
 				<th width="100">所属店铺</th>
-				<th width="100">购物订单号</th>
-				<th width="60">订单金额</th>
-				<th width="300">截图</th>
+				<th width="180">订单信息</th>
+				<th width="250">截图</th>
 				<th width="100">上传时间</th>
 				<th width="60">是否参与</th>
 				<th width="60">审核状态</th>
@@ -179,11 +185,12 @@ function validateOrderList(orderNo){
 							
 						</td>
 						
-						<td id="orderNo_${wxPic.orderNo}">
-							${wxPic.orderNo!''}
+						<td>
+							<p class="order-p" id="orderNo_${wxPic.orderNo}">订单号：${wxPic.orderNo!''}</p>
+							<p class="order-p" id="amount_${wxPic.orderNo}">订单金额：</p>
+							<p class="order-p" id="pay_${wxPic.orderNo}">支付宝账号：</p>
+							<p class="order-p" id="c_${wxPic.orderNo}">旺旺：</p>
 						</td>
-						
-						<td id="amount_${wxPic.orderNo}"></td>
 						<td>
 							<ul class="figure-list">
 <#list wxPic.picUrl?split(",") as pic>
@@ -214,8 +221,7 @@ function validateOrderList(orderNo){
 						</td>
 	
 						<td>
-							<a class="delete" style="padding:5px;" href="${DOMAIN}comment/payordercomment?wxPicId=${wxPic.id}" target="ajaxTodo" callback="navTabAjaxDone" title="确定要返现吗?"><span>返现</span></a><br>
-							<a class="delete"  style="padding:5px;" href="${DOMAIN}comment/payorderpass?wxPicId=${wxPic.id}" callback="navTabAjaxDone" title="确定不通过吗?" target="ajaxTodo">不通过</a>
+							<a class="edit"  style="padding:5px;" href="${DOMAIN}comment/openWxpicCheck?wxPicId=${wxPic.id}" mask="true" title="点击进行审核" target="dialog">审核</a>
 						</td>
 						<script>
 						    idArrays.push('${wxPic.orderNo}');

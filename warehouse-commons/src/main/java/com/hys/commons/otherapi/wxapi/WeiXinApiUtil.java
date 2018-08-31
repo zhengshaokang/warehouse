@@ -189,6 +189,34 @@ public class WeiXinApiUtil
         String json = HttpInvokeUtil.httpGet(url, map);
         return JsonConverter.parse(json, UserInfo.class);
     }
+    /**
+     * @param accessToken 调用接口凭证
+     * @param touser  要发送的微信openid
+     * @param templateId 模板Id
+     * @param url   模板跳转链接 
+     * @param miniprogram   跳小程序所需数据，不需跳小程序可不用传该数据
+     * @param data 模板数据
+     * @return
+     */
+    public static String sendTemplateMessage (String accessToken,String touser,String templateId,String url,Map<String,Object> miniprogram,Map<String,Object> data){
+    	Map<String,Object> map = new HashMap<String,Object>();
+    	map.put("touser", touser);
+        map.put("template_id", templateId);
+        map.put("url", url);
+        map.put("miniprogram", miniprogram);
+        map.put("data", data);
+        
+        String rqurl = "https://api.weixin.qq.com/cgi-bin/message/template/send";
+        String jsonStr = JsonConverter.format(map);
+        
+        
+        HttpPost httpPost = new HttpPost(rqurl + "?access_token=" + accessToken);
+        httpPost.setEntity(new StringEntity(jsonStr, "UTF-8"));
+        
+        String json = HttpInvokeUtil.httpPost(httpPost);
+        System.out.println("返回数据："+json);
+        return json;
+    }
 
     /**
      * 发送图文消息

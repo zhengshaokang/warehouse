@@ -62,24 +62,34 @@ public class WxPicController {
 	    	return wxPicViewComp.validateOrder(orderNo, Integer.parseInt(sysAdminVo.getId()));
 	    } 
 	    
-	    @ResponseBody
-	    @RequestMapping(value = "payordercomment")
-	    public ResultPrompt payordercomment(Integer wxPicId, ModelMap modelMap, HttpServletRequest request){
+	    
+	    
+	    @RequestMapping(value = "openWxpicCheck")
+	    public String openWxpicCheck(Integer wxPicId, ModelMap modelMap, HttpServletRequest request){
 	    	
-	    	HttpSession session = SessionUtils.getSession();
-	    	SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
-	    	
-	    	return wxPicViewComp.updateOrderPayStatus(wxPicId, EnumOrderPayStatus.YESPAY.getValue(), Integer.parseInt(sysAdminVo.getId()));
-	    } 
+	        modelMap.put("wxPicId", wxPicId);
+	        return "comment/wx_pic_censor";
+	    }
 	    
 	    @ResponseBody
-	    @RequestMapping(value = "payorderpass")
-	    public ResultPrompt payorderpass(Integer wxPicId, ModelMap modelMap, HttpServletRequest request){
+	    @RequestMapping(value = "wxpicCheck")
+	    public ResultPrompt wxpicCheck(Integer wxPicId, String checkReason,Integer picSorStatus,Integer sendMassge,ModelMap modelMap, HttpServletRequest request){
 	    	
-	    	HttpSession session = SessionUtils.getSession();
-	    	SysUserVo sysAdminVo = (SysUserVo) session.getAttribute("sysadmin");
-	    	
-	    	return wxPicViewComp.updateOrderPayStatus(wxPicId, EnumOrderPayStatus.NOPASS.getValue(), Integer.parseInt(sysAdminVo.getId()));
+	    	return wxPicViewComp.updateOrderPayStatus(wxPicId, picSorStatus ,checkReason,sendMassge);
 	    } 
+	    
+//	    @ResponseBody
+//	    @RequestMapping(value = "payordercomment")
+//	    public ResultPrompt payordercomment(Integer wxPicId,ModelMap modelMap, HttpServletRequest request){
+//	    	String reason = "审核通过";
+//	    	return wxPicViewComp.updateOrderPayStatus(wxPicId, EnumOrderPayStatus.YESPAY.getValue(),reason);
+//	    } 
+//	    
+//	    @ResponseBody
+//	    @RequestMapping(value = "payorderpass")
+//	    public ResultPrompt payorderpass(Integer wxPicId, String reason,ModelMap modelMap, HttpServletRequest request){
+//	    	
+//	    	return wxPicViewComp.updateOrderPayStatus(wxPicId, EnumOrderPayStatus.NOPASS.getValue(),reason);
+//	    } 
 	    
 }

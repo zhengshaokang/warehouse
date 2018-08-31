@@ -87,6 +87,7 @@
 			<if test="p.platform != null and p.platform >= 0">
 				and platform = #{p.platform}
 			</if>
+		order by id desc
 	</select>
 	
 

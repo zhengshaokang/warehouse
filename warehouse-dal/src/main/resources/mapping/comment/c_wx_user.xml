@@ -47,6 +47,7 @@
 			<if test="p.nickname != null and p.nickname != ''">
 				and nickname like concat('%',#{p.nickname},'%')
 			</if>
+			order by id desc
 	</select>
 	
 </mapper>

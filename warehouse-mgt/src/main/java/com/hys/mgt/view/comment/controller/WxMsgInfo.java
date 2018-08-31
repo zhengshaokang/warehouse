@@ -25,6 +25,7 @@ import com.hys.commons.otherapi.wxapi.bean.Menu;
 import com.hys.commons.otherapi.wxapi.bean.Message;
 import com.hys.commons.otherapi.wxapi.bean.resp.Article;
 import com.hys.commons.otherapi.wxapi.bean.resp.TextMessage;
+import com.hys.commons.util.DateUtil;
 import com.hys.commons.util.LogicUtil;
 import com.hys.mgt.view.common.constants.WebConstants;
 import com.hys.mgt.view.user.component.ISysUserViewComp;
@@ -292,5 +293,104 @@ public class WxMsgInfo {
  
 		String s = new String(tempArr);
 		return s;
+	}
+	
+	public static void main(String[] args) {
+		String appId = "wx36c0752699ec541c";
+		String secret = "28dba62ab2c83f7fedb3b5d9edaba30b";
+		//String accessToken = WeiXinApiUtil.getAccessToken(appId,secret);
+		//System.out.println(accessToken);
+		
+		
+		StringBuffer buffer = new StringBuffer();
+		buffer.append("您好,我是小q,请回复数字选择服务:\n");
+
+		buffer.append("1 天气预报\n");
+
+		buffer.append("2 公交查询\n");
+
+		buffer.append("3 周边搜索\n");
+
+		buffer.append("4 歌曲点播\n");
+
+		buffer.append("5 经典游戏\n");
+		
+		String accessToken = "13_fAMRq4MfRygs0Eo-IgMiXzv-4D9mTWKLszZ97XNRd_9J5goHhtX7gQSQxyY_G1cKjXHGXcDDRR6Lo-J-68-YAzTKBal78PDa0a_pUr9AjNLjAuG5IWEnhoNYMSyeMPDVL8LjRxQ5X6aMnLuPTWDaACAORY";
+		
+		//WeiXinApiUtil.responseCustomText("oqfNhwiNujE2FErngqdAAAMs-fuc", "是我，别开枪", "13_Fgd4CO5SFkdtzk5fWEGJKE0mgjmCzU7MXaXqDwJQssMpb-Afzh_ikA73DZurnp7B3UhFYtaCAM8G9yrupWr2w4Z2ViHCQLE6G7J_3tjfkuWjC13tRq9ckH0W9MMddYNWJe7f1Z0E7JEAesTNCGQfAJAUYI");
+		//WeiXinApiUtil.responseCustomText("oqfNhwgVdvMSo71yRmxfZRZiMe40", buffer.toString(), "13_MPM9rL9Tq9BEYvd4crwwttI4uteMzC7KMxHxj2DfDnvT2lWGBWwVXgtFSse78Q7vYu523PDE2zJu3NB9bXb8ryx7nNdMBa1-nFbfp6TK7zZS7AOkdJLbbK4OWKm3-SFoabXvWVy-B6ZpBYfFIREaABALUH");
+	
+		Article a1 =new Article();
+        a1.setDescription("说什么好嘞");
+        a1.setPicurl("http://mmbiz.qpic.cn/mmbiz_jpg/l0waw4uknPbYncvibUfxjicyDa7iaZ1lsia0BXYltPiatnMkZURWILiaMdbF2ZZsgNdSjJrtpG95PeObYLkQRxtiah0kg/0?wx_fmt=jpeg");
+        a1.setTitle("【晒图有礼】晒出你的美");
+        a1.setUrl("http://mp.weixin.qq.com/s?__biz=MzI2MTE5OTI3Mw==&mid=100000042&idx=1&sn=48dd90b80b8a5fa963a8e6017dade2d8&chksm=6a5f45ec5d28ccfa33c0bfdf4371f05e07fab4b6147e4044dda60b5b90ea29f829c3a6aafcbc#rd");
+        Article[] articles = new Article[1];
+        articles[0] = a1;
+       // WeiXinApiUtil.responseCustomNews(accessToken, "oqfNhwgVdvMSo71yRmxfZRZiMe40", articles);
+        
+        String touser = "oqfNhwiNujE2FErngqdAAAMs-fuc";
+        touser = "oqfNhwm37q9CdWD5cPJA9yl6yMfY";
+        //touser = "oqfNhwgVdvMSo71yRmxfZRZiMe40";
+        String templateId = "XYglxw6VJOZrIOc3kEGoj_II9tH5Ev80LosTW4CkCvI"; //审核失败模板
+        
+        String templateUrl = "http://wx.vva.com.cn/wxpicadd?activ=MXxBQ1RJVjIwMTgwNzE5MTU1MDQ0";
+        Map<String,Object> miniprogram = new HashMap<String,Object>();
+        miniprogram.put("appid", "");
+        miniprogram.put("pagepath", "");
+        
+        Map<String,Object> data = new HashMap<String,Object>();
+        Map<String,Object> first = new HashMap<String,Object>();
+        first.put("value", "很遗憾，您参与的晒图有礼活动未通过审核！");
+        first.put("color", "#FF0000");
+        data.put("first", first);
+        
+        Map<String,Object> keyword1 = new HashMap<String,Object>();
+        keyword1.put("value", "未按要求进行晒图，请按要求重新提交。");
+        keyword1.put("color", "#000");
+        data.put("keyword1", keyword1);
+        
+        Map<String,Object> keyword2 = new HashMap<String,Object>();
+        keyword2.put("value", DateUtil.getCurrentDateTime("yyyy-MM-dd HH:mm:ss"));
+        keyword2.put("color", "#000");
+        data.put("keyword2", keyword2);
+        
+        Map<String,Object> remark = new HashMap<String,Object>();
+        remark.put("value", "点击详情重新提交");
+        remark.put("color", "#FF0000");
+        data.put("remark", remark);
+        
+        
+        //WeiXinApiUtil.sendTemplateMessage(accessToken, touser,templateId, templateUrl, miniprogram, data);
+        
+        
+        templateId = "wj8zA-Mmk0HLD9Mt9nhbdQtP3IC8h23hZc1oGR1N6UY"; //成功模板
+        
+        String templateUrl1 = "";
+        Map<String,Object> miniprogram1 = new HashMap<String,Object>();
+        miniprogram1.put("appid", "");
+        miniprogram1.put("pagepath", "");
+        Map<String,Object> data1 = new HashMap<String,Object>();
+        Map<String,Object> first1 = new HashMap<String,Object>();
+        first1.put("value", "您参与的晒图有礼活动已经通过审核，请到支付账号中查看领取！");
+        first1.put("color", "#FF0000");
+        data1.put("first", first1);
+        
+        Map<String,Object> keyword11 = new HashMap<String,Object>();
+        keyword11.put("value", "审核通过");
+        keyword11.put("color", "#000");
+        data1.put("keyword1", keyword11);
+        
+        Map<String,Object> keyword21 = new HashMap<String,Object>();
+        keyword21.put("value", DateUtil.getCurrentDateTime("yyyy-MM-dd HH:mm:ss"));
+        keyword21.put("color", "#000");
+        data1.put("keyword2", keyword21);
+        
+        Map<String,Object> remark1 = new HashMap<String,Object>();
+        remark1.put("value", "  谢谢您的参与！");
+        remark1.put("color", "#FF0000");
+        data1.put("remark", remark1);
+	
+        WeiXinApiUtil.sendTemplateMessage(accessToken, touser,templateId, templateUrl1, miniprogram1, data1);
 	}
 }
